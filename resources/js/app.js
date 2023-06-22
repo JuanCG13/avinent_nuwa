@@ -1,16 +1,21 @@
 import './bootstrap';
-import '../css/app.css';
+import '../scss/app.scss';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import PrimeVue from 'primevue/config';
 import { createI18n } from "vue-i18n";
+import messages_es from '../lang/es.json'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 const messages = {
     en: {
+        laravel: {
+            Password:"Password",
+        },
     nav: {
         home: "Главная",
         about: "О нас"
@@ -23,7 +28,13 @@ const messages = {
         header: "О нас"
       }
     },
+    es: {
+        laravel:messages_es,
+    },
     ru: {
+        laravel: {
+            Password:"Добро",
+        },
       nav: {
         home: "Главная",
         about: "О нас"
@@ -44,7 +55,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         
         const i18n = createI18n({
-            locale: import.meta.env.VITE_DEFAULT_LOCALE,
+            locale: 'es',
             fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE,
             legacy: false,
             globalInjection: true,
@@ -59,6 +70,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(PrimeVue)
             .use(i18n)
             .mount(el);
     },
@@ -66,3 +78,9 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+
+
+if (process.env.NODE_ENV !== 'production') {
+
+}

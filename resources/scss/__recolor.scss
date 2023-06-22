@@ -1,0 +1,23 @@
+/* Recolor styles for PrimeVue */
+
+.p-button-info{
+    border: 0px!important;
+    background-color: rgba(127,185, 39,1)!important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight{
+    background-color: rgba(127,185,39,1)!important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight{
+    border-color: rgba(127,185,39,1)!important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight{
+    color: #ffffff!important;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    color: rgba(127,185,39,1)!important;
+    border-color: rgba(127,185,39,1)!important;
+}

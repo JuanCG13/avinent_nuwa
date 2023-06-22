@@ -1,0 +1,65 @@
+/* Style primevue components */
+
+.p-checkbox .p-checkbox-box.p-highlight {
+    border-color: rgba(127,185,39,1);
+    background: rgba(127,185,39,1);
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+    border-color: rgba(127,185,39,1);
+    background: rgba(127,185,39,1);
+}
+
+.p-slider .p-slider-range {
+    background-color: rgba(127,185,39,1);
+}
+
+.p-slider .p-slider-handle{
+    border-color: rgba(127,185,39,1);
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    color: rgba(127,185,39,1);
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    border-color: rgba(127,185,39,1);
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus{
+    box-shadow: inset 0 0 0 1px rgba(127,185,39,1);
+}
+
+.p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 1px rgba(127,185,39,1);
+    border-color: rgba(127,185,39,1);
+}
+
+.p-column-filter-overlay .p-button{
+    border: 1px solid rgba(127,185,39,1);
+    background-color: rgba(127,185,39,1);
+}
+
+.p-column-filter-overlay .p-button:hover{
+    background-color: #ffffff;
+    color: rgba(127,185,39,1);
+    border: 1px solid rgba(127,185,39,1);
+}
+
+.p-column-filter-overlay .p-button.p-button-outlined {
+    color: #fff!important;
+}
+
+.p-column-filter-overlay .p-button.p-button-outlined:enabled:hover{
+    background-color: rgba(127,185,39,1);
+    color: #ffffff;
+    border: 1px solid rgba(127,185,39,1);
+}
+
+.svg-copate-color {
+    stroke: rgba(127,185,39,1);
+}
+
+.svg-copateblue-color {
+    stroke: rgba(1,115,152,1);
+}

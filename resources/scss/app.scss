@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url(primevue/resources/themes/tailwind-light/theme.css);
+@import url(primevue/resources/primevue.min.css);
+@import url(primeicons/primeicons.css);
+
+/* Main Copate Intranet styles */
+
+@import url(__main.scss);
+@import url(__auth.scss);
+@import url(__recolor.scss);

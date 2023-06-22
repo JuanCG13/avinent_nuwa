@@ -56,6 +56,17 @@ return [
             'throw' => false,
         ],
 
+        'users' => [
+            'driver' => 'local',
+            'root' => storage_path('app/user'),
+            'visibility' => 'private'
+        ],
+        'tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/temp'),
+            'visibility' => 'private'
+        ],
+
     ],
 
     /*
