@@ -1,17 +1,8 @@
 <template>
-    <select v-model="$i18n.locale">
-        <option v-for="language in languages" :key="language.id" :value="language.id">
-            {{language.name}}
-        </option>
+
+    <select class="border-0 focus:border-0" v-model="$i18n.locale">
+      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
     </select>
+
 </template>
 
-<script>
-    import { useI18n } from "vue-i18n";
-    export default {
-    setup() {
-        const { t } = useI18n({});
-        return { t };
-    },
-}
-</script>
