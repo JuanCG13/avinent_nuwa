@@ -1,13 +1,10 @@
 <script setup>
 import { ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import AuthenticationCard from "@/Components/AuthenticationCard.vue";
 import Button from "primevue/button";
 import Checkbox from "@/Components/Checkbox.vue";
-import Dialog from "primevue/dialog";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 
@@ -33,7 +30,7 @@ const submit = () => {
     });
 };
 
-const displayModal = ref(false);
+
 </script>
 
 <template>
@@ -43,7 +40,7 @@ const displayModal = ref(false);
      <div class="mt-8">
       <div>
          <div class="relative flex text-sm">
-            <span class="text-gray-500" v-html='$t("laravel.Login copy")'></span>
+            <span class="text-gray-500" v-html='$t("msg.auth-intro")'></span>
           </div>
       </div>
 
@@ -52,7 +49,7 @@ const displayModal = ref(false);
       <div class="mt-6">
         <form class="space-y-6" @submit.prevent="submit">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700"> {{ $t("laravel.E-Mail") }}</label>
+            <label for="email" class="block text-sm font-medium text-gray-700"> {{ $t("msg.email") }}</label>
             <div class="mt-1">
               <textInput
                 id="email"
@@ -68,7 +65,7 @@ const displayModal = ref(false);
           </div>
 
           <div class="space-y-1">
-            <label for="password" class="block text-sm font-medium text-gray-700">{{ $t("laravel.Password") }}</label>
+            <label for="password" class="block text-sm font-medium text-gray-700">{{ $t("msg.password") }}</label>
             <div class="mt-1">
               <textInput
                 id="password"
@@ -89,29 +86,29 @@ const displayModal = ref(false);
               <label
                 for="remember-me"
                 class="ml-2 block text-sm text-gray-900"
-              >{{ $t("laravel.Remember Me") }}</label>
+              >{{ $t("msg.remember") }}</label>
             </div>
             <div>
                 <Link
                 v-if="canResetPassword"
                 :href="route('password.request')"
                 class="ml-2 block text-sm text-gray-900 underline"
-              >{{ $t("laravel.Forgot Your Password?") }}</Link>
+              >{{ $t("msg.forgot") }}</Link>
             </div>
           </div>
 
           <div class="block lg:flex pt-3 lg:gap-6">
-            <PrimaryButton
+            <Button
+              type="submit"
               class="flex w-full justify-center rounded-md border border-transparent bg-primary-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-copate-700 focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
               :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
-            >{{ $t("laravel.Login") }}</PrimaryButton>
+            >{{ $t("msg.login") }}</Button>
             
-             <PrimaryButton
-              class="flex w-full justify-center rounded-md border border-transparent bg-neutral-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-copate-700 focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
-              :class="{ 'opacity-25': form.processing }"
-              :disabled="form.processing"
-            >{{ $t("laravel.Register") }}</PrimaryButton>
+             <Link
+               :href="route('register')" class="flex w-full justify-center rounded-md border border-transparent bg-neutral-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-copate-700 focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
+            >{{ $t("msg.register") }}
+              </Link>
           </div>
 
         </form>

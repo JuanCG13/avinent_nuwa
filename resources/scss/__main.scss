@@ -1,3 +1,12 @@
+select, input {
+    &:focus {
+        --tw-ring-color: none !important;
+        --tw-ring-offset-shadow: none !important;
+        --tw-ring-shadow: none !important;
+        box-shadow: none !important;
+    }
+}
+
 /* Style primevue components */
 
 .p-checkbox .p-checkbox-box.p-highlight {

@@ -8,45 +8,18 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import PrimeVue from 'primevue/config';
 import { createI18n } from "vue-i18n";
 import messages_es from '../lang/es.json'
+import messages_en from '../lang/en.json'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
-const messages = {
+const translations = {
     en: {
-        laravel: {
-            Password:"Password",
-        },
-    nav: {
-        home: "Главная",
-        about: "О нас"
-      },
-      home: {
-        header: "Добро пожаловать в руководство Vue 3 I18n!",
-        created_by: "Это руководство создано для вас компанией Lokalise."
-      },
-      about: {
-        header: "О нас"
-      }
+        msg:messages_en,
     },
     es: {
-        laravel:messages_es,
-    },
-    ru: {
-        laravel: {
-            Password:"Добро",
-        },
-      nav: {
-        home: "Главная",
-        about: "О нас"
-      },
-      home: {
-        header: "Добро пожаловать в руководство Vue 3 I18n!",
-        created_by: "Это руководство создано для вас компанией Lokalise."
-      },
-      about: {
-        header: "О нас"
-      }
+        msg:messages_es,
     }
+    
   }
   
 createInertiaApp({
@@ -59,7 +32,7 @@ createInertiaApp({
             fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE,
             legacy: false,
             globalInjection: true,
-            messages: messages,
+            messages: translations,
             //messages: { tr, en },
             runtimeOnly: false,
             // set locale messages

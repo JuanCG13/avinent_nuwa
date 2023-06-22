@@ -1,0 +1,18 @@
+{
+
+
+    "auth-intro":"Bienvenidos al portal de pedidos de Avinent CAD CAM. <br/> Por favor, inicia sesión o regístrate.",
+    "email": "E-Mail",
+    "password": "Password",
+    "remember": "Remember Me",
+    "login": "Login",
+    "forgot": "Forgot Your Password?",
+    "register": "Register",
+    "logout": "Logout",
+    "name": "Name",
+    "confirm-password": "Confirm Password",
+    "password-reset": "Reset Password",
+    "password-reset-notification": "Reset Password Notification"
+   
+   
+}
