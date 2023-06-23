@@ -1,14 +1,20 @@
 <script setup>
+import Button from "primevue/button";
+
 defineProps({
     type: {
         type: String,
-        default: 'button',
+        default: 'submit',
     },
 });
 </script>
 
 <template>
-    <button :type="type" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-        <slot />
-    </button>
+    <Button
+        :type="submit"
+        class="flex justify-center rounded-md border border-transparent bg-gray-500 hover:!bg-primary-500 py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2 transition ease-in-out duration-150"
+    >
+     <slot />
+    </Button>
+
 </template>

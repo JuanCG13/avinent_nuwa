@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import Button from "primevue/button";
+import Button from "@/Components/PrimaryButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -35,7 +35,7 @@ const submit = () => {
 
 <template>
 <AuthLayout> 
-  <Head title="Login" />
+  <Head :title="$t('msg.login')" />
   <main>
      <div class="mt-8">
       <div>
@@ -100,13 +100,13 @@ const submit = () => {
           <div class="block lg:flex pt-3 lg:gap-6">
             <Button
               type="submit"
-              class="flex w-full justify-center rounded-md border border-transparent bg-primary-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-copate-700 focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
               :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
             >{{ $t("msg.login") }}</Button>
             
              <Link
-               :href="route('register')" class="flex w-full justify-center rounded-md border border-transparent bg-neutral-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-copate-700 focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
+               :href="route('register')" 
+               class="flex w-full justify-center rounded-md border border-transparent bg-neutral-500 hover:!bg-primary-500  py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
             >{{ $t("msg.register") }}
               </Link>
           </div>
