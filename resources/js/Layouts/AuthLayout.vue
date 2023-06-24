@@ -15,7 +15,7 @@ defineProps({
 
 <template>
  
-    <div class="flex min-h-full">
+    <div class="flex min-h-full dark:bg-slate-800">
 
         <Head :title="title" />
 

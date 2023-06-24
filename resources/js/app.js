@@ -28,6 +28,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         
         const i18n = createI18n({
+            detectBrowserLanguage: true,
             locale: 'es',
             fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE,
             legacy: false,

@@ -12,7 +12,9 @@
     "name": "Name",
     "confirm-password": "Confirm Password",
     "password-reset": "Reset Password",
-    "password-reset-notification": "Reset Password Notification"
-   
+    "password-reset-notification": "Reset Password Notification",
+    "register-title": "Fill in the form to sign up",
+    "register-copy": "Once registered, we will validate your data and you will be able to access the portal."
+    
    
 }

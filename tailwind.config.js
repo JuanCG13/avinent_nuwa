@@ -10,7 +10,9 @@ module.exports = {
         './resources/js/**/*.vue',
     ],
     important: true,
+    darkMode: 'class',
     theme: {
+        
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],

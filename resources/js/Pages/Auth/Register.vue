@@ -29,8 +29,8 @@ const submit = () => {
     <Head :title="$t('msg.register')" />
         <main>
              <MessageBox 
-            title="Rellena el formulario para registrarte" 
-            text="Una vez registrado, validaremos tus datos y ya podrás acceder al portal."/>
+            :title="$t('msg.register-title')" 
+            :text="$t('msg.register-copy')"/>
           
 
             <div class="columns-2 gap-8">

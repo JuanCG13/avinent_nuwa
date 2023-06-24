@@ -40,7 +40,7 @@ const submit = () => {
      <div class="mt-8">
       <div>
          <div class="relative flex text-sm">
-            <span class="text-gray-500" v-html='$t("msg.auth-intro")'></span>
+            <span class="text-gray-500 dark:text-white" v-html='$t("msg.auth-intro")'></span>
           </div>
       </div>
 
@@ -49,7 +49,7 @@ const submit = () => {
       <div class="mt-6">
         <form class="space-y-6" @submit.prevent="submit">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700"> {{ $t("msg.email") }}</label>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-slate-300"> {{ $t("msg.email") }}</label>
             <div class="mt-1">
               <textInput
                 id="email"
@@ -65,7 +65,7 @@ const submit = () => {
           </div>
 
           <div class="space-y-1">
-            <label for="password" class="block text-sm font-medium text-gray-700">{{ $t("msg.password") }}</label>
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-slate-300">{{ $t("msg.password") }}</label>
             <div class="mt-1">
               <textInput
                 id="password"
@@ -85,14 +85,14 @@ const submit = () => {
               <Checkbox v-model:checked="form.remember" name="remember" />
               <label
                 for="remember-me"
-                class="ml-2 block text-sm text-gray-900"
+                class="ml-2 block text-sm text-gray-900 dark:text-slate-300"
               >{{ $t("msg.remember") }}</label>
             </div>
             <div>
                 <Link
                 v-if="canResetPassword"
                 :href="route('password.request')"
-                class="ml-2 block text-sm text-gray-900 underline"
+                class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
               >{{ $t("msg.forgot") }}</Link>
             </div>
           </div>
