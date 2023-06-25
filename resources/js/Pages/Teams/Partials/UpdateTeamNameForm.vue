@@ -27,11 +27,11 @@ const updateTeamName = () => {
 <template>
     <FormSection @submitted="updateTeamName">
         <template #title>
-            Team Name
+            {{ $t('msg.team-name') }}
         </template>
 
         <template #description>
-            The team's name and owner information.
+            {{ $t('msg.team-info') }}
         </template>
 
         <template #form>
@@ -69,11 +69,11 @@ const updateTeamName = () => {
 
         <template v-if="permissions.canUpdateTeam" #actions>
             <ActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                {{ $t('msg.saved') }}
             </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                {{ $t('msg.save') }}
             </PrimaryButton>
         </template>
     </FormSection>

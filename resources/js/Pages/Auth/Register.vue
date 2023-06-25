@@ -1,27 +1,14 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
-import Button from "@/Components/PrimaryButton.vue";
-import Checkbox from "@/Components/Checkbox.vue";
-import InputError from "@/Components/InputError.vue";
+import { Head } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
 import MessageBox from "@/Components/MessageBox.vue";
 import PageLayout from "@/Layouts/PageLayout.vue";
+import RadioButton from 'primevue/radiobutton'
+import RegisterTypeA from "./RegisterTypeA.vue"
+import RegisterTypeB from "./RegisterTypeB.vue"
 
-const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    terms: false,
-});
-
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
+const customer_type = ref('1');
 </script>
 
 <template>
@@ -29,95 +16,26 @@ const submit = () => {
     <Head :title="$t('msg.register')" />
         <main>
              <MessageBox 
-            :title="$t('msg.register-title')" 
-            :text="$t('msg.register-copy')"/>
+                :title="$t('msg.register-title')" 
+                :text="$t('msg.register-copy')"
+                />
+            
+            <div class="flex flex-col gap-2 mb-6">
+                <div class="flex align-items-center">
+                    <RadioButton v-model="customer_type" inputId="typeA" value="1" />
+                    <InputLabel for="typeA" class="ml-2 cursor-pointer">{{ $t('msg.register-type-a') }}</InputLabel>
+                </div>
+                <div class="flex align-items-center">
+                    <RadioButton v-model="customer_type" inputId="typeB" value="2" />
+                    <InputLabel for="typeB" class="ml-2 cursor-pointer">{{ $t('msg.register-type-b') }}</InputLabel>
+                </div>
+            </div>
           
 
-            <div class="columns-2 gap-8">
-             
-            <form @submit.prevent="submit">
-                <div>
-                    <InputLabel for="name" value="Name" />
-                    <TextInput
-                        id="name"
-                        v-model="form.name"
-                        type="text"
-                        class="mt-1 block w-full"
-                        required
-                        autofocus
-                        autocomplete="name"
-                    />
-                    <InputError class="mt-2" :message="form.errors.name" />
-                </div>
-
-                <div class="mt-4">
-                    <InputLabel for="email" value="Email" />
-                    <TextInput
-                        id="email"
-                        v-model="form.email"
-                        type="email"
-                        class="mt-1 block w-full"
-                        required
-                        autocomplete="username"
-                    />
-                    <InputError class="mt-2" :message="form.errors.email" />
-                </div>
-
-                   <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-                    <InputLabel for="terms">
-                        <div class="flex items-center">
-                            <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
-
-                            <div class="ml-2">
-                                I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Privacy Policy</a>
-                            </div>
-                        </div>
-                        <InputError class="mt-2" :message="form.errors.terms" />
-                    </InputLabel>
-                </div>
-
-                <div class="flex items-center mt-4">
-                    <!-- <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Already registered?
-                    </Link> -->
-               
-                </div>
-
-                <div class="flex items-center mt-4">
-                    <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        {{$t('msg.register')}}
-                    </Button>
-                </div>
-
-                <div class="break-before-column">
-                    <InputLabel for="password" value="Password" />
-                    <TextInput
-                        id="password"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-full"
-                        required
-                        autocomplete="new-password"
-                    />
-                    <InputError class="mt-2" :message="form.errors.password" />
-                </div>
-
-                <div class="mt-4">
-                    <InputLabel for="password_confirmation" value="Confirm Password" />
-                    <TextInput
-                        id="password_confirmation"
-                        v-model="form.password_confirmation"
-                        type="password"
-                        class="mt-1 block w-full"
-                        required
-                        autocomplete="new-password"
-                    />
-                    <InputError class="mt-2" :message="form.errors.password_confirmation" />
-                </div>
-
-             
-            </form>
-    </div>
+            <div class="md:columns-2 gap-8">
+                <RegisterTypeA v-if="customer_type==1"></RegisterTypeA>
+                <RegisterTypeB v-if="customer_type==2"></RegisterTypeB>
+            </div>
         </main>
 
     </PageLayout>

@@ -14,7 +14,16 @@
     "password-reset-notification": "Aviso para restablecer contraseña",
     "register-title": "Rellena el formulario para registrarte",
     "register-copy": "Una vez registrado, validaremos tus datos y ya podrás acceder al portal.",
-    
+    "register-type-a": "Soy cliente de Avinent",
+    "register-type-b": "Quiero ser cliente de Avinent",
+    "register-id" : "Código de cliente",
+    "register-nif" : "NIF",
+    "register-name" : "Nombre",
+    "team-name": "Nombre del equipo",
+    "team-info" : "Nombre del equipo e información del propietario.",
+    "saved" : "Guardado",
+    "save" : "Guardar",
+
     "You are receiving this email because we received a password reset request for your account.": "Estás recibiendo este email porque se ha solicitado un cambio de contraseña para tu cuenta.",
     "This password reset link will expire in :count minutes.": "Este enlace para restablecer la contraseña caduca en :count minutos.",
     "If you did not request a password reset, no further action is required.": "Si no has solicitado un cambio de contraseña, puedes ignorar o eliminar este e-mail.",

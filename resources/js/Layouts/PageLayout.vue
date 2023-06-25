@@ -27,10 +27,9 @@ defineProps({
 
         <div class="container mx-auto flex items-center">
 
-
-            <div class="mx-auto w-full max-w-3xl pt-12 pb-8">
+            <div class="mx-auto w-full max-w-3xl pt-12 pb-8 px-6">
                 
-                <div class="pb-24 flex justify-center">
+                <div class="pb-12 lg:pb-24 flex justify-center">
                     <AuthenticationCardLogo />
                 </div>
                   

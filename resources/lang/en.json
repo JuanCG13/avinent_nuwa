@@ -14,7 +14,11 @@
     "password-reset": "Reset Password",
     "password-reset-notification": "Reset Password Notification",
     "register-title": "Fill in the form to sign up",
-    "register-copy": "Once registered, we will validate your data and you will be able to access the portal."
-    
-   
+    "register-copy": "Once registered, we will validate your data and you will be able to access the portal.",
+    "register-type-a": "I'm an Avinent customer",
+    "register-type-b": "I want to be an Avinent customer",
+    "team-name": "Team name",
+    "team-info" : "Team name and owner info.",
+    "saved" : "Saved",
+    "save" : "Save"
 }
