@@ -21,7 +21,7 @@ defineProps({
 
         <Banner />
 
-        <div class="absolute right-16 top-8">
+        <div class="absolute right-8 top-8">
             <languageSelector/>
         </div>
 

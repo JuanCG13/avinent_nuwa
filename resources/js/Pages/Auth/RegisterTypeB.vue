@@ -6,6 +6,10 @@ import Checkbox from "@/Components/Checkbox.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import TitleBorder from "@/Components/TitleBorder.vue";
+
+import { VueTelInput } from 'vue3-tel-input'
+import 'vue3-tel-input/dist/vue3-tel-input.css';
 
 const form = useForm({
     name: '',
@@ -13,7 +17,25 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     terms: false,
+    shipping: true,
 });
+
+const phoneOptions = {
+        mode: "international",
+       // defaultCountry: "ES",
+        required: true,
+        enabledCountryCode: true,
+        enabledFlags: true,
+        //onlyCountries: ["ES", "PT","AD"],
+        invalidMsg: 'Caca',
+        styleClasses: "w-full mt-1 py-1 border-gray-300 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-300 dark:bg-white rounded-sm shadow-sm",
+        inputOptions: {
+            styleClasses: "",
+            autocomplete: "on",
+            name: "phone",
+            placeholder: ""
+            }
+        };
 
 const submit = () => {
     form.post(route('register'), {
@@ -23,7 +45,7 @@ const submit = () => {
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div>
+        <div class="mb-4">
             <InputLabel for="name" :value="$t('msg.name')" />
             <TextInput
                 id="name"
@@ -37,7 +59,151 @@ const submit = () => {
             <InputError class="mt-2" :message="form.errors.name" />
         </div>
 
+
+        <div class="mb-4">
+            <InputLabel for="company_name" :value="$t('msg.company_name')" />
+            <TextInput
+                id="company_name"
+                v-model="form.company_name"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_name"
+            />
+            <InputError class="mt-2" :message="form.errors.company_name" />
+        </div>
+
+
+
+
+        <div class="mb-4">
+            <InputLabel for="company_address" :value="$t('msg.company_address')" />
+            <TextInput
+                id="company_address"
+                v-model="form.company_address"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_address"
+            />
+            <InputError class="mt-2" :message="form.errors.company_address" />
+        </div>
+
+        <div class="mb-4">
+            <InputLabel for="company_city" :value="$t('msg.company_city')" />
+            <TextInput
+                id="company_city"
+                v-model="form.company_city"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_city"
+            />
+            <InputError class="mt-2" :message="form.errors.company_city" />
+        </div>
+
+        <div class="mb-4">
+            <InputLabel for="company_province" :value="$t('msg.company_province')" />
+            <TextInput
+                id="company_province"
+                v-model="form.company_province"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_province"
+            />
+            <InputError class="mt-2" :message="form.errors.company_zipcode" />
+        </div>
+
+        <div class="">
+            <InputLabel for="company_zipcode" :value="$t('msg.company_zipcode')" />
+            <TextInput
+                id="company_zipcode"
+                v-model="form.company_zipcode"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_zipcode"
+            />
+            <InputError class="mt-2" :message="form.errors.company_zipcode" />
+        </div>
+
+        <TitleBorder>
+            <template #title>Dirección de envío</template> 
+        </TitleBorder>
+
         <div class="mt-4">
+            <InputLabel for="shipping">
+                <div class="flex items-center">
+                    <Checkbox id="shipping" v-model:checked="form.shipping" name="shipping" required />
+
+                    <div class="ml-2">
+                        Usar la misma dirección que la dirección de facturación.
+                    </div>
+                </div>
+            </InputLabel>
+        </div>
+
+
+
+       <!------------col2------------------------------->
+
+       <div class="break-before-column"></div>
+
+       <div class="mb-4">
+            <InputLabel for="company_country" :value="$t('msg.company_country')" />
+            <TextInput
+                id="company_country"
+                v-model="form.company_country"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_country"
+            />
+            <InputError class="mt-2" :message="form.errors.company_country" />
+        </div>
+
+       <div class="mb-4">
+            <InputLabel for="nif" :value="$t('msg.nif')" />
+            <TextInput
+                id="nif"
+                v-model="form.nif"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="nif"
+            />
+            <InputError class="mt-2" :message="form.errors.nif" />
+        </div>
+
+        <div class="mb-4">
+            <InputLabel for="company_vatnumber" :value="$t('msg.company_vatnumber')" />
+            <TextInput
+                id="company_vatnumber"
+                v-model="form.company_vatnumber"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="company_vatnumber"
+            />
+            <InputError class="mt-2" :message="form.errors.company_country" />
+        </div>
+
+       <div class="mb-4">
+            <InputLabel for="company_phone" :value="$t('msg.company_phone')" />
+            <VueTelInput id="form.company_phone" v-model="form.company_phone" v-bind="phoneOptions" @validate="phoneValidated"></VueTelInput>
+            <InputError class="mt-2" :message="form.errors.company_phone" />
+        </div>
+
+       <div class="mb-4">
             <InputLabel for="email" :value="$t('msg.email')" />
             <TextInput
                 id="email"
@@ -50,9 +216,7 @@ const submit = () => {
             <InputError class="mt-2" :message="form.errors.email" />
         </div>
 
-       
-
-        <div class="break-before-column">
+        <div class="mb-4">
             <InputLabel for="password" :value="$t('msg.password')" />
             <TextInput
                 id="password"
@@ -65,7 +229,7 @@ const submit = () => {
             <InputError class="mt-2" :message="form.errors.password" />
         </div>
 
-        <div class="mt-4">
+        <div class="mb-4">
             <InputLabel for="password_confirmation" :value="$t('msg.confirm-password')" />
             <TextInput
                 id="password_confirmation"
@@ -84,7 +248,7 @@ const submit = () => {
                     <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
 
                     <div class="ml-2">
-                        I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Privacy Policy</a>
+                        I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm dark:text-gray-200 text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm dark:text-gray-200 text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Privacy Policy</a>
                     </div>
                 </div>
                 <InputError class="mt-2" :message="form.errors.terms" />
@@ -95,7 +259,6 @@ const submit = () => {
             <!-- <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Already registered?
             </Link> -->
-    
         </div>
 
         <div class="flex items-center mt-4">
