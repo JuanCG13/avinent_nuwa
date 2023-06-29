@@ -8,11 +8,13 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 
 const form = useForm({
-    name: '',
+    idClientX3: '',
+    cif: '',
     email: '',
     password: '',
     password_confirmation: '',
     terms: false,
+    customer_type: 'A',
 });
 
 const submit = () => {
@@ -27,26 +29,26 @@ const submit = () => {
             <InputLabel for="customercode" :value="$t('msg.register-id')" />
             <TextInput
                 id="customercode"
-                v-model="form.customercode"
+                v-model="form.idClientX3"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="name"
             />
-            <InputError class="mt-2" :message="form.errors.customercode" />
+            <InputError class="mt-2" :message="form.errors.idClientX3" />
         </div>
 
         <div class="mt-4">
             <InputLabel for="nif" :value="$t('msg.register-nif')" />
             <TextInput
                 id="nif"
-                v-model="form.nif"
+                v-model="form.cif"
                 type="text"
                 class="mt-1 block w-full"
                 required
             />
-            <InputError class="mt-2" :message="form.errors.password" />
+            <InputError class="mt-2" :message="form.errors.cif" />
         </div>
 
         <div class="break-after-column  mt-4">

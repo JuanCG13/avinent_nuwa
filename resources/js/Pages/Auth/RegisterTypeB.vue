@@ -7,18 +7,28 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TitleBorder from "@/Components/TitleBorder.vue";
-
 import { VueTelInput } from 'vue3-tel-input'
 import 'vue3-tel-input/dist/vue3-tel-input.css';
 
 const form = useForm({
     name: '',
     email: '',
+    cif:'',
+    raoSocial: '',
+    direccio: '',
+    municipi: '',
+    codipostal: '',
+    provincia: '',
+    pais: '',
+    telefon: '',
     password: '',
     password_confirmation: '',
     terms: false,
-    shipping: true,
+    customer_type: 'B',
 });
+
+
+const shipping = ref(true);
 
 const phoneOptions = {
         mode: "international",
@@ -64,14 +74,14 @@ const submit = () => {
             <InputLabel for="company_name" :value="$t('msg.company_name')" />
             <TextInput
                 id="company_name"
-                v-model="form.company_name"
+                v-model="form.raoSocial"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="company_name"
             />
-            <InputError class="mt-2" :message="form.errors.company_name" />
+            <InputError class="mt-2" :message="form.errors.raoSocial" />
         </div>
 
 
@@ -81,56 +91,56 @@ const submit = () => {
             <InputLabel for="company_address" :value="$t('msg.company_address')" />
             <TextInput
                 id="company_address"
-                v-model="form.company_address"
+                v-model="form.direccio"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="company_address"
             />
-            <InputError class="mt-2" :message="form.errors.company_address" />
+            <InputError class="mt-2" :message="form.errors.direccio" />
         </div>
 
         <div class="mb-4">
             <InputLabel for="company_city" :value="$t('msg.company_city')" />
             <TextInput
                 id="company_city"
-                v-model="form.company_city"
+                v-model="form.municipi"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="company_city"
             />
-            <InputError class="mt-2" :message="form.errors.company_city" />
+            <InputError class="mt-2" :message="form.errors.municipi" />
         </div>
 
         <div class="mb-4">
             <InputLabel for="company_province" :value="$t('msg.company_province')" />
             <TextInput
                 id="company_province"
-                v-model="form.company_province"
+                v-model="form.provincia"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="company_province"
             />
-            <InputError class="mt-2" :message="form.errors.company_zipcode" />
+            <InputError class="mt-2" :message="form.errors.provincia" />
         </div>
 
         <div class="">
-            <InputLabel for="company_zipcode" :value="$t('msg.company_zipcode')" />
+            <InputLabel for="company_zipcode" :value="$t('msg.codigopostal')" />
             <TextInput
                 id="company_zipcode"
-                v-model="form.company_zipcode"
+                v-model="form.codipostal"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="company_zipcode"
             />
-            <InputError class="mt-2" :message="form.errors.company_zipcode" />
+            <InputError class="mt-2" :message="form.errors.codipostal" />
         </div>
 
         <TitleBorder>
@@ -140,7 +150,7 @@ const submit = () => {
         <div class="mt-4">
             <InputLabel for="shipping">
                 <div class="flex items-center">
-                    <Checkbox id="shipping" v-model:checked="form.shipping" name="shipping" required />
+                    <Checkbox id="shipping" v-model:checked="shipping" name="shipping" required />
 
                     <div class="ml-2">
                         Usar la misma dirección que la dirección de facturación.
@@ -159,31 +169,31 @@ const submit = () => {
             <InputLabel for="company_country" :value="$t('msg.company_country')" />
             <TextInput
                 id="company_country"
-                v-model="form.company_country"
+                v-model="form.pais"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="company_country"
             />
-            <InputError class="mt-2" :message="form.errors.company_country" />
+            <InputError class="mt-2" :message="form.errors.pais" />
         </div>
 
        <div class="mb-4">
             <InputLabel for="nif" :value="$t('msg.nif')" />
             <TextInput
                 id="nif"
-                v-model="form.nif"
+                v-model="form.cif"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 autofocus
-                autocomplete="nif"
+                autocomplete="cif"
             />
-            <InputError class="mt-2" :message="form.errors.nif" />
+            <InputError class="mt-2" :message="form.errors.cif" />
         </div>
 
-        <div class="mb-4">
+        <!-- <div class="mb-4">
             <InputLabel for="company_vatnumber" :value="$t('msg.company_vatnumber')" />
             <TextInput
                 id="company_vatnumber"
@@ -195,12 +205,12 @@ const submit = () => {
                 autocomplete="company_vatnumber"
             />
             <InputError class="mt-2" :message="form.errors.company_country" />
-        </div>
+        </div> -->
 
        <div class="mb-4">
             <InputLabel for="company_phone" :value="$t('msg.company_phone')" />
-            <VueTelInput id="form.company_phone" v-model="form.company_phone" v-bind="phoneOptions" @validate="phoneValidated"></VueTelInput>
-            <InputError class="mt-2" :message="form.errors.company_phone" />
+            <VueTelInput id="form.company_phone" v-model="form.telefono" v-bind="phoneOptions" @validate="phoneValidated"></VueTelInput>
+            <InputError class="mt-2" :message="form.errors.telefono" />
         </div>
 
        <div class="mb-4">

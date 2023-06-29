@@ -26,7 +26,23 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 
+        'email', 
+        'password',
+        'estat',
+        'tipusUsuari',
+        'personaContacte',
+        'telefonContacte',
+        'idClientX3',
+        'raoSocial',
+        'CIF',
+        'direccio',
+        'codipostal',
+        'municipi',
+        'provincia',
+        'pais',
+        'telefon',
+        'isAdmin'
     ];
 
     /**
@@ -58,4 +74,12 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getLoginRoute()
+    {
+        return match((int)$this->estat) {
+            0 => 'welcome',
+            1 => 'dashboard',
+        };
+    }
 }

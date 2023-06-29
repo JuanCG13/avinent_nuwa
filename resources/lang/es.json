@@ -1,6 +1,5 @@
 {
 
-    "auth-intro":"Bienvenidos al portal de pedidos de Avinent CAD CAM. <br/> Por favor, inicia sesión o regístrate.",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "remember": "Recuérdame",
@@ -12,6 +11,7 @@
     "confirm-password": "Confirmar contraseña",
     "password-reset": "Restablecer contraseña",
     "password-reset-notification": "Aviso para restablecer contraseña",
+    "auth-intro":"Bienvenidos al portal de pedidos de Avinent CAD CAM. <br/> Por favor, inicia sesión o regístrate.",
     "register-title": "Rellena el formulario para registrarte",
     "register-copy": "Una vez registrado, validaremos tus datos y ya podrás acceder al portal.",
     "register-type-a": "Soy cliente de Avinent",
@@ -23,6 +23,12 @@
     "team-info" : "Nombre del equipo e información del propietario.",
     "saved" : "Guardado",
     "save" : "Guardar",
+    "hello": "Hola",
+    "welcome-title": "gracias por registrarte en nuestro portal de entrada de trabajos personalizados de Avinent CAD CAM.",
+    "welcome-copy": "Tu registro se encuentra pendiente de aprovación. En las próximas 24 horas laborables, una vez validados todos tus datos fiscales, nos pondremos en contacto contigo vía email.",
+    "welcome-footer": "Mientras tanto, puedes empezar a crear tus casos accediendo al portal.",
+    
+    "cta-portal":"Acceder al portal",
 
     "You are receiving this email because we received a password reset request for your account.": "Estás recibiendo este email porque se ha solicitado un cambio de contraseña para tu cuenta.",
     "This password reset link will expire in :count minutes.": "Este enlace para restablecer la contraseña caduca en :count minutos.",
