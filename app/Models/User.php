@@ -77,6 +77,10 @@ class User extends Authenticatable
 
     public function getLoginRoute()
     {
+  
+        if ($this->isAdmin == 1) 
+            return 'admin.dashboard';
+
         return match((int)$this->estat) {
             0 => 'welcome',
             1 => 'dashboard',

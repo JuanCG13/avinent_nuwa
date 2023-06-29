@@ -41,3 +41,16 @@ Route::middleware([
     })->name('welcome');
 
 });
+
+//** admin routes middleware Admin 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'admin',
+])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return Inertia::render('Admin/Dashboard',[]);
+    })->name('admin.dashboard');
+
+
+});
