@@ -42,9 +42,11 @@ class User extends Authenticatable
         'provincia',
         'pais',
         'telefon',
-        'isAdmin'
+        'isAdmin',
+        'created_at'
     ];
 
+  
     /**
      * The attributes that should be hidden for serialization.
      *
