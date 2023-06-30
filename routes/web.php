@@ -48,9 +48,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'admin',
 ])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return Inertia::render('Admin/Dashboard',[]);
-    })->name('admin.dashboard');
-
-
+    Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@dashboard')->name('admin.dashboard');
 });
