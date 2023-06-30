@@ -21,7 +21,7 @@ defineProps({
             </h2>
         </template>
 
-        <div>
+        <template #content>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div v-if="$page.props.jetstream.canUpdateProfileInformation">
                     <UpdateProfileInformationForm :user="$page.props.auth.user" />
@@ -52,6 +52,6 @@ defineProps({
                     <DeleteUserForm class="mt-10 sm:mt-0" />
                 </template>
             </div>
-        </div>
+        </template>
     </AppLayout>
 </template>

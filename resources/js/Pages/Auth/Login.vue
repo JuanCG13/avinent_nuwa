@@ -104,11 +104,10 @@ const submit = () => {
               :disabled="form.processing"
             >{{ $t("msg.login") }}</Button>
             
-             <Link
-               :href="route('register')" 
-               class="flex w-full justify-center rounded-md border border-transparent bg-neutral-500 hover:!bg-primary-500  py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-copate-500 focus:ring-offset-2"
-            >{{ $t("msg.register") }}
-              </Link>
+            <Link :href="route('register')">
+             <Button class="w-full mt-4 lg:mt-0 !bg-neutral-500 hover:!bg-primary-500">{{ $t("msg.register") }} </Button>
+            </Link>
+       
           </div>
 
         </form>
