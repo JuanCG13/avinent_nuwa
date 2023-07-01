@@ -10,6 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\HasNoTeam;
+
 
 class User extends Authenticatable
 {
@@ -19,7 +21,11 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
+    use HasNoTeam, HasTeams {
+        HasNoTeam::ownsTeam insteadof HasTeams;
+        HasNoTeam::isCurrentTeam insteadof HasTeams;
+    }
+    
     /**
      * The attributes that are mass assignable.
      *
