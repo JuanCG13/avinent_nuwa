@@ -66,6 +66,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'isAdmin' => 'boolean',
     ];
 
     /**
@@ -80,7 +81,7 @@ class User extends Authenticatable
     public function getLoginRoute()
     {
   
-        if ($this->isAdmin == 1) 
+        if ($this->isAdmin) 
             return 'admin.dashboard';
 
         return match((int)$this->estat) {

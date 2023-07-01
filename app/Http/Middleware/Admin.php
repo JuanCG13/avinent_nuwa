@@ -20,7 +20,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->user()->isAdmin != 1) {
+        if(!$request->user()->isAdmin) {
             return abort(403);
         }
 
