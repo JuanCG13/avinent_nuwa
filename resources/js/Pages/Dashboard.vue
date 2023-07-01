@@ -18,16 +18,16 @@ const customers = ref('');
 <template>
     <AppLayout title="Dashboard">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-                Mis casos
+            <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
+                Mis pedidos
             </h2>
         </template>
 
         <template #content>
             <div class="py-12">
             
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <DataTable :tableclass="bg-red-400" :value="customers" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8 main-dashboard">
+                    <DataTable :value="customers" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]">
                         <Column field="name" header="Name" style="width: 25%"></Column>
                         <Column field="country.name" header="Country" style="width: 25%"></Column>
                         <Column field="company" header="Company" style="width: 25%"></Column>

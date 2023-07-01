@@ -73,7 +73,7 @@ onMounted(() => {
                       
                      <template #header>
                         <div class="flex flex-wrap align-items-center">
-                            <span class="text-lg bg-gray-200 dark:bg-gray-900 font-bold">Validación de clientes</span>
+                            <span class="text-lg font-bold">Validación de clientes</span>
                         </div>
                     </template>
                         <Column header="Data" >
@@ -110,7 +110,7 @@ onMounted(() => {
                     <DataTable :value="_data.users" paginator :rows="20" :rowsPerPageOptions="[10, 20, 50]">
                     <template #header>
                         <div class="flex flex-wrap align-items-center">
-                            <span class="text-lg bg-gray-200 dark:bg-gray-900 font-bold">Validación de pedidos</span>
+                            <span class="text-lg font-bold">Validación de pedidos</span>
                         </div>
                     </template>
                         <Column header="Data" >
