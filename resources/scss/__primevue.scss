@@ -137,3 +137,23 @@
     }
 
 }
+
+/*--------------------*/
+
+.p-button:focus {
+    box-shadow:none;
+}
+
+.p-selectbutton.p-buttonset.p-component {
+    & .p-button.p-component {
+        padding: 0.35rem 0.65rem;
+        @apply text-sm;
+
+        &.p-highlight {
+            @apply bg-white text-gray-900 border-white;
+        }
+        &:not(.p-highlight) {
+            @apply bg-gray-100;
+        }
+    }
+}

@@ -8,7 +8,9 @@ import Row from 'primevue/row';
 import Message from 'primevue/message';      
 import Breadcrumb from 'primevue/breadcrumb';
 import moment from 'moment';
-import { useToast } from 'primevue/usetoast';
+import { useToast } from "primevue/usetoast";
+import Toast from 'primevue/toast';
+import ToastNotification from '@/Components/ToastNotification.vue';
 
 const toast = useToast();
 
@@ -31,18 +33,18 @@ const _status = ((idEstat)=> {
       function(data){ return data.idEstat == idEstat && data.idIdioma == 'SPA' }
   );
 
-    console.table(match);
+    //console.table(match);
     if (match.length > 0) return match[0].estat; else return '-';
-
 
 });
 
-const showSuccess = () => {
-};
-
+const testing = (obj) => {
+        console.log(`Received object from child:`)    
+        console.log(obj)
+}
 
 onMounted(() => {
-    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+  //  toast.add({ severity: 'success', summary:'', detail: 'Message Content', life: 3000 });
 //   CustomerService.getCustomersMedium().then((data) => (customers.value = data));
 });
 
@@ -50,10 +52,13 @@ onMounted(() => {
 
 <template>
     <AppLayout title="Dashboard">
+    
         <template #header>
+            <ToastNotification @onTesting="testing" />
             <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
                 Últimos movimientos
             </h2>
+
         </template>
 
         <template #content>
@@ -91,7 +96,7 @@ onMounted(() => {
                         </Column>
                         <Column field="idClientX3" header="ID Client" ></Column>
                         <!-- <template #footer> In total there are {{ _data.users ? _data.users.length: 0 }} clients. </template> -->
-                        <Column field="id">
+                        <Column field="id" alignFrozen="right" :frozen="true">
                             <template #body="{data}">
                                 <i class="pi pi-eye text-primary-500"></i>
                                 <!-- {{ data.id }} -->
