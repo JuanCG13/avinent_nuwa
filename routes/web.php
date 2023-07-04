@@ -39,6 +39,9 @@ Route::middleware([
     Route::get('/welcome', function () {
         return Inertia::render('Auth/Welcome', []);
     })->name('welcome');
+    Route::get('/order/new', function () {
+        return Inertia::render('Orders/New', []);
+    })->name('orders.new');
 
 });
 

@@ -90,9 +90,10 @@ class User extends Authenticatable
         if ($this->isAdmin) 
             return 'admin.dashboard';
 
-        return match((int)$this->estat) {
-            0 => 'welcome',
-            1 => 'dashboard',
-        };
+        switch($this->estat) {
+            case 0: return 'welcome';
+            default: return 'dashboard';
+        }
+
     }
 }

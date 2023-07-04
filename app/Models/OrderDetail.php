@@ -9,6 +9,8 @@ class OrderDetail extends Model
 {
     use HasFactory;
 
+    protected $table = 'tLiniesComanda';
+
     protected $fillable = [
         'idLiniaCmd',
         'idComanda',
