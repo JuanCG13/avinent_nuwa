@@ -26,7 +26,8 @@
         "moment": "^2.29.4",
         "primeicons": "^6.0.1",
         "primevue": "^3.29.2",
-        "vue-3d-model": "^1.4.1",
+        "vite-plugin-laravel-translations": "^0.1.4",
+        "vue-3d-loader": "^2.1.7",
         "vue-i18n": "^9.2.2",
         "vue3-tel-input": "^1.0.4"
     }

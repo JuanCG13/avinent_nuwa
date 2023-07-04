@@ -24,18 +24,13 @@ const customers = ref('');
         </template>
 
         <template #content>
-            <div class="py-12">
-            
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 main-dashboard">
-                    <DataTable :value="customers" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]">
-                        <Column field="name" header="Name" style="width: 25%"></Column>
-                        <Column field="country.name" header="Country" style="width: 25%"></Column>
-                        <Column field="company" header="Company" style="width: 25%"></Column>
-                        <Column field="representative.name" header="Representative" style="width: 25%"></Column>
-                    </DataTable>
-
-
-                </div>
+            <div class="py-12 px-6 lg:px-0 mx-auto main-dashboard">
+                <DataTable :value="customers" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]">
+                    <Column field="name" header="Name" style="width: 25%"></Column>
+                    <Column field="country.name" header="Country" style="width: 25%"></Column>
+                    <Column field="company" header="Company" style="width: 25%"></Column>
+                    <Column field="representative.name" header="Representative" style="width: 25%"></Column>
+                </DataTable>
             </div>
         </template>
     </AppLayout>

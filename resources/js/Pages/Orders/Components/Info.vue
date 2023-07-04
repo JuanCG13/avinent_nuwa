@@ -67,7 +67,7 @@ const phoneOptions = {
 
 <template>
 
-    <div class="bg-gray-200 w-full h-full border border-gray-300 p-6">
+    <div class="bg-gray-200 dark:bg-gray-900 w-full h-full border border-gray-300 dark:border-slate-500 p-6">
         <h2 class="font-bold text-gray-600">Información general</h2>
 
         <div class="mt-8">

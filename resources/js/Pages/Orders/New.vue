@@ -7,6 +7,7 @@ import Info from './Components/Info.vue';
 import Work from './Components/Work.vue';
 import { useToast } from "primevue/usetoast";
 import toast from 'primevue/toast';
+import Button from '@/Components/PrimaryButton.vue';
 import AltButton from '@/Components/SecondaryButton.vue';
 import SelectButton from 'primevue/selectbutton';
 
@@ -19,8 +20,8 @@ const workTypes = ref([
 ])
 
 const orderData = reactive({
-    orderHeader:{}, 
-    orderWorks:[]
+    orderHeader:{}, //Object
+    orderWorks:[] //Array of objects
 });
 
 
@@ -32,10 +33,6 @@ const addWork = (type) => {
 
 const updateData = (data) => {
     orderData.orderHeader = data.orderHeader;
-    //orderData.orderWorks = data.orderWorks;
-    // console.table(data.orderHeader);
-    // console.table(data.orderWorks);
- 
 };
 
 const addOrder = () => {
@@ -73,23 +70,22 @@ const saveOrder = (data) => {
 
         <template #content>
 
-            <div class="max-w-7xl mx-auto px-6 lg:px-8 gap-12 flex py-12">
+            <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
 
                 <div class="w-1/3">
                     <Info
                      @addOrder = "addOrder"
                      @saveOrder = "saveOrder"
-                     @updateData="updateData" 
-                     :refPacient="pepito"
+                     @updateData="updateData"
                      />
                 </div>
 
                 <div class="w-2/3">
-                    <div class="works" v-for="work in orderData.orderWorks">
+                    <div class="works" v-for="work in orderData.orderWorks" :key="work">
                         <Work :workType="work.workType"/>
                     </div> 
                     <div class="flex w-full p-6 bg-primary-500 text-white items-center justify-between">
-                        <div class="text-xl font-bold flex">
+                        <div class="text-xl font-bold flex items-center">
                             <svg class="mr-4" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
                                 <g id="Grupo_557" data-name="Grupo 557" transform="translate(-491 -1488)">
                                     <path id="Elipse_14" data-name="Elipse 14" d="M16.5,2.64A13.86,13.86,0,0,0,6.7,26.3,13.86,13.86,0,1,0,26.3,6.7a13.769,13.769,0,0,0-9.8-4.06M16.5,0A16.5,16.5,0,1,1,0,16.5,16.5,16.5,0,0,1,16.5,0Z" transform="translate(491 1488)" fill="#fff"/>
@@ -107,15 +103,13 @@ const saveOrder = (data) => {
                             </SelectButton>
                         </div>
                         <div>
-                            <Button class="text-lg font-bold bg-white text-primary-500 hover:bg-primary-300" :disabled="!workType" @click="addWork(workType)">Empezar</Button>
+                            <Button class="text-xl font-bold bg-white text-purple-800 hover:bg-primary-300" :disabled="!workType" @click="addWork(workType)">Empezar</Button>
                         </div>
                         </div>
 
                     </div>
                   
                 </div>
-                
-                {{ workType?.value }}
 
         </template>
     </AppLayout>

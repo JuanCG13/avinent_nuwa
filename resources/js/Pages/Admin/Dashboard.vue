@@ -61,8 +61,8 @@ onMounted(() => {
         </template>
 
         <template #content>
-            <div class="py-12 lg:columns-2 gap-0">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">         
+            <div class="py-12 px-6 lg:px-0 lg:columns-2 gap-12">
+                <div>         
                        <Message severity="success">
                         <div class="flex flex-col">
                             <span class="font-bold">¡Tienes clientes pendientes de validación! </span>
@@ -107,7 +107,7 @@ onMounted(() => {
 
                 <div class="lg:break-after-column"></div>
 
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div>
 
                     <Message severity="info" icon="pi pi-send">Info Message Content</Message>
 
