@@ -6,9 +6,14 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import PrimeVue from 'primevue/config';
+
 import { createI18n } from "vue-i18n";
 import messages_es from '../lang/es.json'
 import messages_en from '../lang/en.json'
+
+import ToastService from 'primevue/toastservice';
+
+
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -18,7 +23,11 @@ const translations = {
     },
     es: {
         msg:messages_es,
+    },
+    ca: {
+        msg:messages_es,
     }
+    
     
   }
   
@@ -36,15 +45,13 @@ createInertiaApp({
             messages: translations,
             //messages: { tr, en },
             runtimeOnly: false,
-            // set locale messages
-            // If you need to specify other options, you can set other options
-            // ...
           })
 
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(PrimeVue)
+            .use(ToastService)
             .use(i18n)
             .mount(el);
     },
