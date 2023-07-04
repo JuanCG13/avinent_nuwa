@@ -1,0 +1,123 @@
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { useForm, router } from '@inertiajs/vue3';
+
+import { ref, onMounted, reactive } from 'vue';
+import Info from './Components/Info.vue';
+import Work from './Components/Work.vue';
+import { useToast } from "primevue/usetoast";
+import toast from 'primevue/toast';
+import AltButton from '@/Components/SecondaryButton.vue';
+import SelectButton from 'primevue/selectbutton';
+
+
+const workType = ref(null);
+
+const workTypes = ref([
+    { label: 'Producción', value: 'A' },
+    { label: 'Producción y diseño', value: 'B' },
+])
+
+const orderData = reactive({
+    orderHeader:{}, 
+    orderWorks:[]
+});
+
+
+const addWork = (type) => {
+    orderData.orderWorks.push({
+        workType:type.value
+    })
+}
+
+const updateData = (data) => {
+    orderData.orderHeader = data.orderHeader;
+    //orderData.orderWorks = data.orderWorks;
+    // console.table(data.orderHeader);
+    // console.table(data.orderWorks);
+ 
+};
+
+const addOrder = () => {
+    router.post('order.new', [props.orderHeader, props.orderWorks]), {
+        errorBag: 'addOrder',
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.add();
+        }
+    }
+};
+
+const saveOrder = (data) => {
+    console.table(data.orderHeader);
+    console.table(data.orderWorks);
+    return;
+    router.post('order.store', [data.orderHeader, data.orderWorks]), {
+        errorBag: 'addOrder',
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.add();
+        }
+    }
+};
+
+</script>
+
+<template>
+    <AppLayout title="Dashboard">
+        <template #header>
+            <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
+                Nuevo pedido
+            </h2>
+        </template>
+
+        <template #content>
+
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 gap-12 flex py-12">
+
+                <div class="w-1/3">
+                    <Info
+                     @addOrder = "addOrder"
+                     @saveOrder = "saveOrder"
+                     @updateData="updateData" 
+                     :refPacient="pepito"
+                     />
+                </div>
+
+                <div class="w-2/3">
+                    <div class="works" v-for="work in orderData.orderWorks">
+                        <Work :workType="work.workType"/>
+                    </div> 
+                    <div class="flex w-full p-6 bg-primary-500 text-white items-center justify-between">
+                        <div class="text-xl font-bold flex">
+                            <svg class="mr-4" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+                                <g id="Grupo_557" data-name="Grupo 557" transform="translate(-491 -1488)">
+                                    <path id="Elipse_14" data-name="Elipse 14" d="M16.5,2.64A13.86,13.86,0,0,0,6.7,26.3,13.86,13.86,0,1,0,26.3,6.7a13.769,13.769,0,0,0-9.8-4.06M16.5,0A16.5,16.5,0,1,1,0,16.5,16.5,16.5,0,0,1,16.5,0Z" transform="translate(491 1488)" fill="#fff"/>
+                                    <g id="Grupo_556" data-name="Grupo 556" transform="translate(497.202 1494.6)">
+                                    <path id="Línea_34" data-name="Línea 34" d="M-.68,17.14A1.32,1.32,0,0,1-2,15.82V-.68A1.32,1.32,0,0,1-.68-2,1.32,1.32,0,0,1,.64-.68v16.5A1.32,1.32,0,0,1-.68,17.14Z" transform="translate(10.91 2)" fill="#fff"/>
+                                    <path id="Línea_35" data-name="Línea 35" d="M17.276.64H-.68A1.32,1.32,0,0,1-2-.68,1.32,1.32,0,0,1-.68-2H17.276A1.32,1.32,0,0,1,18.6-.68,1.32,1.32,0,0,1,17.276.64Z" transform="translate(2 10.25)" fill="#fff"/>
+                                    </g>
+                                </g>
+                            </svg>
+                            Nuevo trabajo 
+                        </div>
+                        <div class="card flex flex-wrap justify-content-center gap-3">
+                            <SelectButton v-model="workType" :options="workTypes" optionLabel="label" dataKey="value">
+                   
+                            </SelectButton>
+                        </div>
+                        <div>
+                            <Button class="text-lg font-bold bg-white text-primary-500 hover:bg-primary-300" :disabled="!workType" @click="addWork(workType)">Empezar</Button>
+                        </div>
+                        </div>
+
+                    </div>
+                  
+                </div>
+                
+                {{ workType?.value }}
+
+        </template>
+    </AppLayout>
+</template>
+
