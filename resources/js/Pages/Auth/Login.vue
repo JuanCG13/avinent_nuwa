@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, router } from "@inertiajs/vue3";
 import Button from "@/Components/PrimaryButton.vue";
+import ButtonAlt from "@/Components/SecondaryButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -30,6 +31,9 @@ const submit = () => {
     });
 };
 
+const register = () => {
+  router.visit(route('register'));
+}
 
 </script>
 
@@ -99,14 +103,16 @@ const submit = () => {
 
           <div class="block lg:flex pt-3 lg:gap-6">
             <Button
-              type="submit"
               :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
-            >{{ $t("msg.login") }}</Button>
+              >{{ $t("msg.login") }}
+            </Button>
             
-            <Link :href="route('register')">
-             <Button class="w-full mt-4 lg:mt-0 !bg-neutral-500 hover:!bg-primary-500">{{ $t("msg.register") }} </Button>
-            </Link>
+            <ButtonAlt
+              @click="register" 
+              class="w-full mt-4 lg:mt-0"
+              >{{ $t("msg.register") }} 
+            </ButtonAlt>
        
           </div>
 
