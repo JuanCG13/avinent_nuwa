@@ -144,10 +144,15 @@ const logout = () => {
             
             <!-- Page Content -->
             <div class="container mx-auto mb-auto h-full relative">
+                <slot name="fullcontent">
+                    
                     <div class="pt-12 px-6 mx-auto lg:px-0">
                         <slot name="header" />
                     </div>
                     <slot name="content"/>
+
+                </slot>
+
             </div>
 
             <!-- Footer -->

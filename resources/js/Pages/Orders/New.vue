@@ -5,14 +5,21 @@ import { useForm, router } from '@inertiajs/vue3';
 import { ref, onMounted, reactive } from 'vue';
 import Info from './Components/Info.vue';
 import Work from './Components/Work.vue';
-import { useToast } from "primevue/usetoast";
-import toast from 'primevue/toast';
+import WorkDetail from './Components/WorkDetail.vue';
+
 import Button from '@/Components/PrimaryButton.vue';
 import AltButton from '@/Components/SecondaryButton.vue';
 import SelectButton from 'primevue/selectbutton';
+import MessageBox from "@/Components/MessageBox.vue";
+import { useToast } from "primevue/usetoast";
+import Toast from 'primevue/toast';
 
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmPopup from 'primevue/confirmpopup';
 
+const toast = useToast();
 const workType = ref(null);
+const showWorkDetail = ref(true);
 
 const workTypes = ref([
     { label: 'Producción', value: 'A' },
@@ -24,6 +31,17 @@ const orderData = reactive({
     orderWorks:[] //Array of objects
 });
 
+const closeWorkDetail = () => {
+    showWorkDetail.value = false;
+}
+
+const deleteWork = (work) => {
+    orderData.orderWorks.splice(work, 1);
+}
+
+const cloneWork = (work) => {
+   // orderData.orderWorks.splice(work, 1);
+}
 
 const addWork = (type) => {
     orderData.orderWorks.push({
@@ -62,9 +80,14 @@ const saveOrder = (data) => {
 
 <template>
     <AppLayout title="Dashboard">
+        
+        <template #fullcontent>
+            <WorkDetail v-if="showWorkDetail" :workType="WorkType" @closeDetail="closeWorkDetail"></WorkDetail>
+        </template>
+
         <template #header>
             <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-                Nuevo pedido
+               Nuevo pedido
             </h2>
         </template>
 
@@ -72,18 +95,25 @@ const saveOrder = (data) => {
 
             <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
 
-                <div class="w-1/3">
+                <div class="w-1/3 h-full">
                     <Info
                      @addOrder = "addOrder"
                      @saveOrder = "saveOrder"
                      @updateData="updateData"
                      />
+
+                     <MessageBox class="mt-6 border-red-800 bg-red-100 text-red-900"
+                      :title="$t('msg.register-title')" 
+                      :text="$t('msg.register-copy')"
+                      />
+                     
                 </div>
 
-                <div class="w-2/3">
-                    <div class="works" v-for="work in orderData.orderWorks" :key="work">
-                        <Work :workType="work.workType"/>
-                    </div> 
+                <div class="w-2/3 works">
+                    <template v-for="(value, index) in orderData.orderWorks" :key="index">
+                        <Work :workType="value.workType" @deleteWork="deleteWork(index)"  @cloneWork="cloneWork(index)"/>
+                    </template>
+                  
                     <div class="flex w-full p-6 bg-primary-500 text-white items-center justify-between">
                         <div class="text-xl font-bold flex items-center">
                             <svg class="mr-4" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
@@ -103,13 +133,20 @@ const saveOrder = (data) => {
                             </SelectButton>
                         </div>
                         <div>
-                            <Button class="text-xl font-bold bg-white text-purple-800 hover:bg-primary-300" :disabled="!workType" @click="addWork(workType)">Empezar</Button>
-                        </div>
-                        </div>
 
+                        <Button 
+                            class="text-lg font-bold bg-white !text-purple-900 hover:bg-primary-300" 
+                            :disabled="!workType" 
+                            @click="addWork(workType)"
+                            v-tooltip.top="{value:'Debes seleccionar el tipo de trabajo', class:'text-xs text-center border-sm no-wrap'}">
+                            Empezar
+                        </Button>
+                        </div>
                     </div>
-                  
+
                 </div>
+                  
+            </div>
 
         </template>
     </AppLayout>

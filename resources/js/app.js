@@ -1,4 +1,8 @@
 import './bootstrap';
+
+import "primevue/resources/themes/tailwind-light/theme.css"; //theme
+import "primevue/resources/primevue.min.css"; //core CSS
+import "primeicons/primeicons.css"; //icons
 import '../scss/app.scss';
 
 import { createApp, h } from 'vue';
@@ -12,8 +16,9 @@ import messages_es from '../lang/es.json'
 import messages_en from '../lang/en.json'
 
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
-
+import Tooltip from 'primevue/tooltip';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -53,10 +58,12 @@ createInertiaApp({
             .use(PrimeVue)
             .use(ToastService)
             .use(i18n)
+            .use(ConfirmationService)
+            .directive('tooltip', Tooltip)
             .mount(el);
     },
     progress: {
-        color: '#4B5563',
+        color: '#FFFFFF',
     },
 });
 
