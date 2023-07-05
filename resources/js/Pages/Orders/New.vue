@@ -21,6 +21,7 @@ const toast = useToast();
 
 const workType = ref(null);
 const showWorkDetail = ref(false);
+const currentWorkDetail = ref(0);
 
 const workTypes = ref([
     { label: 'Producción', value: 'A' },
@@ -49,8 +50,8 @@ const addWork = (type) => {
         workType:type.value
     })
     workType.value = null;
+    currentWorkDetail.value = orderData.orderWorks[orderData.orderWorks.length-1]
     showWorkDetail.value = true;
-
 }
 
 const updateData = (data) => {
@@ -84,9 +85,12 @@ const saveOrder = (data) => {
 
 <template>
     <AppLayout title="Dashboard">
-        
         <template #fullcontent>
-            <WorkDetail v-if="showWorkDetail" :workType="WorkType" @closeDetail="closeWorkDetail"></WorkDetail>
+
+            <WorkDetail v-if="showWorkDetail" 
+                :workDetail="currentWorkDetail"
+                @closeDetail="closeWorkDetail">
+            </WorkDetail>
         </template>
 
         <template #header>
@@ -96,6 +100,8 @@ const saveOrder = (data) => {
         </template>
 
         <template #content>
+
+            {{orderData}}
 
             <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
 

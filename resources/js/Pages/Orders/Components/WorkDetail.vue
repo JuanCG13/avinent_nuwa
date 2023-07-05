@@ -11,16 +11,21 @@ import Dropdown from 'primevue/dropdown';
 const emit = defineEmits(['closeDetail'])
 
 const props = defineProps({
-    workType: String,
+    workDetail:Object,
 });
+
 
 </script>
 
 <template>
     <div class="pt-12 px-6 mx-auto lg:px-0">
         <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-            Detaller linea n
+            Detalle trabajo {{props.workType}}
         </h2>
+    </div>
+
+    <div>
+        {{ workDetail }}
     </div>
 
     <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
