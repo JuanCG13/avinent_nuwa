@@ -18,8 +18,9 @@ import { useConfirm } from "primevue/useconfirm";
 import ConfirmPopup from 'primevue/confirmpopup';
 
 const toast = useToast();
+
 const workType = ref(null);
-const showWorkDetail = ref(true);
+const showWorkDetail = ref(false);
 
 const workTypes = ref([
     { label: 'Producción', value: 'A' },
@@ -46,6 +47,7 @@ const cloneWork = (work) => {
 const addWork = (type) => {
     orderData.orderWorks.push({
         workType:type.value
+        showWorkDetail = true;
     })
 }
 
@@ -102,10 +104,10 @@ const saveOrder = (data) => {
                      @updateData="updateData"
                      />
 
-                     <MessageBox class="mt-6 border-red-800 bg-red-100 text-red-900"
-                      :title="$t('msg.register-title')" 
-                      :text="$t('msg.register-copy')"
-                      />
+                    <MessageBox class="mt-6 border-red-800 bg-red-100 text-red-900"
+                    :title="$t('msg.register-title')" 
+                    :text="$t('msg.register-copy')"
+                    />
                      
                 </div>
 
@@ -132,13 +134,12 @@ const saveOrder = (data) => {
                    
                             </SelectButton>
                         </div>
-                        <div>
-
+                        <div v-tooltip.top="{value:workType?'':'Debes seleccionar el tipo de trabajo', class:'text-xs text-center border-sm no-wrap'}"> 
                         <Button 
-                            class="text-lg font-bold bg-white !text-purple-900 hover:bg-primary-300" 
-                            :disabled="!workType" 
+                            class="text-lg font-bold bg-white !text-purple-950 hover:bg-primary-300" 
+                            :disabled="!workType"
                             @click="addWork(workType)"
-                            v-tooltip.top="{value:'Debes seleccionar el tipo de trabajo', class:'text-xs text-center border-sm no-wrap'}">
+                            >
                             Empezar
                         </Button>
                         </div>
