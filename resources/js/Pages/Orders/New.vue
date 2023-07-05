@@ -47,8 +47,9 @@ const cloneWork = (work) => {
 const addWork = (type) => {
     orderData.orderWorks.push({
         workType:type.value
-        showWorkDetail = true;
     })
+    showWorkDetail.value = true;
+
 }
 
 const updateData = (data) => {
