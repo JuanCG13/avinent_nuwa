@@ -48,6 +48,7 @@ const addWork = (type) => {
     orderData.orderWorks.push({
         workType:type.value
     })
+    workType.value = null;
     showWorkDetail.value = true;
 
 }
