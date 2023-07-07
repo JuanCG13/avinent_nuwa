@@ -113,13 +113,13 @@ const cloneWork = (event) => {
             </div>
          
             <div class="mt-4 w-1/3">
-                <vue3dLoader
+                <!-- <vue3dLoader
                 :height="200"
                 :showFps="true"
                 :filePath="['http://127.0.0.1:8000/storage/placeholder.stl']"
                 :backgroundColor="0x000000"
                 >
-                </vue3dLoader>
+                </vue3dLoader> -->
              </div>
          
         </div>

@@ -23,6 +23,7 @@ const workType = ref(null);
 const showWorkDetail = ref(false);
 const currentWorkDetail = ref(0);
 
+
 const workTypes = ref([
     { label: 'Producción', value: 'A' },
     { label: 'Producción y diseño', value: 'B' },
@@ -37,8 +38,8 @@ const closeWorkDetail = () => {
     showWorkDetail.value = false;
 }
 
-const deleteWork = (work) => {
-    orderData.orderWorks.splice(work, 1);
+const deleteWork = (index) => {
+    orderData.orderWorks.splice(index, 1);
 }
 
 const cloneWork = (work) => {
@@ -47,11 +48,43 @@ const cloneWork = (work) => {
 
 const addWork = (type) => {
     orderData.orderWorks.push({
-        workType:type.value
+        workType: type.value,
+        implantsDetail: {},
+        // idLiniaCmd: 0,
+        // idComanda: 0,
+        numLin: 0,
+        idTipusArticle: '',
+        idMaterial: '',
+        idTipusArticle2: '',
+        quantitat: 0,
+        numDesmontables: 0,
+        posDesmontables: '',
+        idColor: '',
+        idIncisal: '',
+        idSistemaFitxer: '',
+        fitxer1: '',
+        fitxer2: '',
+        numDents: 0,
+        numImplants: 0,
+        acabatBrillant: false,
+        tractamentTermic: false,
+        anodizat: false,
+        zonesPulides: '',
+        colorAnodizat: '',
+        teMicrorosca: false,
+        numMicrorosques: 0,
+        inclourePilars: '',
+        enviarModel: false,
+        tipusEnviament: '',
+    //  dataRecepcio: Date,
+    //  idOFX3: '',
+    //  dataCreacio:Date,
+    //  dataModificacio:Date,
     })
-    workType.value = null;
-    currentWorkDetail.value = orderData.orderWorks[orderData.orderWorks.length-1]
-    showWorkDetail.value = true;
+
+    workType.value = null; //reset tipo de treball
+    currentWorkDetail.value = orderData.orderWorks[orderData.orderWorks.length-1] 
+    showWorkDetail.value = true; //show pantalla treball
 }
 
 const updateData = (data) => {
@@ -121,7 +154,7 @@ const saveOrder = (data) => {
 
                 <div class="w-2/3 works">
                     <template v-for="(value, index) in orderData.orderWorks" :key="index">
-                        <Work :workType="value.workType" @deleteWork="deleteWork(index)"  @cloneWork="cloneWork(index)"/>
+                        <Work :workType="value.workType" @deleteWork="deleteWork(index)" @editWork="editWork(index)"  @cloneWork="cloneWork(index)"/>
                     </template>
                   
                     <div class="flex w-full p-6 bg-primary-500 text-white items-center justify-between">
