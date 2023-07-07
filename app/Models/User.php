@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\HasNoTeam;
+use Lab404\Impersonate\Models\Impersonate;
 
 
 class User extends Authenticatable
@@ -25,6 +26,7 @@ class User extends Authenticatable
         HasNoTeam::ownsTeam insteadof HasTeams;
         HasNoTeam::isCurrentTeam insteadof HasTeams;
     }
+    use Impersonate;
     
     /**
      * The attributes that are mass assignable.
@@ -83,6 +85,18 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function canImpersonate()
+    {
+         if ($this->isAdmin == 1 || $this->tipusUsuari == 1) 
+             return true;
+    }
+
+    public function canBeImpersonated()
+    {
+         if ($this->isAdmin == 1) 
+             return true;
+    }
 
     public function getLoginRoute()
     {

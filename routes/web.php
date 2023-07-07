@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,15 +23,31 @@ use Inertia\Inertia;
 //     ]);
 // })->name('welcome');
 
+
+
+
+// Route::middleware([
+//     config('jetstream.auth_session'),
+//     'web',
+// ])->group(function () {
+
+// }); 
+
 Route::get('/', function () {
     return redirect('/login');
 });
 
+ 
 Route::middleware([
-    'auth:sanctum',
+    'auth',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('impersonate/{user}', 'App\Http\Controllers\ImpersonationController@impersonate')
+    ->name('impersonate');
+    Route::get('/leave-impersonate', 'App\Http\Controllers\ImpersonationController@leaveImpersonate')
+    ->name('impersonate.leave');
+    
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
@@ -47,7 +62,7 @@ Route::middleware([
 
 //** admin routes middleware Admin 
 Route::middleware([
-    'auth:sanctum',
+    'auth',
     config('jetstream.auth_session'),
     'admin',
 ])->group(function () {
