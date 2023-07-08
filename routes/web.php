@@ -67,7 +67,7 @@ Route::middleware([
     Route::get('angulacions/{lang}', 'App\Http\Controllers\DataController@getAngulacions');
     Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
     Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
-
+    Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
 
 });
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
@@ -70,5 +72,15 @@ class DataController extends Controller
         return $data;
 
     }
+
+    public function getShippingAddresses(Request $request, User $user)
+    {
+        if($user->id == Auth::User()->id) {
+         $data = DB::Select("SELECT * FROM tAdreces WHERE idClientX3='".$user->idClientX3."'");
+         return $data;
+        } 
+
+    }
+
 
 }
