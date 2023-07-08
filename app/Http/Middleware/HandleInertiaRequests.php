@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\User;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,7 +38,11 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            
+            'impersonator.user' => fn () => $request->session()->get('impersonated_by')
+            ? User::find($request->session()->get('impersonated_by'))
+            : null,
+
         ]);
     }
 }
