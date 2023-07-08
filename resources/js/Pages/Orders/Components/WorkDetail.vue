@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -8,6 +8,9 @@ import AltButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Dropdown from 'primevue/dropdown';
 import MessageBox from '@/Components/MessageBox.vue';
+import { useI18n } from "vue-i18n";
+
+const {locale} = useI18n();
 
 const emit = defineEmits(['closeDetail'])
 
@@ -15,13 +18,36 @@ const props = defineProps({
     workDetail:Object,
 });
 
+const tipusArticle = reactive({
+      data: null,
+    });
+
+const colors = reactive({
+      data: null,
+    });
+
+
+onMounted(async () => {
+    
+      const response = await fetch("/colors/"+locale.value);
+      colors.data = await response.json();
+
+      const response1 = await fetch("/tipusarticle/"+locale.value);
+      tipusArticle.data = await response1.json();
+    
+    //   const response2 = await fetch("/tipusarticle/"+locale.value);
+    //   tipusArticle.data = await response1.json();
+    
+    
+    });
+
 
 </script>
 
 <template>
     <div class="pt-12 px-6 mx-auto lg:px-0">
         <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-            Detalle trabajo {{workDetail.workType}}
+            Detalle trabajo {{workDetail.workType}} {{locale}}
         </h2>
     </div>
 
@@ -35,21 +61,23 @@ const props = defineProps({
 
     <div class="w-full bg-primary-300 border border-gray-200 p-6">
          
-          {{ workDetail }}
+          {{ workDetail }} 
 
         <div class="flex justify-between">
-            <div>{{workDetail.workType}}</div>
+            <div>Tipo {{workDetail.workType}}</div>
         </div>
         <div class="pt-6 w-full flex">
             <div class="w-1/2">
                 <label for="idTipusArticle" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.product-type") }}</label>
-                <TextInput
-                    id="idTipusArticle"
-                    v-model="workDetail.idTipusArticle"
-                    type="text"
-                    class="mt-1 mb-6 block w-full"
-                    @input="handleChange"
-                />
+                <!-- <Dropdown editable :options="colors.data" v-model="workDetail.idTipusArticle" id="idTipusArticle" class="w-full" optionLabel="color" optionValue="idColor" placeholder="Selecciona el tipus">
+    
+                </Dropdown> -->
+
+                <Dropdown editable :options="tipusArticle.data" v-model="workDetail.idTipusArticle" id="idTipusArticle" class="w-full" optionLabel="grupTipusArticle" optionValue="idGrupTipusArticle" placeholder="Selecciona">
+    
+                </Dropdown>
+
+
                 <label for="idMaterial" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.material-type") }}</label>
                 <TextInput
                     id="idMaterial"

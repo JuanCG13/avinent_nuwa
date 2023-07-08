@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -13,9 +13,22 @@ import Dropdown from 'primevue/dropdown';
 
 const emit = defineEmits(['updateData'])
 
+const page = usePage();
+
 const handleChange = (event) => {
   emit('updateData', {orderHeader:orderHeader})
 }
+
+const shipping_addresses = reactive({
+      data: null,
+    });
+
+
+onMounted(async () => {
+      const response = await fetch("/shipping_addresses/"+page.props.auth.user.id);
+      shipping_addresses.data = await response.json();
+    });
+
 
 const orderHeader = reactive({ 
     refPacient: '', 
@@ -34,7 +47,7 @@ const orderHeader = reactive({
 
 const props = defineProps({
     orderHeader: Object,
-    idComanda: Number,
+   // idComanda: Number,
     refPacient: String,
     idAdrecaEnviament: String,
     AdrecaFacturacio: String,
@@ -66,6 +79,7 @@ const phoneOptions = {
 </script>
 
 <template>
+
 
     <div class="bg-gray-200 dark:bg-gray-900 w-full h-full border border-gray-300 dark:border-slate-500 p-6">
         <h2 class="font-bold text-gray-600">Información general</h2>
@@ -111,20 +125,24 @@ const phoneOptions = {
 
 
         <div class="mt-4">
-            <InputLabel for="persContacte" value="Dirección de facturación" />
-            <Dropdown class="w-full" optionLabel="label" optionValue="value" placeholder="Selecciona el tipus">
-                    <template #option="slotProps">
-                        <span>{{slotProps.option.label}}</span>
-                    </template>
-                </Dropdown>
+            <InputLabel for="AdrecaFacturacio" value="Dirección de facturación" />
+              <TextInput
+                id="AdrecaFacturacio"
+                v-model="orderHeader.AdrecaFacturacio"
+                type="text"
+                class="mt-1 block w-full"
+                @input="handleChange"
+            />
+         
             <InputError class="mt-2" />
         </div>
 
         <div class="mt-4">
-            <InputLabel for="persContacte" value="Dirección de envío" />
-            <Dropdown class="w-full" optionLabel="label" optionValue="value" placeholder="Selecciona el tipus">
+
+            <InputLabel for="idAdrecaEnviament" value="Dirección de envío" />
+            <Dropdown :options="shipping_addresses.data" v-model="orderHeader.idAdrecaEnviament" id="idAdrecaEnviament" class="w-full" optionValue="idAdrecaEnviament" optionLabel="Direccio" placeholder="Selecciona">
                     <template #option="slotProps">
-                        <span>{{slotProps.option.label}}</span>
+                        <span>({{slotProps.option.municipi}}) {{slotProps.option.Direccio}} </span>
                     </template>
                 </Dropdown>
             <InputError class="mt-2" />

@@ -8,12 +8,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   
 import Row from 'primevue/row';                   
-//import { CustomerService } from '@/service/CustomerService';
 
-
-onMounted(() => {
-//   CustomerService.getCustomersMedium().then((data) => (customers.value = data));
-});
 
 const page = usePage();
 
@@ -26,7 +21,7 @@ const customers = ref('');
             <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
                 Mis casos
             </h2>
-            {{ page.props.impersonator.user.name }} // {{ page.props.auth.user.name }}
+            <!-- {{ page.props.impersonator.user.name }} // {{ page.props.auth.user.name }} -->
         </template>
 
         <template #content>
