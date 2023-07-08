@@ -47,7 +47,7 @@ Route::middleware([
     ->name('impersonate');
     Route::get('/leave-impersonate', 'App\Http\Controllers\ImpersonationController@leaveImpersonate')
     ->name('impersonate.leave');
-    
+
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
@@ -57,6 +57,17 @@ Route::middleware([
     Route::get('/order/new', function () {
         return Inertia::render('Orders/New', []);
     })->name('orders.new');
+
+    //get db data
+    Route::get('colors/{lang}', 'App\Http\Controllers\DataController@getColors');
+    Route::get('incisal/{lang}', 'App\Http\Controllers\DataController@getIncisal');
+    Route::get('posicions/{lang}', 'App\Http\Controllers\DataController@getPosicions');
+    Route::get('fitxers/{lang}', 'App\Http\Controllers\DataController@getSistemaFitxers');
+    Route::get('zonespulides/{lang}', 'App\Http\Controllers\DataController@getZonesPulides');
+    Route::get('angulacions/{lang}', 'App\Http\Controllers\DataController@getAngulacions');
+    Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
+    Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
+
 
 });
 
