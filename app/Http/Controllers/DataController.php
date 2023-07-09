@@ -82,5 +82,27 @@ class DataController extends Controller
 
     }
 
+    public function getImpersonationUsers(Request $request)
+    {
+        
+        if (Auth::User()->isAdmin) {
+            $data = User::where('id','<>',Auth::User()->id)
+            ->get();
+         return $data;
+        } 
+        
+        if (Auth::User()->tipusUsuari == 1) {
+            $data = User::where('current_team_id', '=', Auth::User()->current_team_id)
+            ->Where('id','<>',Auth::User()->id)
+            ->get();
+         return $data;
+        }
+
+        return null;
+
+  
+
+    }
+
 
 }

@@ -43,20 +43,20 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    //impersonation
     Route::get('impersonate/{user}', 'App\Http\Controllers\ImpersonationController@impersonate')
     ->name('impersonate');
     Route::get('/leave-impersonate', 'App\Http\Controllers\ImpersonationController@leaveImpersonate')
     ->name('impersonate.leave');
 
+    //pages
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::get('/welcome', function () {
         return Inertia::render('Auth/Welcome', []);
     })->name('welcome');
-    Route::get('/order/new', function () {
-        return Inertia::render('Orders/New', []);
-    })->name('orders.new');
+
 
     //get db data
     Route::get('colors/{lang}', 'App\Http\Controllers\DataController@getColors');
@@ -68,6 +68,18 @@ Route::middleware([
     Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
     Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
+    Route::get('impersonate-users', 'App\Http\Controllers\DataController@getImpersonationUsers');
+
+    //orders 
+    Route::get('/order/new', function () {
+        return Inertia::render('Orders/New', []);
+    })->name('orders.new');
+    Route::get('/order/edit/{id}', function () {
+        return Inertia::render('Orders/Edit', [id]);
+    })->name('orders.edit');
+    Route::post('/order/new/store', 'App\Http\Controllers\OrderController@store')
+        ->name('order.store');
+
 
 });
 
@@ -76,6 +88,7 @@ Route::middleware([
     'auth',
     config('jetstream.auth_session'),
     'admin',
+    'verified',
 ])->group(function () {
     Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@dashboard')->name('admin.dashboard');
 });
