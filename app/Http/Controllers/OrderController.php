@@ -12,27 +12,22 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
-        Order::create($request->validate([
-          'first_name' => ['required', 'max:50'],
-          'last_name' => ['required', 'max:50'],
-          'email' => ['required', 'max:50', 'email'],
-        ]));
+        // Order::create($request->validate([
+        //   'first_name' => ['required', 'max:50'],
+        //   'last_name' => ['required', 'max:50'],
+        //   'email' => ['required', 'max:50', 'email'],
+        // ]));
+        //  dd($request->orderHeader['refPacient']);
+        $order = new Order();
+        $order->idUsuari = $request->user()->id;
+        $order->idEstat = 0;
+        $order->idAdrecaEnviament = $request->orderHeader['idAdrecaEnviament'];
+        $order->refPacient = $request->orderHeader['refPacient'];
+        $order->persContacte = $request->orderHeader['persContacte'];
+        $order->telfContacte = $request->orderHeader['telContacte'];
+        $order->save();
 
-        return to_route('dashboard');
+       // return to_route('dashboard');
     }
 }
 
-
-'idComanda',
-'idComandaX3',
-'idEstat',
-'idUsuari',
-'idClientX3',
-'idAdrecaEnviament',
-'tipusEnviament',
-'refPacient',
-'persContacte',
-'telfContacte',
-'dataPrevista', 
-'dataCreacio',
-'dataModificacio',

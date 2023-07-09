@@ -10,7 +10,8 @@ class Order extends Model
     use HasFactory;
 
     protected $table = 'tComandes';
-
+    public $timestamps = false;
+    
     protected $fillable = [
         'idComanda',
         'idComandaX3',
