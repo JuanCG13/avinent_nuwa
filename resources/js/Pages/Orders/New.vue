@@ -42,7 +42,7 @@ const deleteWork = (index) => {
     orderData.orderWorks.splice(index, 1);
 }
 
-const cloneWork = (work) => {
+const cloneWork = (index) => {
    // orderData.orderWorks.splice(work, 1);
 }
 
@@ -92,7 +92,7 @@ const updateData = (data) => {
 };
 
 const addOrder = () => {
-    router.post('order.new', [props.orderHeader, props.orderWorks]), {
+    router.post(route('order.new'), [props.orderHeader, props.orderWorks]), {
         errorBag: 'addOrder',
         preserveScroll: true,
         onSuccess: () => {
@@ -101,15 +101,13 @@ const addOrder = () => {
     }
 };
 
-const saveOrder = (data) => {
-    console.table(data.orderHeader);
-    console.table(data.orderWorks);
-    return;
-    router.post('order.store', [data.orderHeader, data.orderWorks]), {
+const saveOrder = () => {
+
+    router.post(route('order.store'), orderData), {
         errorBag: 'addOrder',
         preserveScroll: true,
         onSuccess: () => {
-            toast.add();
+            toast.add('Order created');
         }
     }
 };
@@ -118,13 +116,10 @@ const saveOrder = (data) => {
 
 <template>
     <AppLayout title="Dashboard">
-        <template #fullcontent>
+        <!-- <template #fullcontent>
 
-            <WorkDetail v-if="showWorkDetail" 
-                :workDetail="currentWorkDetail"
-                @closeDetail="closeWorkDetail">
-            </WorkDetail>
-        </template>
+        
+        </template> -->
 
         <template #header>
             <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
@@ -135,6 +130,11 @@ const saveOrder = (data) => {
         <template #content>
 
             {{orderData}}
+
+            <WorkDetail v-if="showWorkDetail" 
+                :workDetail="currentWorkDetail"
+                @closeDetail="closeWorkDetail">
+            </WorkDetail>
 
             <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
 
