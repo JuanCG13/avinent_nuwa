@@ -20,6 +20,9 @@ import ConfirmationService from 'primevue/confirmationservice';
 
 import Tooltip from 'primevue/tooltip';
 
+import { MotionPlugin } from '@vueuse/motion'
+
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 const translations = {
@@ -59,6 +62,7 @@ createInertiaApp({
             .use(ToastService)
             .use(i18n)
             .use(ConfirmationService)
+            .use(MotionPlugin)
             .directive('tooltip', Tooltip)
             .mount(el);
     },
