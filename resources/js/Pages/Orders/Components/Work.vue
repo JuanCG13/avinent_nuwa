@@ -8,7 +8,6 @@ import Button from '@/Components/PrimaryButton.vue';
 import AltButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Dropdown from 'primevue/dropdown';
-import { vue3dLoader } from "vue-3d-loader";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmPopup from 'primevue/confirmpopup';
 
@@ -40,12 +39,14 @@ const deleteWork = (event) => {
         icon: 'pi pi-trash',
         acceptIcon: 'pi pi-check',
         rejectIcon: 'pi pi-times',
+        acceptClass: 'p-button-danger text-xs',
+        rejectClass: 'p-button-info text-xs',
         accept: () => {
-            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
-            emit('deleteWork')
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 1000 });
+           // emit('deleteWork');
         },
         reject: () => {
-            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 1000 });
         }
     });
 };
@@ -58,7 +59,11 @@ const cloneWork = (event) => {
     confirm.require({
         target: event.currentTarget,
         message: 'Quieres duplicar el trabajo?',
-        icon: 'pi pi-trash',
+        icon: 'pi pi-copy',
+        acceptIcon: 'pi pi-check',
+        rejectIcon: 'pi pi-times',
+        acceptClass: 'p-button-success text-xs',
+        rejectClass: 'p-button-info text-xs',
         accept: () => {
             emit('cloneWork')
         },

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm, router } from '@inertiajs/vue3';
+import { useForm, router, usePage } from '@inertiajs/vue3';
 
 import { ref, onMounted, reactive } from 'vue';
 import Info from './Components/Info.vue';
@@ -18,6 +18,7 @@ import { useConfirm } from "primevue/useconfirm";
 import ConfirmPopup from 'primevue/confirmpopup';
 
 const toast = useToast();
+const page = usePage();
 
 const workType = ref(null);
 const showWorkDetail = ref(false);
@@ -133,9 +134,12 @@ const saveOrder = () => {
 
             <WorkDetail v-if="showWorkDetail" 
                 :workDetail="currentWorkDetail"
-                @closeDetail="closeWorkDetail">
+                @closeDetail="closeWorkDetail"
+                >
+                
             </WorkDetail>
 
+       
             <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
 
                 <div class="w-1/3 h-full">
@@ -143,13 +147,14 @@ const saveOrder = () => {
                      @addOrder = "addOrder"
                      @saveOrder = "saveOrder"
                      @updateData="updateData"
+                     :telfContacte="page.props.auth.user.telefonContacte"
+                     :persContacte="page.props.auth.user.personaContacte"
+                     :adrecaFacturacio="page.props.auth.user.adrecaFacturacio"   
                      />
-
                     <MessageBox class="mt-6 border-red-800 bg-red-100 text-red-900"
                     :title="$t('msg.register-title')" 
                     :text="$t('msg.register-copy')"
                     />
-                     
                 </div>
 
                 <div class="w-2/3 works">
@@ -177,7 +182,7 @@ const saveOrder = () => {
                         </div>
                         <div v-tooltip.top="{value:workType?'':'Debes seleccionar el tipo de trabajo', class:'text-xs text-center border-sm no-wrap'}"> 
                         <Button 
-                            class="text-lg font-bold bg-white !text-purple-950 hover:bg-primary-300" 
+                            class="text-lg font-bold bg-white !text-purple-900 hover:bg-primary-300" 
                             :disabled="!workType"
                             @click="addWork(workType)"
                             >

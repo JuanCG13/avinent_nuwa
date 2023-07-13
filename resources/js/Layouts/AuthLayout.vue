@@ -25,7 +25,7 @@ defineProps({
             <languageSelector/>
         </div>
 
-        <div class="relative hidden w-0 flex-1 lg:flex auth-side-bg">
+        <div class="relative hidden w-0 flex-1 lg:flex auth-side-bg bg-no-repeat bg-cover">
 
         </div>
 

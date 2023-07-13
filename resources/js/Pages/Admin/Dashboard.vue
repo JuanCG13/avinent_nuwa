@@ -21,10 +21,6 @@ const _data = defineProps({
 
 });
 
-const _status1 = reactive({
- 
-})
-
 
 const _status = ((idEstat)=> {
 
@@ -37,15 +33,6 @@ const _status = ((idEstat)=> {
 
 });
 
-const testing = (obj) => {
-        console.log(`Received object from child:`)    
-        console.log(obj)
-}
-
-onMounted(() => {
-  //  toast.add({ severity: 'success', summary:'', detail: 'Message Content', life: 3000 });
-//   CustomerService.getCustomersMedium().then((data) => (customers.value = data));
-});
 
 </script>
 

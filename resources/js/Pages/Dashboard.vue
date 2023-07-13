@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, watch } from 'vue';
 import { Head, Link, useForm, router, usePage } from "@inertiajs/vue3";
 import Button from '@/Components/PrimaryButton.vue';
 import Dropdown from 'primevue/dropdown';
@@ -9,13 +9,24 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   
 import Row from 'primevue/row';    
+import moment from 'moment';
+
+import { useToast } from "primevue/usetoast";
+import Toast from 'primevue/toast';
 
 import { useWebNotification } from '@vueuse/core'
 
 
 const page = usePage();
 
-const customers = ref('');
+const orderList = ref('');
+
+const _data = defineProps({
+
+    orders: Object,
+    status: Object,
+
+});
 
 const impersonateUserSelected = ref(0);
 
@@ -23,11 +34,32 @@ const impersonateUserList = reactive({
     data:null
 });
 
+watch(impersonateUserSelected, (user) => {
+    router.get(route('impersonate', user));
+});
+
+
+const orderStatus = ((idEstat)=> {
+
+var match = _data.status.filter(
+  function(data){ return data.idEstat == idEstat && data.idIdioma == 'SPA' }
+);
+
+//console.table(match);
+if (match.length > 0) return match[0].estat; else return '-';
+
+});
+
 
 onMounted(async () => {
       const response = await fetch("/impersonate-users/");
       impersonateUserList.data = await response.json();
+   
+      const response1 = await fetch("/order/list");
+      orderList.value = await response1.json();
+ 
     });
+
 
 </script>
 
@@ -43,7 +75,7 @@ onMounted(async () => {
 
             <div v-if="isSupported">
                 <Button class="!w-1/6" @click="show()">
-                Show Notification
+                    Show Notification
                 </Button>
             </div>
 
@@ -68,7 +100,7 @@ onMounted(async () => {
               >DESIMPERSONATE</Link>
             </div>
 
-              <Button class="!w-2/12 mt-6" @click="route('orders.new')">
+              <Button class="!w-2/12 mt-6" @click="router.visit(route('orders.new'))">
                 <svg class="mr-3 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
                                 <g id="Grupo_557" data-name="Grupo 557" transform="translate(-491 -1488)">
                                     <path id="Elipse_14" data-name="Elipse 14" d="M16.5,2.64A13.86,13.86,0,0,0,6.7,26.3,13.86,13.86,0,1,0,26.3,6.7a13.769,13.769,0,0,0-9.8-4.06M16.5,0A16.5,16.5,0,1,1,0,16.5,16.5,16.5,0,0,1,16.5,0Z" transform="translate(491 1488)" fill="#fff"/>
@@ -83,11 +115,26 @@ onMounted(async () => {
     
         
             <div class="py-12 px-6 lg:px-0 mx-auto main-dashboard">
-                <DataTable :value="customers" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]">
-                    <Column field="name" header="Name" style="width: 25%"></Column>
-                    <Column field="country.name" header="Country" style="width: 25%"></Column>
-                    <Column field="company" header="Company" style="width: 25%"></Column>
-                    <Column field="representative.name" header="Representative" style="width: 25%"></Column>
+                <DataTable :value="_data.orders" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]" :key="idComanda">
+                    <Column :header="$t('msg.order-date')" style="width: 10%">
+                        <template #body="{data}">
+                                {{ moment(data.dataCreacio).format('DD/MM/YYYY') }}
+                        </template>
+                    </Column>
+                    <Column field="idComandaX3" :header="$t('msg.case-id')" style="width: 10%"></Column>
+                    <Column field="refPacient" :header="$t('msg.pacient-ref')" style="width: 20%">
+                    </Column>
+                    <Column :header="$t('msg.delivery-date')" style="width: 15%">
+                        <template #body="{data}">
+                                {{ moment(data.dataPrevista).format('DD/MM/YYYY') }}
+                        </template>
+                    </Column>
+                    <Column :header="$t('msg.order-status')" style="width: 15%">
+                        <template #body="{data}">
+                                {{ orderStatus(data.estat) }}
+                        </template>
+                    </Column>
+                    <Column :header="$t('msg.order-actions')" style="width: 15%"></Column>
                 </DataTable>
             </div>
         </template>

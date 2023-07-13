@@ -50,9 +50,11 @@ Route::middleware([
     ->name('impersonate.leave');
 
     //pages
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return Inertia::render('Dashboard');
+    // })->name('dashboard');
+    Route::get('/dashboard', 'App\Http\Controllers\OrderController@dashboard')
+        ->name('dashboard');
     Route::get('/welcome', function () {
         return Inertia::render('Auth/Welcome', []);
     })->name('welcome');
@@ -60,6 +62,8 @@ Route::middleware([
 
     //get db data
     Route::get('colors/{lang}', 'App\Http\Controllers\DataController@getColors');
+    Route::get('colorsmaterial/{lang}', 'App\Http\Controllers\DataController@getColorsMaterial');
+
     Route::get('incisal/{lang}', 'App\Http\Controllers\DataController@getIncisal');
     Route::get('posicions/{lang}', 'App\Http\Controllers\DataController@getPosicions');
     Route::get('fitxers/{lang}', 'App\Http\Controllers\DataController@getSistemaFitxers');
@@ -67,6 +71,7 @@ Route::middleware([
     Route::get('angulacions/{lang}', 'App\Http\Controllers\DataController@getAngulacions');
     Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
     Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
+ 
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
     Route::get('impersonate-users', 'App\Http\Controllers\DataController@getImpersonationUsers');
 
@@ -79,8 +84,7 @@ Route::middleware([
     })->name('orders.edit');
     Route::post('/order/new/store', 'App\Http\Controllers\OrderController@store')
         ->name('order.store');
-
-
+    Route::get('/order/list', 'App\Http\Controllers\OrderController@getOrders');
 });
 
 //** admin routes middleware Admin 

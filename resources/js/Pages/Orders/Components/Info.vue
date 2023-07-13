@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { toRef, ref, onMounted, reactive, computed } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import InputError from '@/Components/InputError.vue';
@@ -32,12 +32,10 @@ onMounted(async () => {
 
 const orderHeader = reactive({ 
     refPacient: '', 
-    telContacte: '', 
-    persContacte: '', 
     idComanda: '',
     refPacient: '',
     idAdrecaEnviament: '',
-    AdrecaFacturacio: '',
+    adrecaFacturacio: '??????????',
     persContacte: '',
     telfContacte: '',
     dataPrevista: '',
@@ -50,7 +48,7 @@ const props = defineProps({
    // idComanda: Number,
     refPacient: String,
     idAdrecaEnviament: String,
-    AdrecaFacturacio: String,
+    adrecaFacturacio: String,
     persContacte: String,
     telfContacte: String,
     dataPrevista: String,
@@ -76,10 +74,14 @@ const phoneOptions = {
             }
         };
 
+onMounted(() => {
+        orderHeader.telfContacte = props.telfContacte;
+        orderHeader.persContacte = props.persContacte;
+        orderHeader.adrecaFacturacio = props.adrecaFacturacio;
+        });
 </script>
 
 <template>
-
 
     <div class="bg-gray-200 dark:bg-gray-900 w-full h-full border border-gray-300 dark:border-slate-500 p-6">
         <h2 class="font-bold text-gray-600">Información general</h2>
@@ -128,7 +130,7 @@ const phoneOptions = {
             <InputLabel for="AdrecaFacturacio" value="Dirección de facturación" />
               <TextInput
                 id="AdrecaFacturacio"
-                v-model="orderHeader.AdrecaFacturacio"
+                v-model="orderHeader.adrecaFacturacio"
                 type="text"
                 class="mt-1 block w-full"
                 @input="handleChange"
@@ -140,7 +142,7 @@ const phoneOptions = {
         <div class="mt-4">
 
             <InputLabel for="idAdrecaEnviament" value="Dirección de envío" />
-            <Dropdown :options="shipping_addresses.data" v-model="orderHeader.idAdrecaEnviament" id="idAdrecaEnviament" class="w-full" optionValue="idAdrecaEnviament" optionLabel="Direccio" placeholder="Selecciona">
+            <Dropdown :loading="!shipping_addresses.data" :options="shipping_addresses.data" v-model="orderHeader.idAdrecaEnviament" id="idAdrecaEnviament" class="w-full" optionValue="idAdrecaEnviament" optionLabel="Direccio" placeholder="Selecciona">
                     <template #option="slotProps">
                         <span>({{slotProps.option.municipi}}) {{slotProps.option.Direccio}} </span>
                     </template>
