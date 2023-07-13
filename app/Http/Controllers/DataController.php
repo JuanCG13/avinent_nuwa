@@ -60,10 +60,28 @@ class DataController extends Controller
     public function getMaterials(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tMaterials WHERE IdIdioma='SPA'");
-        return $data;
+        $data = DB::select("SELECT 
+        
+        idGrupMaterial, 
+        grupMaterial,
+                    (SELECT
+                          CONCAT('[', 
+                            GROUP_CONCAT(
+                                JSON_OBJECT(
+                                   'idMaterial', idMaterial
+                                   ,'material', material
+                                   ,'idColorDefecte', idColorDefecte
+                                   ,'minDents', minDents
+                                   ,'maxDents', maxDents
+                                   )
+                                ),
+                            ']') 
+                        FROM tMaterials WHERE idGrupMaterial = tGrupMaterials.idGrupMaterial AND idIdioma = tGrupMaterials.idIdioma) as materials
+                    FROM tGrupMaterials WHERE idIdioma='SPA';
+             ");
+       dd($data);
 
-    }
+    }   
 
     public function getGrupTipusArticle(Request $request)
     {

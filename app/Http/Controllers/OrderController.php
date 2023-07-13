@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Status;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+
 
 class OrderController extends Controller
 {
@@ -28,6 +30,24 @@ class OrderController extends Controller
         $order->save();
 
        // return to_route('dashboard');
+    }
+
+    public function dashboard(Request $request)
+    {
+       $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
+       $status = Status::all();
+
+       return Inertia::render('Dashboard', [
+       'orders' => $orders, 
+       'status' => $status
+        ]);
+       
+    }
+
+    public function getOrders(Request $request)
+    {
+       $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
+       return $orders;
     }
 }
 
