@@ -37,10 +37,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        // if ($request->session()->get('uploadedFile')) {
+        //     dd($request->session()->get('uploadedFile'));
+        // }
+
         return array_merge(parent::share($request), [
             
             'impersonator.user' => fn () => $request->session()->get('impersonated_by')
             ? User::find($request->session()->get('impersonated_by'))
+            : null,
+
+            'uploadedFile' => fn () => $request->session()->get('uploadedFile')
+            ? $request->session()->get('uploadedFile')
             : null,
 
         ]);

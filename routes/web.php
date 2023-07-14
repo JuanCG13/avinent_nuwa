@@ -77,15 +77,22 @@ Route::middleware([
 
     //orders 
     Route::get('/order/new', function () {
-        return Inertia::render('Orders/New', []);
-    })->name('orders.new');
+        return Inertia::render('Orders/New', []);})
+        ->name('orders.new');
+    Route::get('/order/list', 'App\Http\Controllers\OrderController@getOrders')
+        ->name('orders.list');
     Route::get('/order/edit/{id}', function () {
-        return Inertia::render('Orders/Edit', [id]);
-    })->name('orders.edit');
+        return Inertia::render('Orders/Edit', [id]);})
+        ->name('orders.edit');
     Route::post('/order/new/store', 'App\Http\Controllers\OrderController@store')
         ->name('order.store');
-    Route::get('/order/list', 'App\Http\Controllers\OrderController@getOrders');
-});
+    Route::post('/order/fileupload', 'App\Http\Controllers\FileController@fileUpload')
+        ->name('order.fileUpload');
+
+    Route::get('/getfile/{filename}', 'App\Http\Controllers\FileController@getFile')
+        ->name('order.getFile');
+
+    });
 
 //** admin routes middleware Admin 
 Route::middleware([

@@ -8,6 +8,10 @@ use App\Models\Order;
 use App\Models\Status;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Redirect;
 
 
 class OrderController extends Controller
@@ -49,5 +53,6 @@ class OrderController extends Controller
        $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
        return $orders;
     }
+
 }
 

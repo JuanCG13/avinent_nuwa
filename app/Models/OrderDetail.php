@@ -10,6 +10,7 @@ class OrderDetail extends Model
     use HasFactory;
 
     protected $table = 'tLiniesComanda';
+    public $timestamps = false;
 
     protected $fillable = [
         'idLiniaCmd',

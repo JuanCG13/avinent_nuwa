@@ -61,9 +61,10 @@ return [
             'root' => storage_path('app/user'),
             'visibility' => 'private'
         ],
+
         'tmp' => [
             'driver' => 'local',
-            'root' => storage_path('app/temp'),
+            'root' => storage_path('app/tmp'),
             'visibility' => 'private'
         ],
 
