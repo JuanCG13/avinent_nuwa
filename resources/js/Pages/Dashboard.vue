@@ -79,25 +79,26 @@ onMounted(async () => {
                 </Button>
             </div>
 
-            <div class="py-12">
-            <div v-if="!page.props.impersonator.user">
-            <Dropdown :options="impersonateUserList.data" v-model="impersonateUserSelected" class="w-1/6 my-6" optionValue="id" optionLabel="name" placeholder="Selecciona">
-                <template #option="slotProps">
-                    <span> {{slotProps.option.name}} </span>
-                </template>
-            </Dropdown>
+            <div class="py-12" v-if="!page.props.impersonator.user && page.props.auth.user.tipusUsuari != 2">
+              
+                <Dropdown :options="impersonateUserList.data" v-model="impersonateUserSelected" class="w-1/6 my-6" optionValue="id" optionLabel="name" placeholder="Selecciona">
+                    <template #option="slotProps">
+                        <span> {{slotProps.option.name}} </span>
+                    </template>
+                </Dropdown>
 
-            <Link
-                :href="route('impersonate', impersonateUserSelected)"
-                class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
-              >IMPERSONATE</Link>
-            </div>
+                <Link
+                    :href="route('impersonate', impersonateUserSelected)"
+                    class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
+                >IMPERSONATE</Link>
+              
 
-            <div v-if="page.props.impersonator.user"></div>
-              <Link
-                :href="route('impersonate.leave')"
-                class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
-              >DESIMPERSONATE</Link>
+                <div v-if="page.props.impersonator.user">
+                <Link
+                    :href="route('impersonate.leave')"
+                    class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
+                >DESIMPERSONATE</Link>
+                </div>
             </div>
 
               <Button class="!w-2/12 mt-6" @click="router.visit(route('orders.new'))">
