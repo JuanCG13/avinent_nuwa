@@ -12,8 +12,8 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import PrimeVue from 'primevue/config';
 
 import { createI18n } from "vue-i18n";
-import messages_es from '../lang/es.json'
-import messages_en from '../lang/en.json'
+import messages_es from '../../lang/es.json'
+import messages_en from '../../lang/en.json'
 
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';

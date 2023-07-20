@@ -1,7 +1,12 @@
 <script setup>
 import { useDark, useToggle } from '@vueuse/core';
 import { MotionPlugin } from '@vueuse/motion'
+import { router } from '@inertiajs/vue3';
+import { watch } from 'vue';
+import { useI18n } from "vue-i18n";
 
+
+const {locale} = useI18n();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
@@ -13,12 +18,16 @@ const props = defineProps({
     },
 });
 
+watch(locale, (newLocale) => {
+  router.post(route('set.locale',newLocale));
+})
+
 </script>
 
 <template>
     <div class="inline-flex">
         <select :class="class" class="border-0 focus:border-0 focus:shadow-none " v-model="$i18n.locale">
-        <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
         </select>
 
         <div class="ml-4">

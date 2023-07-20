@@ -25,21 +25,31 @@ use Inertia\Inertia;
 
 
 
+Route::middleware([
+    'setLocale',
+])->group(function () {
+    Route::get('/', function () {
+        return redirect('/login');
+    });
+}); 
 
-// Route::middleware([
-//     config('jetstream.auth_session'),
-//     'web',
-// ])->group(function () {
+// Route::get('/', function () {
+//     return redirect('/login');
+// });
 
-// }); 
 
-Route::get('/', function () {
-    return redirect('/login');
-});
-
+//change locale
+Route::post('locale/{lang}', function ($lang) {
+    Session()->put('locale', $lang);
+   // return redirect()->back();
+})->name('set.locale');
  
+// Route::post('/locale/{lang}', 'App\Http\Controllers\DataController@setLocale')
+// ->name('set.locale');
+
 Route::middleware([
     'auth',
+    'setLocale',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
@@ -58,7 +68,6 @@ Route::middleware([
     Route::get('/welcome', function () {
         return Inertia::render('Auth/Welcome', []);
     })->name('welcome');
-
 
     //get db data
     Route::get('colors/{lang}', 'App\Http\Controllers\DataController@getColors');
@@ -101,5 +110,6 @@ Route::middleware([
     'admin',
     'verified',
 ])->group(function () {
-    Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@dashboard')->name('admin.dashboard');
+    Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@dashboard')
+    ->name('admin.dashboard');
 });
