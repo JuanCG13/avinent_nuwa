@@ -15,6 +15,10 @@ use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Mail\TeamInvitation;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+
 
 class InviteTeamMember implements InvitesTeamMembers
 {
@@ -23,14 +27,28 @@ class InviteTeamMember implements InvitesTeamMembers
      */
     public function invite(User $user, Team $team, string $email, string $role = null): void
     {
-        Gate::forUser($user)->authorize('addTeamMember', $team);
+        // Gate::forUser($user)->authorize('addTeamMember', $team);
 
-        $this->validate($team, $email, $role);
+        // $this->validate($team, $email, $role);
 
-        InvitingTeamMember::dispatch($team, $email, $role);
+        // InvitingTeamMember::dispatch($team, $email, $role);
+        
+        $_user = new User();
+        $password = Str::random(8);
+        $name = $email;
+
+        $_user->name = $name;
+        $_user->email = $email;
+        $_user->estat = 1;
+        $_user->tipusUsuari = 2;
+        $_user->password = Hash::make($password);
+        $_user->current_team_id = $team->id;
+        $_user->save();
 
         $invitation = $team->teamInvitations()->create([
             'email' => $email,
+            'name' => $name,
+            'password' => $password,
             'role' => $role,
         ]);
 

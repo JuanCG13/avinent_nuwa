@@ -22,6 +22,7 @@ const props = defineProps({
 
 const addTeamMemberForm = useForm({
     email: '',
+    name:'',
     role: null,
 });
 
@@ -113,6 +114,18 @@ const displayableRole = (role) => {
                     </div>
 
                     <!-- Member Email -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <InputLabel for="name" value="Name" />
+                        <TextInput
+                            id="name"
+                            v-model="addTeamMemberForm.name"
+                            type="text"
+                            class="mt-1 block w-full"
+                        />
+                        <InputError :message="addTeamMemberForm.errors.email" class="mt-2" />
+                    </div>
+
+
                     <div class="col-span-6 sm:col-span-4">
                         <InputLabel for="email" value="Email" />
                         <TextInput
