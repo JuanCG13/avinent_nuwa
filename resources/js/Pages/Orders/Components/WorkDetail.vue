@@ -271,7 +271,7 @@ watch(renderFile, (currentValue, oldValue) => {
 
                             <p class="mt-4 font-bold">Añadir fichero de diseño</p>
                              <template v-if="!renderFile">
-                                <FileUpload class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
+                                <FileUpload accept="model/stl" class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
                             :maxFileSize="50000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
           
                                 </FileUpload>
@@ -300,7 +300,18 @@ watch(renderFile, (currentValue, oldValue) => {
                             <template v-if="!constructFile">
                                 <FileUpload class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
                             :maxFileSize="50000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
-          
+                                    <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
+                                <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+                                    <!-- <div class="flex gap-2">
+                                        <Button @click="chooseCallback()" icon="pi pi-images" rounded outlined></Button>
+                                        <Button @click="uploadEvent(uploadCallback)" icon="pi pi-cloud-upload" rounded outlined severity="success" :disabled="!files || files.length === 0"></Button>
+                                        <Button @click="clearCallback()" icon="pi pi-times" rounded outlined severity="danger" :disabled="!files || files.length === 0"></Button>
+                                    </div> -->
+                                    <ProgressBar :value="totalSizePercent" :showValue="false" :class="['md:w-20rem h-1rem w-full md:ml-auto', { 'exceeded-progress-bar': totalSizePercent > 100 }]"
+                                        ><span class="white-space-nowrap">{{ totalSize }}B / 1Mb</span></ProgressBar
+                                    >
+                                </div>
+                            </template>
                                 </FileUpload>
                             </template>
 
@@ -312,7 +323,7 @@ watch(renderFile, (currentValue, oldValue) => {
 
                         </div>
                     </div>
-
+                </div>
 
             </div>
          
@@ -325,7 +336,7 @@ watch(renderFile, (currentValue, oldValue) => {
                 >
                 </vue3dLoader>
              </div>
-         
+
         </div>
      
     </div>
