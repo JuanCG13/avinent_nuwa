@@ -229,7 +229,7 @@ watch(renderFile, (currentValue, oldValue) => {
                         </Dropdown>
                      </div>
                      <div class="w-2/12 overflow-hidden">
-                    </div>
+                     </div>
                      <div class="w-4/12 overflow-hidden">
                      </div>
                 </div>
