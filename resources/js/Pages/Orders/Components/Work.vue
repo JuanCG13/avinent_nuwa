@@ -7,7 +7,6 @@ import InputLabel from '@/Components/InputLabel.vue';
 import Button from '@/Components/PrimaryButton.vue';
 import AltButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import Dropdown from 'primevue/dropdown';
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmPopup from 'primevue/confirmpopup';
 

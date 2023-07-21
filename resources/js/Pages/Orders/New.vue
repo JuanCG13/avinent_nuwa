@@ -50,7 +50,7 @@ const cloneWork = (index) => {
 const addWork = (type) => {
     orderData.orderWorks.push({
         workType: type.value,
-        implantsDetail: {},
+        implantsDetail: [],
         // idLiniaCmd: 0,
         // idComanda: 0,
         numLin: 0,
@@ -117,30 +117,36 @@ const saveOrder = () => {
 
 <template>
     <AppLayout title="Dashboard">
-        <!-- <template #fullcontent>
-
-        
-        </template> -->
+  
 
         <template #header>
-            <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
+            <h2 v-if="!showWorkDetail" class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
                Nuevo pedido
             </h2>
+
+            <h2 v-if="showWorkDetail" class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
+               Detalle trabajo {{ workDetail }} 
+            </h2>
+
+
         </template>
 
         <template #content>
 
             {{orderData}}
 
-            <WorkDetail v-if="showWorkDetail" 
-                :workDetail="currentWorkDetail"
-                @closeDetail="closeWorkDetail"
-                >
-                
-            </WorkDetail>
+            <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
+
+                <WorkDetail v-if="showWorkDetail" 
+                    :workDetail="currentWorkDetail"
+                    @closeDetail="closeWorkDetail"
+                    >
+                    
+                </WorkDetail>
+            </div>  
 
        
-            <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
+            <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12"  :class="[showWorkDetail ? 'hidden' : 'flex']">
 
                 <div class="w-1/3 h-full">
                     <Info
@@ -182,7 +188,7 @@ const saveOrder = () => {
                         </div>
                         <div v-tooltip.top="{value:workType?'':'Debes seleccionar el tipo de trabajo', class:'text-xs text-center border-sm no-wrap'}"> 
                         <Button 
-                            class="text-lg font-bold bg-white !text-purple-900 hover:bg-primary-300" 
+                            class="text-lg font-bold bg-white !text-purple-950 hover:bg-primary-300" 
                             :disabled="!workType"
                             @click="addWork(workType)"
                             >

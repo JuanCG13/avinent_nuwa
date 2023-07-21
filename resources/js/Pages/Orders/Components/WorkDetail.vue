@@ -149,13 +149,7 @@ watch(renderFile, (currentValue, oldValue) => {
 </script>
 
 <template>
-    <div class="absolute w-full px-6 lg:px-0 z-10 top-0 left-0 bg-white h-full min-h-fit">
-        
-    <div class="pt-12 mx-auto">
-        <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-            Detalle trabajo {{workDetail.workType}}
-        </h2>
-    </div>
+    <div class="w-full px-6 lg:px-0 z-10 top-0 left-0 bg-white dark:bg-gray-900 h-full min-h-fit">
 
     {{ workDetail }} 
 
@@ -276,10 +270,16 @@ watch(renderFile, (currentValue, oldValue) => {
                             </svg>
 
                             <p class="mt-4 font-bold">Añadir fichero de diseño</p>
-                            <FileUpload class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
-                            :maxFileSize="10000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
+                             <template v-if="!renderFile">
+                                <FileUpload class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
+                            :maxFileSize="50000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
           
-                            </FileUpload>
+                                </FileUpload>
+                            </template>
+
+                            <template v-if="renderFile">
+                               <AltButton class="bg-red-500">Borrar fichero</AltButton>
+                            </template>
 
                         </div>
                     </div>
@@ -297,23 +297,21 @@ watch(renderFile, (currentValue, oldValue) => {
                                 </svg>
 
                             <p class="mt-4 font-bold">Añadir fichero construcción</p>
-                            <template v-if="!renderFile">
+                            <template v-if="!constructFile">
                                 <FileUpload class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
-                            :maxFileSize="100000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
+                            :maxFileSize="50000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
           
                                 </FileUpload>
                             </template>
 
-                            <template v-if="renderFile">
-                                
+                            <template v-if="constructFile">
+                                <AltButton class="bg-red-500">Borrar fichero</AltButton>
                             </template>
             
 
 
                         </div>
                     </div>
-
-                </div>
 
 
             </div>
@@ -373,24 +371,20 @@ watch(renderFile, (currentValue, oldValue) => {
        
             
                 <DataTable class="mt-4" :value="workDetail.implantsDetail" tableStyle="min-width: 50rem">
-                    <template #header>
-                        <div class="flex justify-content-between">
-                          
-                        </div>
-                    </template>    
 
-                    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                    <Column field="code" ></Column>
-                    <Column field="name" ></Column>
-                    <Column field="category" ></Column>
-                    <Column field="quantity"></Column>
-                    <Column field="code" ></Column>
-                    <Column field="name" ></Column>
-                    <Column field="category" ></Column>
-                    <Column field="quantity" ></Column>
-                    <Column field="name" ></Column>
-                    <Column field="category"></Column>
-                    <Column field="quantity"></Column>
+                    <Column field="posicio" ></Column>
+                    <Column field="idMarcac" ></Column>
+                    <Column field="idConexio" ></Column>
+                    <Column field="idAngulacions"></Column>
+                    <Column field="analeg" ></Column>
+                    <Column field="tipusAnaleg" ></Column>
+                    <Column field="enviarCargol" ></Column>
+                    <Column field="baseTi" ></Column>
+                    <Column field="tipusBaseTi" ></Column>
+                    <Column field="tallables"></Column>
+                    <Column field="alcadaGH"></Column>
+                    <Column style="width: 3rem"></Column>
+
                 </DataTable>
 
             </div>
