@@ -9,6 +9,9 @@ import TextInput from "@/Components/TextInput.vue";
 import TitleBorder from "@/Components/TitleBorder.vue";
 import { VueTelInput } from 'vue3-tel-input'
 import 'vue3-tel-input/dist/vue3-tel-input.css';
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const form = useForm({
     name: '',
@@ -32,12 +35,12 @@ const shipping = ref(true);
 
 const phoneOptions = {
         mode: "international",
-       // defaultCountry: "ES",
+        defaultCountry: "ES",
         required: true,
         enabledCountryCode: true,
         enabledFlags: true,
         //onlyCountries: ["ES", "PT","AD"],
-        invalidMsg: 'Caca',
+        invalidMsg: t('msg.register-invalid-phone'),
         styleClasses: "w-full mt-1 py-1 border-gray-300 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-300 dark:bg-white rounded-sm shadow-sm",
         inputOptions: {
             styleClasses: "",
@@ -52,7 +55,17 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+
+function phoneValidated(object) {
+           if (object.valid) {
+             form.telefon = object.number;
+           } else {
+            form.telefon = '';
+           }
+        }
 </script>
+
 <template>
     <form @submit.prevent="submit">
         <div class="mb-4">
@@ -208,7 +221,7 @@ const submit = () => {
         </div> -->
 
        <div class="mb-4">
-            <InputLabel for="company_phone" :value="$t('msg.company_phone')" />
+            <InputLabel for="company_phone" :value="$t('msg.register-phone')" />
             <VueTelInput id="form.company_phone" v-model="form.telefono" v-bind="phoneOptions" @validate="phoneValidated"></VueTelInput>
             <InputError class="mt-2" :message="form.errors.telefono" />
         </div>
