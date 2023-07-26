@@ -61,25 +61,23 @@ class DataController extends Controller
     {
        
         $data = DB::select("SELECT 
-        
         idGrupMaterial, 
         grupMaterial,
-                    (SELECT
-                          CONCAT('[', 
-                            GROUP_CONCAT(
-                                JSON_OBJECT(
-                                   'idMaterial', idMaterial
-                                   ,'material', material
-                                   ,'idColorDefecte', idColorDefecte
-                                   ,'minDents', minDents
-                                   ,'maxDents', maxDents
-                                   )
-                                ),
-                            ']') 
-                        FROM tMaterials WHERE idGrupMaterial = tGrupMaterials.idGrupMaterial AND idIdioma = tGrupMaterials.idIdioma) as materials
-                    FROM tGrupMaterials WHERE idIdioma='SPA';
-             ");
-       dd($data);
+        JSON_EXTRACT(
+            (SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT(
+                            'idMaterial', idMaterial
+                            ,'material', material
+                            ,'idColorDefecte', idColorDefecte
+                            ,'minDents', minDents
+                            ,'maxDents', maxDents
+                            )
+                        )
+                FROM tMaterials WHERE idGrupMaterial = tGrupMaterials.idGrupMaterial AND idIdioma = tGrupMaterials.idIdioma),
+            '$') AS materials
+              FROM tGrupMaterials WHERE idIdioma='SPA';
+               ");
+       return $this->result_as_json($data);
 
     }   
 
@@ -120,6 +118,31 @@ class DataController extends Controller
 
   
 
+    }
+
+    private function isJson($string) {
+        json_decode($string, true);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+    
+    
+    private function result_as_json($result, $array_columns = null){
+        $json = array();
+        foreach($result as $res) {
+            $item = array();
+            if($array_columns != null){
+                foreach ( $array_columns as $key) {
+                    $item[$key] = isJson($res[$key])?json_decode($res[$key], true):$res[$key];
+                }
+            }
+            else {
+                foreach ($res as $key => $value) {
+                    $item[$key] = $this->isJson($value)?json_decode($value, true):$value;
+                }
+            }
+            array_push($json, $item);
+        }
+        return json_encode($json);
     }
 
 
