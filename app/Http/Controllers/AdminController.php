@@ -11,7 +11,7 @@ use Inertia\Inertia;
 class AdminController extends Controller
 {
     public function dashboard() {
-        $users = User::all();
+        $users = User::where('estat','=','0')->get();
         $orders = Order::all();
         $status = Status::all();
 

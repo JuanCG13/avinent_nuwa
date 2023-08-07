@@ -106,10 +106,14 @@ Route::middleware([
 //** admin routes middleware Admin 
 Route::middleware([
     'auth',
+    'setLocale',
     config('jetstream.auth_session'),
     'admin',
     'verified',
 ])->group(function () {
     Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@dashboard')
     ->name('admin.dashboard');
+
+    Route::post('/activateuser', 'App\Http\Controllers\UserController@activateUser')
+    ->name('admin.activateuser');
 });

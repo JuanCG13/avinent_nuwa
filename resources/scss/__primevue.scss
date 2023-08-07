@@ -158,8 +158,17 @@
     }
 }
 
-.p-confirm-popup-content, .p-confirm-popup .p-confirm-popup-icon {
+.p-confirm-popup-content, .p-confirm-popup {
     @apply text-sm;
     
 }
 
+
+.p-dialog-content, .p-dialog-header-icons, .p-dialog-header, .p-dialog .p-dialog-header .p-dialog-title {
+    @apply text-sm;
+    
+}
+
+.p-tooltip-text	{
+    @apply text-xs;
+}
