@@ -68,7 +68,9 @@ Route::middleware([
     Route::get('/welcome', function () {
         return Inertia::render('Auth/Welcome', []);
     })->name('welcome');
-
+    Route::get('/support', function () {
+        return Inertia::render('Support', []);
+    })->name('support');
     //get db data
     Route::get('colors/{lang}', 'App\Http\Controllers\DataController@getColors');
     Route::get('colorsmaterial/{lang}', 'App\Http\Controllers\DataController@getColorsMaterial');

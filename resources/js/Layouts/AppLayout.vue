@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -16,6 +16,8 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
+
+const page = usePage();
 
 const logout = () => {
     router.post(route('logout'));
@@ -43,14 +45,27 @@ const logout = () => {
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                            <div class="ml-16 sm:flex" v-if="page.props.auth.user.isAdmin">
+                                <NavLink class="text-white hover:text-white text-sm" :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                                    <i class="pi pi-inbox mr-2 text-xl"></i>{{ $t('Gestión') }}  
                                 </NavLink>
                             </div>
+
+                            <div class="ml-16 sm:flex">
+                                <NavLink class="text-white hover:text-white text-sm" :href="route('dashboard')" :active="route().current('dashboard')">
+                                    <i class="pi pi-file mr-2 text-xl"></i>{{ $t('Mis casos') }}   
+                                </NavLink>
+                            </div>
+
+                            <div class="ml-16 sm:flex">
+                                <NavLink class="text-white hover:text-white text-sm" :href="route('support')" :active="route().current('support')">
+                                    <i class="pi pi-book mr-2 text-xl"></i>{{ $t('Soporte') }}   
+                                </NavLink>
+                            </div>
+
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <div class="sm:flex sm:items-center sm:ml-6">
                             <div class="ml-3 relative">
 
                             <!-- Teams Dropdown -->
