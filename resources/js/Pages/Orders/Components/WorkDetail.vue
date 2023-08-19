@@ -3,11 +3,12 @@ import { ref, onMounted, reactive, computed, watch } from 'vue';
 import { useForm, router, usePage } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import TextInput from '@/Components/TextInput.vue';
 import Button from '@/Components/PrimaryButton.vue';
 import AltButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import Dropdown from 'primevue/dropdown';
 import MessageBox from '@/Components/MessageBox.vue';
+import Checkbox from 'primevue/checkbox';
 import { useI18n } from "vue-i18n";
 import FileUpload from 'primevue/fileupload';
 import { vue3dLoader } from "vue-3d-loader";
@@ -19,8 +20,8 @@ import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';    
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
-
-import { usePageLeave } from '@vueuse/core'
+import _ from 'lodash';
+import { usePageLeave } from '@vueuse/core';
 
 const isLeft = usePageLeave();
 
@@ -29,7 +30,7 @@ const page = usePage();
 const toast = useToast();
 const confirm = useConfirm();
 
-const {locale} = useI18n();
+const {t, locale} = useI18n();
 
 const emit = defineEmits(['closeDetail'])
 
@@ -50,52 +51,55 @@ const _data = reactive({
     zonespulides:null,
     angulacions:null,
     grupsMaterials:null,
-    materials:null,
+    materials:[],
     tipusImplants:null,
     marcaImplants:null,
     colorsMaterial:null,
     });
 
+const implantDetail = reactive({
+        posicio: '',
+        idMarca: '',
+        idConexio: '',
+        idAngulacions: '',
+        analeg: '',
+        tipusAnaleg: '',
+        enviarCargol: '',
+        baseTi: '',
+        tipusBaseTi: '',
+        tallables: '',
+        alcadaGH: '',
+});
+
 const addImplant = () => {
-    workDetail.implantsDetail.push({
+    props.workDetail.implantsDetail.push(
             // id: '',
             // idComanda: '',
             // idLiniaCmd:'',
-            posicio: '',
-            idMarca: '',
-            idConexio: '',
-            idAngulacions: '',
-            analeg: '',
-            tipusAnaleg: '',
-            enviarCargol: '',
-            baseTi: '',
-            tipusBaseTi: '',
-            tallables: '',
-            alcadaGH: '',
-        })
+            implantDetail
+        )
     }
 
 
 onMounted(async () => {
-    
-      const response = await fetch("/colors/"+locale.value);
-      _data.colors = await response.json();
 
       const response1 = await fetch("/tipusarticle/"+locale.value);
       _data.tipusArticle = await response1.json();
     
+      const response7 = await fetch("/materials/"+locale.value);
+      _data.materials = await response7.json();
+    
+      const response = await fetch("/colors/"+locale.value);
+      _data.colors = await response.json();
+
       const response3 = await fetch("/incisal/"+locale.value);
       _data.incisal = await response3.json();
     
       const response4 = await fetch("/fitxers/"+locale.value);
       _data.sistemesFitxers = await response4.json();
-   
-      const response7 = await fetch("/materials/"+locale.value);
-     // _data.materials = await response7.json();
-      _data.materials =  [ { "idGrupMaterial": "GT001", "grupMaterial": "Sobre diente natural", "materials": [{"idMaterial": "001", "material": "CoCr", "idColorDefecte": "001", "minDents": 1, "maxDents": 10}, {"idMaterial": "002", "material": "Titani", "idColorDefecte": "001", "minDents": 1, "maxDents": 10}] }, { "idGrupMaterial": "GT002", "grupMaterial": "Sobre implante", "materials": [{"idMaterial": "003", "material": "Cera d'orella", "idColorDefecte": "001", "minDents": 1, "maxDents": 10}] } ]
-    
-      const response8 = await fetch("/colorsmaterial/"+locale.value);
-      _data.colorsMaterial = await response8.json();
+
+    //   const response8 = await fetch("/colorsmaterial/"+locale.value);
+    //   _data.colorsMaterial = await response8.json();
 
       const response5 = await fetch("/zonespulides/"+locale.value);
       _data.zonespulides = await response5.json();
@@ -139,11 +143,19 @@ const fileUploadExecute = async (event) => {
             }
         });
     }
+    
+watch(()=>props.workDetail.idTipusArticle, (value, oldValue) => {
+    
+    _.filter(_data.materials, { materials: [{ name: 'Medium', present: true }] })
+    
+}, { deep: true });
+
 
 watch(renderFile, (currentValue, oldValue) => {
     console.log(currentValue);
     console.log(oldValue);
 });
+
 
 
 </script>
@@ -156,8 +168,8 @@ watch(renderFile, (currentValue, oldValue) => {
     <!-- step 1 -->
      <MessageBox
         class="w-full md:w-3/5 mt-12 bg-gray-100 dark:bg-gray-200"
-        :title="$t('msg.step-1-title')"
-        :text="$t('msg.step-1-header')"
+        :title="$t('Paso 1')"
+        :text="$t('Tipo de solución')"
         >
      </MessageBox>
  
@@ -167,12 +179,36 @@ watch(renderFile, (currentValue, oldValue) => {
         <div class="pt-6 w-full flex gap-6">
             <div class="w-full lg:w-3/5">
     
-                <label for="idTipusArticle" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.product-type") }}</label>
-                <Dropdown :loading="!_data.tipusArticle"  :options="_data.tipusArticle" v-model="workDetail.idTipusArticle" id="idTipusArticle" class="w-full mb-6" optionLabel="grupTipusArticle" optionValue="idGrupTipusArticle" placeholder="Selecciona">
+                <label for="idTipusArticle" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de producto") }}</label>
+                <Dropdown 
+                    :loading="!_data.tipusArticle" 
+                    v-model="workDetail.idTipusArticle" 
+                    :options="_data.tipusArticle" 
+                    optionLabel="tipusArticle" 
+                    optionGroupLabel="grupTipusArticle" 
+                    optionGroupChildren="tipusArticles" 
+                    optionValue="idTipusArticle" 
+                    :placeholder="t('Seleccionar tipo de artículo')"
+                    class="w-full md:w-14rem mb-6">
+                    <template #optiongroup="slotProps">
+                            <div class="flex align-items-center">
+                                <!-- <img :alt="slotProps.option.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" /> -->
+                                <div>{{ slotProps.option.grupTipusArticle }}</div>
+                            </div>
+                        </template>
                 </Dropdown>
 
-                <label for="idMaterial" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.material") }}</label>
-                <Dropdown :loading="!_data.materials" v-model="workDetail.idMaterial" :options="_data.materials" optionLabel="material" optionGroupLabel="grupMaterial" optionGroupChildren="materials" optionValue="idMaterial" class="w-full md:w-14rem mb-6">
+                <label for="idMaterial" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Material") }}</label>
+                <Dropdown 
+                    :loading="!_data.materials" 
+                    v-model="workDetail.idMaterial" 
+                    :options="_data.materials" 
+                    optionLabel="material" 
+                    optionGroupLabel="grupMaterial" 
+                    optionGroupChildren="materials" 
+                    optionValue="idMaterial" 
+                    :placeholder="t('Seleccionar material')"
+                    class="w-full md:w-14rem mb-6">
                         <template #optiongroup="slotProps">
                             <div class="flex align-items-center">
                                 <!-- <img :alt="slotProps.option.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" /> -->
@@ -183,12 +219,20 @@ watch(renderFile, (currentValue, oldValue) => {
                 
                 <div class="flex gap-6">
                     <div class="w-4/12 overflow-hidden">
-                        <label for="idTipusArticle2" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.article-type") }}</label>
-                        <Dropdown :loading="!_data.tipusArticle" :options="_data.tipusArticle" v-model="workDetail.tipusArticle" id="idMaterial" class="w-full mb-6" optionLabel="material" optionValue="idMaterial" placeholder="Selecciona">
+                        <label for="idTipusArticle2" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de artículo") }}</label>
+                        <Dropdown 
+                            :loading="!_data.tipusArticle" 
+                            :options="_data.tipusArticle"
+                             v-model="workDetail.tipusArticle" 
+                             id="idMaterial" 
+                             class="w-full mb-6" 
+                             optionLabel="material" 
+                             optionValue="idMaterial" 
+                             placeholder="Seleccionar">
                         </Dropdown>
                     </div>
                      <div class="w-2/12 overflow-hidden">
-                        <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.qty") }}</label>
+                        <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Cantidad") }}</label>
                         <TextInput
                             id="quantitat"
                             v-model="workDetail.quantitat"
@@ -197,7 +241,7 @@ watch(renderFile, (currentValue, oldValue) => {
                                 />
                      </div>
                      <div class="w-2/12 overflow-hidden">
-                        <label for="numDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.desmontables") }}</label>
+                        <label for="numDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Nº Desmontables") }}</label>
                         <TextInput
                             id="numDesmontables"
                             v-model="workDetail.numDesmontables"
@@ -206,7 +250,7 @@ watch(renderFile, (currentValue, oldValue) => {
                                 />
                      </div>
                      <div class="w-4/12 overflow-hidden">
-                        <label for="posDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.pos-desmontable") }}</label>
+                        <label for="posDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Pos. Desmontable") }}</label>
                         <TextInput
                             id="posDesmontables"
                             v-model="workDetail.posDesmontables"
@@ -219,12 +263,12 @@ watch(renderFile, (currentValue, oldValue) => {
 
                  <div class="flex gap-6">
                     <div class="w-4/12 overflow-hidden">
-                        <label for="color" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.color") }}</label>
+                        <label for="color" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Color") }}</label>
                         <Dropdown :loading="!_data.colors" :options="_data.colors" v-model="workDetail.idColor" id="idColor" class="w-full mb-6" optionLabel="color" optionValue="idColor" placeholder="Selecciona">
                         </Dropdown>
                     </div>
                      <div class="w-2/12 overflow-hidden">
-                        <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.incisal") }}</label>
+                        <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Incisal") }}</label>
                         <Dropdown :loading="!_data.incisal" :options="_data.incisal" v-model="workDetail.idIncisal" id="idColor" class="w-full mb-6" optionLabel="color" optionValue="idIncisal" placeholder="Selecciona">
                         </Dropdown>
                      </div>
@@ -248,8 +292,8 @@ watch(renderFile, (currentValue, oldValue) => {
     <!-- step 2 -->
     <MessageBox
         class="w-full md:w-3/5 mt-12 bg-gray-100 dark:bg-gray-200"
-        :title="$t('msg.step-2-title')"
-        :text="$t('msg.step-2-header')"
+        :title="$t('Paso 2')"
+        :text="$t('Archivos')"
         >
      </MessageBox>
 
@@ -346,18 +390,17 @@ watch(renderFile, (currentValue, oldValue) => {
 
     <MessageBox
         class="w-full md:w-3/5 mt-12 bg-gray-100 dark:bg-gray-200"
-        :title="$t('msg.step-3-title')"
-        :text="$t('msg.step-3-header')"
+        :title="$t('Paso 3')"
+        :text="$t('Selección de la posición de implantes y componentes')"
         >
      </MessageBox>
  
-
+     {{ implantDetail }}
     <div class="w-full bg-primary-300 border border-gray-200 p-6">
-
         <div class="pt-6 w-full flex gap-6">
               
                 <div class="w-32 overflow-hidden">
-                    <label for="numDents" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.num-dents") }}</label>
+                    <label for="numDents" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Nº dientes") }}</label>
                     <TextInput
                         id="numDents"
                         v-model="workDetail.numDents"
@@ -366,7 +409,7 @@ watch(renderFile, (currentValue, oldValue) => {
                         />
                 </div>
                 <div class="w-32 overflow-hidden">
-                    <label for="numImplants" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.num-implants") }}</label>
+                    <label for="numImplants" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Nº implantes") }}</label>
                     <TextInput
                         id="numImplants"
                         v-model="workDetail.numImplants"
@@ -378,25 +421,183 @@ watch(renderFile, (currentValue, oldValue) => {
             </div>
         
             <div class="pt-6 w-full gap-6">
-                <label class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("msg.tipo-implants") }}</label>
-       
-            
-                <DataTable class="mt-4" :value="workDetail.implantsDetail" tableStyle="min-width: 50rem">
+                <label class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de implantes") }}</label>
+                
+                <DataTable scrollable class="mt-4" :value="props.workDetail.implantsDetail" tableStyle="min-width: 50rem">
+               
+                    <Column field="posicio" style="min-width: 6rem">
+                        <template #header>
+                            <div>
+                                {{ $t('Posición') }}
+                                <br/>
+                                <Dropdown 
+                                    :options="_data.posicions" 
+                                    optionLabel="posicions" 
+                                    optionValue="idPosicions"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.posicio"
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
+                            </div>
+                        </template>
+                        <template #body="slotProps">
+                            <img :src="`https://primefaces.org/cdn/primevue/images/product/bamboo-watch.jpg`" :alt="slotProps.data.image" class="w-6rem shadow-2 border-round" />
+                        </template>
+                    </Column>
+                    <Column field="idMarca" style="min-width: 12rem">
+                        
+                        <template #header>
+                            <div>
+                                {{ $t('Marca') }}
+                                <br/>
+                                <Dropdown 
+                                    :options="_data.marcaImplants" 
+                                    optionLabel="marca" 
+                                    optionValue="idMarca"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.idMarca"    
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="idConexio" style="min-width: 6rem">
+                        <template #header>
+                            <div>
+                                {{ $t('Conexión') }}
+                                <br/>
+                                <Dropdown 
+                                    :options="_data.conexions" 
+                                    optionLabel="conexio" 
+                                    optionValue="idConexio"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.idConexio"    
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="idAngulacions" style="min-width: 6rem">
+                        <template #header>
+                            <div>
+                                {{ $t('Angulación') }}
+                                <br/>
+                                <Dropdown 
+                                    :options="_data.angulacions" 
+                                    optionLabel="angulacions" 
+                                    optionValue="idAngulacions"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.idAngulacions"    
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="analeg" style="min-width: 6rem">
+                        <template #header>
+                            <div class="text-center">
+                                {{ $t('Análogo') }}
+                                <br/>
+                                <Checkbox v-model="implantDetail.analeg" :binary="true" />
+                            </div>
+                        </template>
+                    </Column> 
+                    <Column field="tipusAnaleg" style="min-width: 6rem">
+                        <template #header>
+                            <div>
+                                {{ $t('Tipo análogo') }}
+                                <br/>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="baseTi" style="min-width: 6rem">
+                        <template #header>
+                            <div class="text-center">
+                                {{ $t('Enviar tornillos') }}
+                                <br/>
+                                <Checkbox v-model="implantDetail.enviarCargol" :binary="true" />
 
-                    <Column field="posicio" ></Column>
-                    <Column field="idMarcac" ></Column>
-                    <Column field="idConexio" ></Column>
-                    <Column field="idAngulacions"></Column>
-                    <Column field="analeg" ></Column>
-                    <Column field="tipusAnaleg" ></Column>
-                    <Column field="enviarCargol" ></Column>
-                    <Column field="baseTi" ></Column>
-                    <Column field="tipusBaseTi" ></Column>
-                    <Column field="tallables"></Column>
-                    <Column field="alcadaGH"></Column>
-                    <Column style="width: 3rem"></Column>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="baseTi" style="min-width: 6rem">
+                        <template #header>
+                            <div  class="text-center">
+                                {{ $t('Base Ti') }}
+                                <br/>
+                                <Checkbox class="" v-model="implantDetail.baseTi" :binary="true" />
+
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="tipusBaseTi" style="min-width: 6rem">
+                        <template #header>
+                            <div>
+                                {{ $t('Tipo base') }}
+                                <br/>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="tallables" style="min-width: 6rem">
+                        <template #header>
+                            <div class="text-center">
+                                {{ $t('Tallable') }}
+                                <br/>
+                                <Checkbox v-model="implantDetail.tallables" :binary="true" />
+
+                            </div>
+                        </template>
+                    </Column>
+                    <Column field="alcadaGH" style="min-width: 6rem">
+                        <template #header>
+                            <div>
+                                {{ $t('GH') }}
+                                <br/>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column style="width: 6rem" alignFrozen="right" frozen="1">
+                        <template #header>
+                            <Button 
+                            class="text-3xl font-bold bg-purple-800" 
+                            @click="addImplant()"
+                            >
+                            {{ $t('+') }}
+                        </Button>
+                        </template>
+                        <template #body="slotProps">
+                            <div class="text-center">
+                                <i class="pi pi-trash text-primary-500"></i>
+                            </div>
+                        </template>
+                    </Column>
 
                 </DataTable>
+
 
             </div>
      
