@@ -16,7 +16,9 @@ import Toast from 'primevue/toast';
 
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmPopup from 'primevue/confirmpopup';
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const toast = useToast();
 const page = usePage();
 
@@ -26,8 +28,8 @@ const currentWorkDetail = ref(0);
 
 
 const workTypes = ref([
-    { label: 'Producción', value: 'A' },
-    { label: 'Producción y diseño', value: 'B' },
+    { label: t('Producción'), value: t('A') },
+    { label: t('Producción y diseño'), value: t('B') },
 ])
 
 const orderData = reactive({
@@ -116,18 +118,16 @@ const saveOrder = () => {
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
-  
+    <AppLayout :title="$t('Nuevo caso')">
 
         <template #header>
             <h2 v-if="!showWorkDetail" class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-               Nuevo pedido
+               {{$t('Nuevo caso')}}
             </h2>
 
             <h2 v-if="showWorkDetail" class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-               Detalle trabajo {{ workDetail }} 
+                {{$t('Detalle trabajo')}} {{ workDetail }} 
             </h2>
-
 
         </template>
 
@@ -141,7 +141,6 @@ const saveOrder = () => {
                     :workDetail="currentWorkDetail"
                     @closeDetail="closeWorkDetail"
                     >
-                    
                 </WorkDetail>
             </div>  
 
@@ -150,22 +149,27 @@ const saveOrder = () => {
 
                 <div class="w-1/3 h-full">
                     <Info
-                     @addOrder = "addOrder"
-                     @saveOrder = "saveOrder"
-                     @updateData="updateData"
-                     :telfContacte="page.props.auth.user.telefonContacte"
-                     :persContacte="page.props.auth.user.personaContacte"
-                     :adrecaFacturacio="page.props.auth.user.adrecaFacturacio"   
+                        @addOrder = "addOrder"
+                        @saveOrder = "saveOrder"
+                        @updateData="updateData"
+                        :telfContacte="page.props.auth.user.telefonContacte"
+                        :persContacte="page.props.auth.user.personaContacte"
+                        :adrecaFacturacio="page.props.auth.user.adrecaFacturacio"   
                      />
                     <MessageBox class="mt-6 border-red-800 bg-red-100 text-red-900"
-                    :title="$t('msg.register-title')" 
-                    :text="$t('msg.register-copy')"
+                        :title="$t('msg.register-title')" 
+                        :text="$t('msg.register-copy')"
                     />
                 </div>
 
                 <div class="w-2/3 works">
                     <template v-for="(value, index) in orderData.orderWorks" :key="index">
-                        <Work :workType="value.workType" @deleteWork="deleteWork(index)" @editWork="editWork(index)"  @cloneWork="cloneWork(index)"/>
+                        <Work 
+                            :workType="value.workType" 
+                            @deleteWork="deleteWork(index)" 
+                            @editWork="editWork(index)"  
+                            @cloneWork="cloneWork(index)"
+                        />
                     </template>
                   
                     <div class="flex w-full p-6 bg-primary-500 text-white items-center justify-between">
@@ -179,20 +183,20 @@ const saveOrder = () => {
                                     </g>
                                 </g>
                             </svg>
-                            Nuevo trabajo 
+                            {{ $t('Nuevo trabajo') }}
                         </div>
                         <div class="card flex flex-wrap justify-content-center gap-3">
                             <SelectButton v-model="workType" :options="workTypes" optionLabel="label" dataKey="value">
                    
                             </SelectButton>
                         </div>
-                        <div v-tooltip.top="{value:workType?'':'Debes seleccionar el tipo de trabajo', class:'text-xs text-center border-sm no-wrap'}"> 
+                        <div v-tooltip.top="{value:workType?'':$t('Debes seleccionar el tipo de trabajo'), class:'text-xs text-center border-sm no-wrap'}"> 
                         <Button 
                             class="text-lg font-bold bg-white !text-purple-950 hover:bg-primary-300" 
                             :disabled="!workType"
                             @click="addWork(workType)"
                             >
-                            Empezar
+                            {{ $t('Empezar') }}
                         </Button>
                         </div>
                     </div>

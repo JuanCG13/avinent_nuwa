@@ -15,11 +15,12 @@ import { useConfirm } from "primevue/useconfirm";
 import ConfirmPopup from 'primevue/confirmpopup';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Tooltip from 'primevue/tooltip';
-import axios from 'axios'
 
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 
 const page = usePage();
 const toast = useToast();
@@ -78,7 +79,7 @@ const activateUser = (event, currUser) => {
     <ConfirmDialog>
         <template #message="slotProps">
             <div>
-            <InputLabel class="text-slate-800" for="idClientX3" value="Código cliente X3" />
+            <InputLabel class="text-slate-800" for="idClientX3" :value="$t('msg.cod-cliente-x3')" />
             <InputMask
                 mask="aa99999" 
                 placeholder="LB999999"
@@ -95,12 +96,12 @@ const activateUser = (event, currUser) => {
 
     </ConfirmDialog>
 
-    <AppLayout title="Dashboard">
+    <AppLayout :title="$t('Gestión')">
 
         <template #header>
             <ToastNotification @onTesting="testing" />
             <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-                Últimos movimientos
+                {{$t('Últimos movimientos')}}
             </h2>
 
         </template>
@@ -118,28 +119,27 @@ const activateUser = (event, currUser) => {
                     <DataTable :value="_data.users" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20]">
                      <template #empty>
                         <div class="flex justify-center">
-                            No customers found.
+                            {{$t('No hay clientes pendientes')}}
                         </div>
                     </template>
 
                      <template #header>
                         <div class="flex flex-wrap align-items-center">
-                            <span class="text-lg font-bold">Validación de clientes</span>
+                            <span class="text-lg font-bold"> {{$t('Validación de clientes')}}</span>
                         </div>
                     </template>
-                        <Column header="Data" >
+                        <Column :header="$t('Fecha')">
                             <template #body="{data}">
                                 {{ moment(data.created_at).format('DD/MM/YYYY') }}
                             </template>
                        
                         </Column>
-                        <Column field="raoSocial" header="Raó social" ></Column>
+                        <Column field="raoSocial" :header="$t('Nombre cliente')"></Column>
       
-                        <!-- <template #footer> In total there are {{ _data.users ? _data.users.length: 0 }} clients. </template> -->
                         <Column field="id" alignFrozen="right" :frozen="true">
                             <template #body="{data}">
                                 <div @click="activateUser($event, {id:data.id, name:data.name, idClientX3:currUser.idClientX3})">
-                                    <i v-tooltip="'Activar usuario'" class="pi pi-check-circle hover:cursor-pointer text-primary-500"></i>
+                                    <i v-tooltip="$t('Activar usuario')" class="pi pi-check-circle hover:cursor-pointer text-primary-500"></i>
                                 </div>
                                 <!-- {{ data.id }} -->
                             </template>
@@ -151,25 +151,29 @@ const activateUser = (event, currUser) => {
                 <div class="lg:break-after-column"></div>
 
                 <div>
-
                     <DataTable :value="_data.orders" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20]">
-                    <template #header>
-                        <div class="flex flex-wrap align-items-center">
-                            <span class="text-lg font-bold">Validación de pedidos</span>
+                    <template #empty>
+                        <div class="flex justify-center">
+                            {{$t('No hay pedidos pendientes')}}
                         </div>
                     </template>
-                        <Column header="Data" >
+                    <template #header>
+                        <div class="flex flex-wrap align-items-center">
+                            <span class="text-lg font-bold"> {{$t('Validación de pedidos')}}</span>
+                        </div>
+                    </template>
+                        <Column :header="$t('Fecha')">
                             <template #body="{data}">
                                 {{ moment(data.dataCreacio).format('DD/MM/YYYY') }}
                             </template>
                         </Column>
-                        <Column field="idClientX3" header="Client" ></Column>
-                        <Column field="estat" header="Estat" >
+                        <Column field="idClientX3" :header="$t('Código cliente')" ></Column>
+                        <Column field="estat" :header="$t('Estado')" >
                             <template #body="{data}">
                                 {{ _status(data.idEstat) }}
                             </template>
                         </Column>                 
-                        <Column field="idComandaX3" header="ID Cas" ></Column>
+                        <Column field="idComandaX3" :header="$t('ID caso')"></Column>
                         <Column field="id">
                             <template #body="{data}">
                                 <i class="pi pi-check-circle text-primary-500"></i>

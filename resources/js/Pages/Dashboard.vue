@@ -64,10 +64,10 @@ onMounted(async () => {
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout :title="$t('Mis casos')">
         <template #header>
             <h2 class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-                Mis casos
+               {{ $t('Mis casos') }} 
             </h2>
         </template>
 
@@ -81,7 +81,7 @@ onMounted(async () => {
 
             <div class="py-12" v-if="!page.props.impersonator.user && page.props.auth.user.tipusUsuari != 2">
               
-                <Dropdown :options="impersonateUserList.data" v-model="impersonateUserSelected" class="w-1/6 my-6" optionValue="id" optionLabel="name" placeholder="Selecciona">
+                <Dropdown :options="impersonateUserList.data" v-model="impersonateUserSelected" class="w-1/6 my-6" optionValue="id" optionLabel="name" :placeholder="$t('Seleccionar usuario')">
                     <template #option="slotProps">
                         <span> {{slotProps.option.name}} </span>
                     </template>
@@ -103,39 +103,39 @@ onMounted(async () => {
 
               <Button class="!w-2/12 mt-6" @click="router.visit(route('orders.new'))">
                 <svg class="mr-3 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
-                                <g id="Grupo_557" data-name="Grupo 557" transform="translate(-491 -1488)">
-                                    <path id="Elipse_14" data-name="Elipse 14" d="M16.5,2.64A13.86,13.86,0,0,0,6.7,26.3,13.86,13.86,0,1,0,26.3,6.7a13.769,13.769,0,0,0-9.8-4.06M16.5,0A16.5,16.5,0,1,1,0,16.5,16.5,16.5,0,0,1,16.5,0Z" transform="translate(491 1488)" fill="#fff"/>
-                                    <g id="Grupo_556" data-name="Grupo 556" transform="translate(497.202 1494.6)">
-                                    <path id="Línea_34" data-name="Línea 34" d="M-.68,17.14A1.32,1.32,0,0,1-2,15.82V-.68A1.32,1.32,0,0,1-.68-2,1.32,1.32,0,0,1,.64-.68v16.5A1.32,1.32,0,0,1-.68,17.14Z" transform="translate(10.91 2)" fill="#fff"/>
-                                    <path id="Línea_35" data-name="Línea 35" d="M17.276.64H-.68A1.32,1.32,0,0,1-2-.68,1.32,1.32,0,0,1-.68-2H17.276A1.32,1.32,0,0,1,18.6-.68,1.32,1.32,0,0,1,17.276.64Z" transform="translate(2 10.25)" fill="#fff"/>
-                                    </g>
-                                </g>
-                            </svg>
-                Crear nuevo caso
+                    <g id="Grupo_557" data-name="Grupo 557" transform="translate(-491 -1488)">
+                        <path id="Elipse_14" data-name="Elipse 14" d="M16.5,2.64A13.86,13.86,0,0,0,6.7,26.3,13.86,13.86,0,1,0,26.3,6.7a13.769,13.769,0,0,0-9.8-4.06M16.5,0A16.5,16.5,0,1,1,0,16.5,16.5,16.5,0,0,1,16.5,0Z" transform="translate(491 1488)" fill="#fff"/>
+                        <g id="Grupo_556" data-name="Grupo 556" transform="translate(497.202 1494.6)">
+                        <path id="Línea_34" data-name="Línea 34" d="M-.68,17.14A1.32,1.32,0,0,1-2,15.82V-.68A1.32,1.32,0,0,1-.68-2,1.32,1.32,0,0,1,.64-.68v16.5A1.32,1.32,0,0,1-.68,17.14Z" transform="translate(10.91 2)" fill="#fff"/>
+                        <path id="Línea_35" data-name="Línea 35" d="M17.276.64H-.68A1.32,1.32,0,0,1-2-.68,1.32,1.32,0,0,1-.68-2H17.276A1.32,1.32,0,0,1,18.6-.68,1.32,1.32,0,0,1,17.276.64Z" transform="translate(2 10.25)" fill="#fff"/>
+                        </g>
+                    </g>
+                </svg>
+                {{ $t('Crear nuevo caso') }} 
             </Button>
     
         
             <div class="py-12 px-6 lg:px-0 mx-auto main-dashboard">
                 <DataTable :value="_data.orders" paginator :rows="20" :rowsPerPageOptions="[20, 50, 100]" :key="idComanda">
-                    <Column :header="$t('msg.order-date')" style="width: 10%">
+                    <Column :header="$t('Fecha creación')" style="width: 10%">
                         <template #body="{data}">
                                 {{ moment(data.dataCreacio).format('DD/MM/YYYY') }}
                         </template>
                     </Column>
-                    <Column field="idComandaX3" :header="$t('msg.case-id')" style="width: 10%"></Column>
-                    <Column field="refPacient" :header="$t('msg.pacient-ref')" style="width: 20%">
+                    <Column field="idComandaX3" :header="$t('ID caso')" style="width: 10%"></Column>
+                    <Column field="refPacient" :header="$t('Referencia paciente')" style="width: 20%">
                     </Column>
-                    <Column :header="$t('msg.delivery-date')" style="width: 15%">
+                    <Column :header="$t('Fecha entrega')" style="width: 15%">
                         <template #body="{data}">
                                 {{ moment(data.dataPrevista).format('DD/MM/YYYY') }}
                         </template>
                     </Column>
-                    <Column :header="$t('msg.order-status')" style="width: 15%">
+                    <Column :header="$t('Estado')" style="width: 15%">
                         <template #body="{data}">
                                 {{ orderStatus(data.estat) }}
                         </template>
                     </Column>
-                    <Column :header="$t('msg.order-actions')" style="width: 15%"></Column>
+                    <Column :header="$t('Acciones')" style="width: 15%"></Column>
                 </DataTable>
             </div>
         </template>

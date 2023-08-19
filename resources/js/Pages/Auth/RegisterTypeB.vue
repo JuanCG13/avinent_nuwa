@@ -40,7 +40,7 @@ const phoneOptions = {
         enabledCountryCode: true,
         enabledFlags: true,
         //onlyCountries: ["ES", "PT","AD"],
-        invalidMsg: t('msg.register-invalid-phone'),
+        invalidMsg: t('El teléfono no es correcto'),
         styleClasses: "w-full mt-1 py-1 border-gray-300 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-300 dark:bg-white rounded-sm shadow-sm",
         inputOptions: {
             styleClasses: "",
@@ -69,12 +69,12 @@ function phoneValidated(object) {
 <template>
     <form @submit.prevent="submit">
         <div class="mb-4">
-            <InputLabel for="name" :value="$t('msg.name')" />
+            <InputLabel for="name" :value="$t('Nombre')" />
             <TextInput
                 id="name"
                 v-model="form.name"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="name"
@@ -84,12 +84,12 @@ function phoneValidated(object) {
 
 
         <div class="mb-4">
-            <InputLabel for="company_name" :value="$t('msg.company_name')" />
+            <InputLabel for="company_name" :value="$t('Empresa')" />
             <TextInput
                 id="company_name"
                 v-model="form.raoSocial"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_name"
@@ -101,12 +101,12 @@ function phoneValidated(object) {
 
 
         <div class="mb-4">
-            <InputLabel for="company_address" :value="$t('msg.company_address')" />
+            <InputLabel for="company_address" :value="$t('Dirección')" />
             <TextInput
                 id="company_address"
                 v-model="form.direccio"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_address"
@@ -115,12 +115,12 @@ function phoneValidated(object) {
         </div>
 
         <div class="mb-4">
-            <InputLabel for="company_city" :value="$t('msg.company_city')" />
+            <InputLabel for="company_city" :value="$t('Población')" />
             <TextInput
                 id="company_city"
                 v-model="form.municipi"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_city"
@@ -129,12 +129,12 @@ function phoneValidated(object) {
         </div>
 
         <div class="mb-4">
-            <InputLabel for="company_province" :value="$t('msg.company_province')" />
+            <InputLabel for="company_province" :value="$t('Provincia')" />
             <TextInput
                 id="company_province"
                 v-model="form.provincia"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_province"
@@ -143,12 +143,12 @@ function phoneValidated(object) {
         </div>
 
         <div class="">
-            <InputLabel for="company_zipcode" :value="$t('msg.codigopostal')" />
+            <InputLabel for="company_zipcode" :value="$t('Código postal')" />
             <TextInput
                 id="company_zipcode"
                 v-model="form.codipostal"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_zipcode"
@@ -156,11 +156,12 @@ function phoneValidated(object) {
             <InputError class="mt-2" :message="form.errors.codipostal" />
         </div>
 
+         <!-- 
         <TitleBorder>
             <template #title>Dirección de envío</template> 
         </TitleBorder>
 
-        <div class="mt-4">
+       <div class="mt-4">
             <InputLabel for="shipping">
                 <div class="flex items-center">
                     <Checkbox id="shipping" v-model:checked="shipping" name="shipping" required />
@@ -170,7 +171,7 @@ function phoneValidated(object) {
                     </div>
                 </div>
             </InputLabel>
-        </div>
+        </div> -->
 
 
 
@@ -179,12 +180,12 @@ function phoneValidated(object) {
        <div class="break-before-column"></div>
 
        <div class="mb-4">
-            <InputLabel for="company_country" :value="$t('msg.company_country')" />
+            <InputLabel for="company_country" :value="$t('País')" />
             <TextInput
                 id="company_country"
                 v-model="form.pais"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_country"
@@ -193,12 +194,12 @@ function phoneValidated(object) {
         </div>
 
        <div class="mb-4">
-            <InputLabel for="nif" :value="$t('msg.nif')" />
+            <InputLabel for="nif" :value="$t('NIF')" />
             <TextInput
                 id="nif"
                 v-model="form.cif"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="cif"
@@ -212,7 +213,7 @@ function phoneValidated(object) {
                 id="company_vatnumber"
                 v-model="form.company_vatnumber"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autofocus
                 autocomplete="company_vatnumber"
@@ -221,18 +222,18 @@ function phoneValidated(object) {
         </div> -->
 
        <div class="mb-4">
-            <InputLabel for="company_phone" :value="$t('msg.register-phone')" />
+            <InputLabel for="company_phone" :value="$t('Teléfono')" />
             <VueTelInput id="form.company_phone" v-model="form.telefono" v-bind="phoneOptions" @validate="phoneValidated"></VueTelInput>
             <InputError class="mt-2" :message="form.errors.telefono" />
         </div>
 
        <div class="mb-4">
-            <InputLabel for="email" :value="$t('msg.email')" />
+            <InputLabel for="email" :value="$t('Email')" />
             <TextInput
                 id="email"
                 v-model="form.email"
                 type="email"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autocomplete="username"
             />
@@ -240,12 +241,12 @@ function phoneValidated(object) {
         </div>
 
         <div class="mb-4">
-            <InputLabel for="password" :value="$t('msg.password')" />
+            <InputLabel for="password" :value="$t('Contraseña')" />
             <TextInput
                 id="password"
                 v-model="form.password"
                 type="password"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autocomplete="new-password"
             />
@@ -253,12 +254,12 @@ function phoneValidated(object) {
         </div>
 
         <div class="mb-4">
-            <InputLabel for="password_confirmation" :value="$t('msg.confirm-password')" />
+            <InputLabel for="password_confirmation" :value="$t('Confirmar contraseña')" />
             <TextInput
                 id="password_confirmation"
                 v-model="form.password_confirmation"
                 type="password"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autocomplete="new-password"
             />
@@ -285,8 +286,8 @@ function phoneValidated(object) {
         </div>
 
         <div class="flex items-center mt-4">
-            <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                {{$t('msg.register')}}
+            <Button class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                {{$t('Registrarme')}}
             </Button>
         </div>
     </form>

@@ -44,7 +44,7 @@ const register = () => {
      <div class="mt-8">
       <div>
          <div class="relative flex text-sm">
-            <span class="text-gray-500 dark:text-white" v-html='$t("msg.auth-intro")'></span>
+            <span class="text-gray-500 dark:text-white" v-html='$t("Bienvenidos al portal de pedidos de Avinent CAD CAM. <br/> Por favor, inicia sesión o regístrate.")'></span>
           </div>
       </div>
 
@@ -53,7 +53,7 @@ const register = () => {
       <div class="mt-6">
         <form class="space-y-6" @submit.prevent="submit">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-slate-300"> {{ $t("msg.email") }}</label>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-slate-300"> {{ $t("Email") }}</label>
             <div class="mt-1">
               <textInput
                 id="email"
@@ -69,7 +69,7 @@ const register = () => {
           </div>
 
           <div class="space-y-1">
-            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-slate-300">{{ $t("msg.password") }}</label>
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-slate-300">{{ $t("Contraseña") }}</label>
             <div class="mt-1">
               <textInput
                 id="password"
@@ -90,28 +90,28 @@ const register = () => {
               <label
                 for="remember-me"
                 class="ml-2 block text-sm text-gray-900 dark:text-slate-300"
-              >{{ $t("msg.remember") }}</label>
+              >{{ $t("Recuérdame") }}</label>
             </div>
             <div>
                 <Link
                 v-if="canResetPassword"
                 :href="route('password.request')"
                 class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
-              >{{ $t("msg.forgot") }}</Link>
+              >{{ $t("¿Olvidaste tu contraseña?") }}</Link>
             </div>
           </div>
 
           <div class="block lg:flex pt-3 lg:gap-6">
             <Button
-              :class="{ 'opacity-25': form.processing }"
+              class="w-full" :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
-              >{{ $t("msg.login") }}
+              >{{ $t("Iniciar sesión") }}
             </Button>
             
             <ButtonAlt
               @click="register" 
               class="w-full mt-4 lg:mt-0"
-              >{{ $t("msg.register") }} 
+              >{{ $t("Registrarme") }} 
             </ButtonAlt>
        
           </div>

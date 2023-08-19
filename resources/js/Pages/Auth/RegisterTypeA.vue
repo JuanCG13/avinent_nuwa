@@ -8,6 +8,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
+import InputMask from 'primevue/inputmask';
 
 const toast = useToast();
 
@@ -27,49 +28,46 @@ const submit = () => {
     });
 };
 
-watch(form.hasErrors,() => {
-    alert();
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Debes revisar los campos indicados.', life: 3000 });
-});
-
 </script>
 <template>
 
     <Toast/>
     <form @submit.prevent="submit">
         <div>
-            <InputLabel for="customercode" :value="$t('msg.register-id')" />
-            <TextInput
+            <InputLabel for="customercode" :value="$t('Código de cliente')" />
+            <InputMask
+                mask="aa99999" 
+                placeholder="LB999999"
                 id="customercode"
-                v-model="form.idClientX3"
                 type="text"
-                class="mt-1 block w-full"
+                v-model="form.idClientX3"
+                class="mt-1 block w-full text-sm uppercase"
                 required
                 autofocus
-                autocomplete="name"
+                name="idClientX3"
             />
             <InputError class="mt-2" :message="form.errors.idClientX3" />
         </div>
 
         <div class="mt-4">
-            <InputLabel for="nif" :value="$t('msg.register-nif')" />
+            <InputLabel for="nif" :value="$t('NIF')" />
             <TextInput
                 id="nif"
                 v-model="form.cif"
                 type="text"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
             />
             <InputError class="mt-2" :message="form.errors.cif" />
         </div>
 
         <div class="break-after-column  mt-4">
-            <InputLabel for="email" :value="$t('msg.email')" />
+            <InputLabel for="email" :value="$t('Email')" />
             <TextInput
                 id="email"
                 v-model="form.email"
                 type="email"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autocomplete="username"
             />
@@ -79,12 +77,12 @@ watch(form.hasErrors,() => {
 
 
         <div>
-            <InputLabel for="password" :value="$t('msg.password')" />
+            <InputLabel for="password" :value="$t('Contraseña')" />
             <TextInput
                 id="password"
                 v-model="form.password"
                 type="password"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autocomplete="new-password"
             />
@@ -92,12 +90,12 @@ watch(form.hasErrors,() => {
         </div>
 
         <div class="mt-4">
-            <InputLabel for="password_confirmation" :value="$t('msg.confirm-password')" />
+            <InputLabel for="password_confirmation" :value="$t('Confirmar contraseña')" />
             <TextInput
                 id="password_confirmation"
                 v-model="form.password_confirmation"
                 type="password"
-                class="mt-1 block w-full"
+                class="mt-1 block w-full text-sm"
                 required
                 autocomplete="new-password"
             />
@@ -125,8 +123,8 @@ watch(form.hasErrors,() => {
         </div>
 
         <div class="flex items-center mt-4">
-            <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                {{$t('msg.register')}}
+            <Button class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                {{$t('Registrarme')}}
             </Button>
         </div>
     
