@@ -77,12 +77,14 @@ Route::middleware([
 
     Route::get('incisal/{lang}', 'App\Http\Controllers\DataController@getIncisal');
     Route::get('posicions/{lang}', 'App\Http\Controllers\DataController@getPosicions');
+    Route::get('marques/{lang}', 'App\Http\Controllers\DataController@getMarques');
     Route::get('fitxers/{lang}', 'App\Http\Controllers\DataController@getSistemaFitxers');
     Route::get('zonespulides/{lang}', 'App\Http\Controllers\DataController@getZonesPulides');
     Route::get('angulacions/{lang}', 'App\Http\Controllers\DataController@getAngulacions');
     Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
     Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
- 
+    Route::get('implants/{lang}', 'App\Http\Controllers\DataController@getTipusImplants');
+
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
     Route::get('impersonate-users', 'App\Http\Controllers\DataController@getImpersonationUsers');
 

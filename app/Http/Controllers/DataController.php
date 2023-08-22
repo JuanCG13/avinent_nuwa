@@ -57,6 +57,22 @@ class DataController extends Controller
 
     }
 
+    public function getTipusImplants(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tTipusImplants ORDER BY ordre");
+        return $data;
+
+    }
+
+    public function getMarques(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tMarcaImplants ORDER BY ordre");
+        return $data;
+
+    }
+
     public function getMaterials(Request $request)
     {
        
@@ -66,11 +82,11 @@ class DataController extends Controller
         JSON_EXTRACT(
             (SELECT JSON_ARRAYAGG(
                             JSON_OBJECT(
-                            'idMaterial', idMaterial
-                            ,'material', material
-                            ,'idColorDefecte', idColorDefecte
-                            ,'minDents', minDents
-                            ,'maxDents', maxDents
+                            'idMaterial', idMaterial,
+                            'material', material,
+                            'idColorDefecte', idColorDefecte,
+                            'minDents', minDents,
+                            'maxDents', maxDents
                             )
                         )
                 FROM tMaterials WHERE idGrupMaterial = tGrupMaterials.idGrupMaterial AND idIdioma = tGrupMaterials.idIdioma),
@@ -84,8 +100,22 @@ class DataController extends Controller
     public function getGrupTipusArticle(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tGrupTipusArticle WHERE IdIdioma='SPA'");
-        return $data;
+        $data = DB::select("SELECT 
+        idGrupTipusArticle, 
+        grupTipusArticle,
+        JSON_EXTRACT(
+            (SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT(
+                            'idTipusArticle', idTipusArticle,
+                            'tipusArticle', tipusArticle
+                            )
+                        )
+                FROM tTipusArticle WHERE idGrupTipusArticle = tGrupTipusArticle.idGrupTipusArticle AND idIdioma = tGrupTipusArticle.idIdioma),
+            '$') AS tipusArticles
+              FROM tGrupTipusArticle WHERE idIdioma='SPA';
+         ");
+       return $this->result_as_json($data);
+
 
     }
 
