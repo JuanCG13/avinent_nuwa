@@ -46,6 +46,7 @@ const filteredData = reactive ({
 });
 
 const _data = reactive({ 
+    grupsTipusArticle:null,
     tipusArticle:null,
     aditaments:null,
     colors:null,
@@ -55,7 +56,7 @@ const _data = reactive({
     zonespulides:null,
     angulacions:null,
     grupsMaterials:null,
-    materials:[],
+    materials:null,
     tipusImplants:null,
     marcaImplants:null,
     colorsMaterial:null,
@@ -87,12 +88,18 @@ const addImplant = () => {
 
 onMounted(async () => {
 
+      const response12 = await fetch("/grupstipusarticle/"+locale.value);
+      _data.grupsTipusArticle = await response12.json();
+    
       const response1 = await fetch("/tipusarticle/"+locale.value);
       _data.tipusArticle = await response1.json();
     
       const response7 = await fetch("/materials/"+locale.value);
       _data.materials = await response7.json();
-    
+   
+      const response11 = await fetch("/grupsmaterials/"+locale.value);
+      _data.grupsMaterials = await response11.json();
+
       const response = await fetch("/colors/"+locale.value);
       _data.colors = await response.json();
 
@@ -194,9 +201,9 @@ watch(renderFile, (currentValue, oldValue) => {
     
                 <label for="idTipusArticle" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de producto") }}</label>
                 <Dropdown 
-                    :loading="!_data.tipusArticle" 
+                    :loading="!_data.grupsTipusArticle" 
                     v-model="workDetail.idTipusArticle" 
-                    :options="_data.tipusArticle" 
+                    :options="_data.grupsTipusArticle" 
                     optionLabel="tipusArticle" 
                     optionGroupLabel="grupTipusArticle" 
                     optionGroupChildren="tipusArticles" 
@@ -213,9 +220,9 @@ watch(renderFile, (currentValue, oldValue) => {
 
                 <label for="idMaterial" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Material") }}</label>
                 <Dropdown 
-                    :loading="!_data.materials" 
+                    :loading="!_data.grupsMaterials" 
                     v-model="workDetail.idMaterial" 
-                    :options="_data.materials" 
+                    :options="_data.grupsMaterials" 
                     optionLabel="material" 
                     optionGroupLabel="grupMaterial" 
                     optionGroupChildren="materials" 
@@ -555,7 +562,7 @@ watch(renderFile, (currentValue, oldValue) => {
                                     optionValue="idTipusImplant"
                                     class="w-full mt-1 rounded-none"
                                     v-model="implantDetail.idConexio" 
-                                    :placeholder="$t('Selecc.    marca')"   
+                                    :placeholder="$t('Selecc. marca')"   
                                     :pt="{
                                         input: { class: 'p-1 text-xs' },
                                         loadingIcon: { class: 'text-xs' },
