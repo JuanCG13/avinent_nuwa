@@ -82,7 +82,10 @@ Route::middleware([
     Route::get('zonespulides/{lang}', 'App\Http\Controllers\DataController@getZonesPulides');
     Route::get('angulacions/{lang}', 'App\Http\Controllers\DataController@getAngulacions');
     Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
-    Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
+    Route::get('grupsmaterials/{lang}', 'App\Http\Controllers\DataController@getGrupsMaterials');
+    Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getTipusArticle');
+    Route::get('grupstipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
+
     Route::get('implants/{lang}', 'App\Http\Controllers\DataController@getTipusImplants');
 
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
