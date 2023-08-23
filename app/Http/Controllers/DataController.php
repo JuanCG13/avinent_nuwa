@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -74,6 +75,21 @@ class DataController extends Controller
     }
 
     public function getMaterials(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tMaterials WHERE IdIdioma='SPA'");
+        return response()->json($data);
+    }
+
+    public function getTipusArticle(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tTipusArticle");
+        return json_encode($data);
+
+    }
+
+    public function getGrupsMaterials(Request $request)
     {
        
         $data = DB::select("SELECT 

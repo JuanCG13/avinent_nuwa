@@ -46,7 +46,9 @@ const deleteWork = (index) => {
 }
 
 const cloneWork = (index) => {
-   // orderData.orderWorks.splice(work, 1);
+   orderData.orderWorks.push(
+     orderData.orderWorks[index]
+    );
 }
 
 const addWork = (type) => {
@@ -165,7 +167,8 @@ const saveOrder = () => {
                 <div class="w-2/3 works">
                     <template v-for="(value, index) in orderData.orderWorks" :key="index">
                         <Work 
-                            :workType="value.workType" 
+                            :workData="value"
+                            :index = "index"
                             @deleteWork="deleteWork(index)" 
                             @editWork="editWork(index)"  
                             @cloneWork="cloneWork(index)"
@@ -192,7 +195,7 @@ const saveOrder = () => {
                         </div>
                         <div v-tooltip.top="{value:workType?'':$t('Debes seleccionar el tipo de trabajo'), class:'text-xs text-center border-sm no-wrap'}"> 
                         <Button 
-                            class="text-lg font-bold bg-white !text-purple-950 hover:bg-primary-300" 
+                            class="text-lg font-bold bg-white !text-purple-900 hover:bg-primary-300" 
                             :disabled="!workType"
                             @click="addWork(workType)"
                             >
