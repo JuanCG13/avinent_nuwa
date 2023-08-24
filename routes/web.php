@@ -85,7 +85,10 @@ Route::middleware([
     Route::get('grupsmaterials/{lang}', 'App\Http\Controllers\DataController@getGrupsMaterials');
     Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getTipusArticle');
     Route::get('grupstipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
+    Route::get('tipusarticle2/{lang}', 'App\Http\Controllers\DataController@getTipusArticle2');
+    Route::get('materialsarticle/{lang}', 'App\Http\Controllers\DataController@getMaterialsTipusArticle');
 
+    
     Route::get('implants/{lang}', 'App\Http\Controllers\DataController@getTipusImplants');
 
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');

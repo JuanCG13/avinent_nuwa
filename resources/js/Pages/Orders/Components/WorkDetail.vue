@@ -43,23 +43,27 @@ const renderFile = ref(null);
 
 const filteredData = reactive ({
     tipusImplants: null,
+    tipusArticle2:null,
+
 });
 
 const _data = reactive({ 
     grupsTipusArticle:null,
     tipusArticle:null,
-    aditaments:null,
+    tipusArticle2:null,
+    grupsMaterials:null,
+    materials:null,
+    tipusArticleMaterials:null,
     colors:null,
+    colorsMaterial:null,
     posicions:null,
     incisal:null,
     sistemesFitxers:null,
     zonespulides:null,
     angulacions:null,
-    grupsMaterials:null,
-    materials:null,
     tipusImplants:null,
     marcaImplants:null,
-    colorsMaterial:null,
+    aditaments:null,
     });
 
 const implantDetail = reactive({
@@ -78,10 +82,7 @@ const implantDetail = reactive({
 
 const addImplant = () => {
     props.workDetail.implantsDetail.push(
-            // id: '',
-            // idComanda: '',
-            // idLiniaCmd:'',
-            implantDetail
+            {...implantDetail}
         )
     }
 
@@ -94,11 +95,17 @@ onMounted(async () => {
       const response1 = await fetch("/tipusarticle/"+locale.value);
       _data.tipusArticle = await response1.json();
     
+      const response14 = await fetch("/tipusarticle2/"+locale.value);
+      _data.tipusArticle2 = await response14.json();
+    
       const response7 = await fetch("/materials/"+locale.value);
       _data.materials = await response7.json();
    
       const response11 = await fetch("/grupsmaterials/"+locale.value);
       _data.grupsMaterials = await response11.json();
+
+      const response13 = await fetch("/materialsarticle/"+locale.value);
+      _data.materialsTipusArticle = await response13.json();
 
       const response = await fetch("/colors/"+locale.value);
       _data.colors = await response.json();
@@ -109,8 +116,8 @@ onMounted(async () => {
       const response4 = await fetch("/fitxers/"+locale.value);
       _data.sistemesFitxers = await response4.json();
 
-    //   const response8 = await fetch("/colorsmaterial/"+locale.value);
-    //   _data.colorsMaterial = await response8.json();
+      const response8 = await fetch("/colorsmaterial/"+locale.value);
+      _data.colorsMaterial = await response8.json();
 
       const response5 = await fetch("/zonespulides/"+locale.value);
       _data.zonespulides = await response5.json();
@@ -129,6 +136,29 @@ onMounted(async () => {
       _data.tipusImplants = await response0.json();
 
     });
+
+
+const txtPosicio = (id) => {
+    var txt = _.filter(_data.posicions, { 'idPosicions' : id });  
+    return txt[0]?.posicions;
+};
+
+const txtMarca = (id) => {
+    var txt = _.filter(_data.marcaImplants, { 'idMarca' : id });
+    return txt[0]?.marca;
+
+};
+
+const txtConexio = (id) => {
+    var txt = _.filter(_data.tipusImplants, { 'idTipusImplant' : id });
+    return txt[0]?.tipusImplants;
+};
+
+const txtAngulacio = (id) => {
+    var txt = _.filter(_data.angulacions, { 'idAngulacions' : id });
+    return txt[0]?.angulacions;
+};
+
 
 const customBase64Uploader = async (event) => {
     const file = event.files[0];
@@ -157,11 +187,11 @@ const fileUploadExecute = async (event) => {
         });
     }
  
-//filter     
+//filter tipusArticle   
 watch(()=>props.workDetail.idTipusArticle, (value, oldValue) => {
 
-    _.filter(_data.materials, { materials: [{ name: 'Medium', present: true }] })
-    
+    filteredData.tipusArticle2 = _.filter(_data.tipusArticle2, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+
 }, { deep: true });
 
 //filter tipusImplants on Brand change    
@@ -170,6 +200,8 @@ watch(()=>implantDetail.idMarca, (value, oldValue) => {
     filteredData.tipusImplants = _.filter(_data.tipusImplants, { 'idMarca' : implantDetail.idMarca })
     
 }, { deep: true });
+
+
 
 watch(renderFile, (currentValue, oldValue) => {
     console.log(currentValue);
@@ -198,7 +230,6 @@ watch(renderFile, (currentValue, oldValue) => {
 
         <div class="pt-6 w-full flex gap-6">
             <div class="w-full lg:w-3/5">
-    
                 <label for="idTipusArticle" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de producto") }}</label>
                 <Dropdown 
                     :loading="!_data.grupsTipusArticle" 
@@ -241,13 +272,13 @@ watch(renderFile, (currentValue, oldValue) => {
                     <div class="w-4/12 overflow-hidden">
                         <label for="idTipusArticle2" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de artículo") }}</label>
                         <Dropdown 
-                            :loading="!_data.tipusArticle" 
-                            :options="_data.tipusArticle"
-                             v-model="workDetail.tipusArticle" 
-                             id="idMaterial" 
+                            :loading="!_data.tipusArticle2" 
+                            :options="filteredData.tipusArticle2"
+                             v-model="workDetail.tipusArticle2" 
+                             id="idTipusArticle2" 
                              class="w-full mb-6" 
-                             optionLabel="material" 
-                             optionValue="idMaterial" 
+                             optionLabel="tipusArticle2" 
+                             optionValue="id" 
                              placeholder="Seleccionar">
                         </Dropdown>
                     </div>
@@ -393,7 +424,7 @@ watch(renderFile, (currentValue, oldValue) => {
 
                             <p class="mt-4 font-bold">Añadir fichero de diseño</p>
                              <template v-if="!renderFile">
-                                <FileUpload accept="model/stl" class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
+                                <FileUpload class="bg-primary-500 text-sm p-button-sm" mode="basic" name="" chooseLabel="Añadir documento" 
                             :maxFileSize="50000000" :auto="true" :customUpload="true" @uploader="fileUploadExecute($event)">
           
                                 </FileUpload>
@@ -453,7 +484,7 @@ watch(renderFile, (currentValue, oldValue) => {
                 <vue3dLoader v-if="renderFile"
                 :height="300"
                 autoPlay="true"
-                :filePath="['http://127.0.0.1:8001/getfile/'+renderFile]"
+                :filePath="['http://127.0.0.1:8000/getfile/'+renderFile]"
                 :backgroundColor="0x000000"
                 >
                 </vue3dLoader>
@@ -525,11 +556,10 @@ watch(renderFile, (currentValue, oldValue) => {
                             </div>
                         </template>
                         <template #body="slotProps">
-                            
+                            {{ txtPosicio(slotProps.data.posicio) }}
                         </template>
                     </Column>
                     <Column field="idMarca" style="min-width: 12rem">
-                        
                         <template #header>
                             <div>
                                 {{ $t('Marca') }}
@@ -549,6 +579,9 @@ watch(renderFile, (currentValue, oldValue) => {
                                     >
                                 </Dropdown>
                             </div>
+                        </template>
+                        <template #body="slotProps">
+                            {{ txtMarca(slotProps.data.idMarca) }}
                         </template>
                     </Column>
                     <Column field="idConexio" style="min-width: 6rem">
@@ -573,6 +606,9 @@ watch(renderFile, (currentValue, oldValue) => {
                                 </Dropdown>
                             </div>
                         </template>
+                        <template #body="slotProps">
+                            {{ txtConexio(slotProps.data.idConexio) }}
+                        </template>
                     </Column>
                     <Column field="idAngulacions" style="min-width: 6rem">
                         <template #header>
@@ -594,6 +630,9 @@ watch(renderFile, (currentValue, oldValue) => {
                                     >
                                 </Dropdown>
                             </div>
+                        </template>
+                        <template #body="slotProps">
+                            {{ txtAngulacio(slotProps.data.idAngulacions) }}
                         </template>
                     </Column>
                     <Column field="analeg" style="min-width: 6rem">

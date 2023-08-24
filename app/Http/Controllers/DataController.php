@@ -78,14 +78,30 @@ class DataController extends Controller
     {
        
         $data = DB::select("SELECT * FROM tMaterials WHERE IdIdioma='SPA'");
-        return response()->json($data);
+        return $data;
+    }
+
+    public function getMaterialsTipusArticle(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tMaterialTipusArticle");
+        return $data;
+
     }
 
     public function getTipusArticle(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tTipusArticle");
-        return json_encode($data);
+        $data = DB::select("SELECT * FROM tTipusArticle WHERE IdIdioma='SPA'");
+        return $data;
+
+    }
+
+    public function getTipusArticle2(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tTipusArticle2");
+        return $data;
 
     }
 
