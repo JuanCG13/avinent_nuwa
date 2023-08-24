@@ -64,7 +64,6 @@ const phoneOptions = {
         enabledCountryCode: true,
         enabledFlags: true,
         //onlyCountries: ["ES", "PT","AD"],
-        invalidMsg: 'Caca',
         styleClasses: "w-full mt-1 py-1 focus:!border-primary-500 focus:!ring-primary-500 dark:border-gray-300 bg-white rounded-sm shadow-sm",
         inputOptions: {
             styleClasses: "",
@@ -151,8 +150,10 @@ onMounted(() => {
         </div>
 
         <div class="mt-12 gap-6 flex justify-center">
-            <AltButton @click="$emit('saveOrder', {orderHeader:orderHeader})" class="w-1/2">{{$t('msg.save')}}</AltButton>
-            <Button @click="$emit('addOrder')" class="w-1/2" :disabled="$page.props.auth.user.estat==0">Enviar pedido</Button>
+            <AltButton @click="$emit('saveOrder', {orderHeader:orderHeader})" class="w-1/2">{{$t('Guardar')}}</AltButton>
+            <div class="w-1/2" v-tooltip.top="{value:$page.props.auth.user.estat==0 ? $t('Usuario pendiente de validación'):'', class:'text-xs text-center border-sm no-wrap'}">
+                <Button @click="$emit('addOrder')" class="w-full" :disabled="$page.props.auth.user.estat==0">{{$t('Enviar pedido')}}</Button>
+            </div>
         </div>
       
     </div>

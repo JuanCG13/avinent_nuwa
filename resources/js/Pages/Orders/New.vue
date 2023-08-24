@@ -1,16 +1,16 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm, router, usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 
 import { ref, onMounted, reactive } from 'vue';
 import Info from './Components/Info.vue';
 import Work from './Components/Work.vue';
 import WorkDetail from './Components/WorkDetail.vue';
+import ValidationBox from './Components/ValidationBox.vue';
 
 import Button from '@/Components/PrimaryButton.vue';
 import AltButton from '@/Components/SecondaryButton.vue';
 import SelectButton from 'primevue/selectbutton';
-import MessageBox from "@/Components/MessageBox.vue";
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
 
@@ -25,7 +25,6 @@ const page = usePage();
 const workType = ref(null);
 const showWorkDetail = ref(false);
 const currentWorkDetail = ref(0);
-
 
 const workTypes = ref([
     { label: t('Producción'), value: t('A') },
@@ -140,9 +139,7 @@ const saveOrder = () => {
 
         <template #content>
 
-            {{orderData}}
-
-            <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12">
+            <div class="mx-auto px-6 lg:px-0 gap-12 flex pb-12">
 
                 <WorkDetail v-if="showWorkDetail" 
                     :workDetail="currentWorkDetail"
@@ -152,7 +149,7 @@ const saveOrder = () => {
             </div>  
 
        
-            <div class="mx-auto px-6 lg:px-0 gap-12 flex py-12"  :class="[showWorkDetail ? 'hidden' : 'flex']">
+            <div class="mx-auto px-6 lg:px-0 gap-12 flex pb-12"  :class="[showWorkDetail ? 'hidden' : 'flex']">
 
                 <div class="w-1/3 h-full">
                     <Info
@@ -163,9 +160,8 @@ const saveOrder = () => {
                         :persContacte="page.props.auth.user.personaContacte"
                         :adrecaFacturacio="page.props.auth.user.adrecaFacturacio"   
                      />
-                    <MessageBox class="mt-6 border-red-800 bg-red-100 text-red-900"
-                        :title="$t('msg.register-title')" 
-                        :text="$t('msg.register-copy')"
+                    <ValidationBox
+                        :orderData="orderData"
                     />
                 </div>
 
