@@ -45,6 +45,11 @@ const deleteWork = (index) => {
     orderData.orderWorks.splice(index, 1);
 }
 
+const editWork = (index) => {
+    currentWorkDetail.value = orderData.orderWorks[index]
+    showWorkDetail.value = true;
+}
+
 const cloneWork = (index) => {
    orderData.orderWorks.push(
      orderData.orderWorks[index]
