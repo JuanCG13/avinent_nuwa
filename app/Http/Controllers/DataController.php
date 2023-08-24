@@ -18,6 +18,14 @@ class DataController extends Controller
 
     }
 
+    public function getColorsMaterial(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tColorsMaterial");
+        return $data;
+
+    }
+
     public function getIncisal(Request $request)
     {
        
