@@ -51,7 +51,7 @@ const editWork = (index) => {
 
 const cloneWork = (index) => {
    orderData.orderWorks.push(
-     orderData.orderWorks[index]
+     {...orderData.orderWorks[index]}
     );
 }
 
