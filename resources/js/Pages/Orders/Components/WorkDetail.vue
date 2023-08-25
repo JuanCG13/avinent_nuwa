@@ -36,14 +36,15 @@ const emit = defineEmits(['closeDetail'])
 
 const props = defineProps({
     workDetail: Object,
-    uploadedFile: String,
+    uploadedFile: String,   
 });
 
 const renderFile = ref(null);
 
 const filteredData = reactive ({
     tipusImplants: null,
-    tipusArticle2:null,
+    tipusArticle2: null,
+    materialsArticle: null,
 
 });
 
@@ -191,6 +192,8 @@ const fileUploadExecute = async (event) => {
 watch(()=>props.workDetail.idTipusArticle, (value, oldValue) => {
 
     filteredData.tipusArticle2 = _.filter(_data.tipusArticle2, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+    filteredData.materialsArticle = _.filter(_data.materialsTipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+    filteredData.materials  = _.filter(_data.materials, {"materials": [{  'idMaterial': '002' }] })
 
 }, { deep: true });
 
@@ -213,9 +216,8 @@ watch(renderFile, (currentValue, oldValue) => {
 </script>
 
 <template>
+    {{ _data.grupsMaterials }}
     <div class="w-full px-6 lg:px-0 z-10 top-0 left-0 bg-white dark:bg-gray-900 h-full min-h-fit">
-
-    {{ workDetail }} 
 
     <!-- step 1 -->
      <MessageBox
@@ -225,9 +227,8 @@ watch(renderFile, (currentValue, oldValue) => {
         >
      </MessageBox>
  
-
     <div class="w-full bg-primary-300 border border-gray-200 p-6">
-
+    
         <div class="pt-6 w-full flex gap-6">
             <div class="w-full lg:w-3/5">
                 <label for="idTipusArticle" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Tipo de producto") }}</label>
@@ -253,7 +254,7 @@ watch(renderFile, (currentValue, oldValue) => {
                 <Dropdown 
                     :loading="!_data.grupsMaterials" 
                     v-model="workDetail.idMaterial" 
-                    :options="_data.grupsMaterials" 
+                    :options="filteredData.materials" 
                     optionLabel="material" 
                     optionGroupLabel="grupMaterial" 
                     optionGroupChildren="materials" 
