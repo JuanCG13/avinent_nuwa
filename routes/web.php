@@ -71,10 +71,10 @@ Route::middleware([
     Route::get('/support', function () {
         return Inertia::render('Support', []);
     })->name('support');
+
     //get db data
     Route::get('colors/{lang}', 'App\Http\Controllers\DataController@getColors');
     Route::get('colorsmaterial/{lang}', 'App\Http\Controllers\DataController@getColorsMaterial');
-
     Route::get('incisal/{lang}', 'App\Http\Controllers\DataController@getIncisal');
     Route::get('posicions/{lang}', 'App\Http\Controllers\DataController@getPosicions');
     Route::get('marques/{lang}', 'App\Http\Controllers\DataController@getMarques');
@@ -82,15 +82,14 @@ Route::middleware([
     Route::get('zonespulides/{lang}', 'App\Http\Controllers\DataController@getZonesPulides');
     Route::get('angulacions/{lang}', 'App\Http\Controllers\DataController@getAngulacions');
     Route::get('materials/{lang}', 'App\Http\Controllers\DataController@getMaterials');
+    Route::get('analegs/{lang}', 'App\Http\Controllers\DataController@getAnalegs');
     Route::get('grupsmaterials/{lang}', 'App\Http\Controllers\DataController@getGrupsMaterials');
     Route::get('tipusarticle/{lang}', 'App\Http\Controllers\DataController@getTipusArticle');
     Route::get('grupstipusarticle/{lang}', 'App\Http\Controllers\DataController@getGrupTipusArticle');
     Route::get('tipusarticle2/{lang}', 'App\Http\Controllers\DataController@getTipusArticle2');
     Route::get('materialsarticle/{lang}', 'App\Http\Controllers\DataController@getMaterialsTipusArticle');
-
-    
     Route::get('implants/{lang}', 'App\Http\Controllers\DataController@getTipusImplants');
-
+    
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
     Route::get('impersonate-users', 'App\Http\Controllers\DataController@getImpersonationUsers');
 
@@ -98,19 +97,22 @@ Route::middleware([
     Route::get('/order/new', function () {
         return Inertia::render('Orders/New', []);})
         ->name('orders.new');
+
     Route::get('/order/list', 'App\Http\Controllers\OrderController@getOrders')
         ->name('orders.list');
+
     Route::get('/order/edit/{id}', function () {
         return Inertia::render('Orders/Edit', [id]);})
         ->name('orders.edit');
+
     Route::post('/order/new/store', 'App\Http\Controllers\OrderController@store')
         ->name('order.store');
+
     Route::post('/order/fileupload', 'App\Http\Controllers\FileController@fileUpload')
         ->name('order.fileUpload');
 
     Route::get('/getfile/{filename}', 'App\Http\Controllers\FileController@getFile')
         ->name('order.getFile');
-
     });
 
 //** admin routes middleware Admin 
