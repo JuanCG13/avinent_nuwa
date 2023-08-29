@@ -22,6 +22,7 @@ import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
 import _ from 'lodash';
 import { usePageLeave } from '@vueuse/core';
+import MultiSelect from 'primevue/multiselect';
 
 const isLeft = usePageLeave();
 
@@ -43,9 +44,12 @@ const renderFile = ref(null);
 
 const filteredData = reactive ({
     tipusImplants: null,
+    tipusArticle: null,
     tipusArticle2: null,
     materialsArticle: null,
-
+    materials: null,
+    material: null,
+    colors: null,
 });
 
 const _data = reactive({ 
@@ -86,8 +90,6 @@ const addImplant = () => {
             {...implantDetail}
         )
     }
-
-
 onMounted(async () => {
 
       const response12 = await fetch("/grupstipusarticle/"+locale.value);
@@ -192,8 +194,22 @@ const fileUploadExecute = async (event) => {
 watch(()=>props.workDetail.idTipusArticle, (value, oldValue) => {
 
     filteredData.tipusArticle2 = _.filter(_data.tipusArticle2, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+    filteredData.tipusArticle = _.filter(_data.tipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
     filteredData.materialsArticle = _.filter(_data.materialsTipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
-    filteredData.materials  = _.filter(_data.materials, {"materials": [{  'idMaterial': '002' }] })
+
+    props.workDetail.quantitat = filteredData.tipusArticle[0].minQuantitat 
+    props.workDetail.numDesmontables = filteredData.tipusArticle[0].minDesmontables 
+    props.workDetail.posDesmontables = []
+
+    // Filtrar _data.grupsMaterials usando el campo idMaterial de filteredData.materialsArticle
+    const filteredMaterialsIds = filteredData.materialsArticle.map(item => item.idMaterial);
+    filteredData.materials = _.cloneDeep(_data.grupsMaterials).map(grup => {
+        grup.materials = _.filter(grup.materials, material => filteredMaterialsIds.includes(material.idMaterial));
+        return grup;
+    });
+
+    // Eliminar objetos en los que el array "materials" esté vacío
+    filteredData.materials = _.filter(filteredData.materials, grup => grup.materials.length > 0);
 
 }, { deep: true });
 
@@ -202,6 +218,16 @@ watch(()=>implantDetail.idMarca, (value, oldValue) => {
 
     filteredData.tipusImplants = _.filter(_data.tipusImplants, { 'idMarca' : implantDetail.idMarca })
     
+}, { deep: true });
+
+watch(()=>props.workDetail.idMaterial, (value, oldValue) => {
+
+    filteredData.material = _.filter(_data.materials, { 'idMaterial' : props.workDetail.idMaterial })
+    filteredData.colors = _.filter(_data.colorsMaterial, { 'idMaterial' : props.workDetail.idMaterial })
+
+    props.workDetail.idColor = filteredData.material[0].idColorDefecte 
+
+
 }, { deep: true });
 
 
@@ -216,7 +242,20 @@ watch(renderFile, (currentValue, oldValue) => {
 </script>
 
 <template>
-    {{ _data.grupsMaterials }}
+    <!-- {{ _data.grupsMaterials }} -->
+    <!-- {{filteredData.materialsArticle}} -->
+    <!-- {{ _data.grupsTipusArticle }} -->
+    <!-- {{ filteredData.materialsArticle }} -->
+    <!-- {{ filteredData.materials }} -->
+    <!-- {{ _data.materials }} -->
+    <!-- {{ props.workDetail.idTipusArticle }} -->
+    <!-- {{ _data.grupsTipusArticle }} -->
+    <!-- {{ filteredData.tipusArticle2 }} -->
+    <!-- {{ filteredData.tipusArticle }} -->
+    <!-- {{ _data.colorsMaterial }} -->
+    <!-- {{ filteredData.colors }} -->
+    <!-- {{ _data.incisal }} -->
+    <!-- {{ _data.posicions }} -->
     <div class="w-full px-6 lg:px-0 z-10 top-0 left-0 bg-white dark:bg-gray-900 h-full min-h-fit">
 
     <!-- step 1 -->
@@ -228,6 +267,7 @@ watch(renderFile, (currentValue, oldValue) => {
      </MessageBox>
  
     <div class="w-full bg-primary-300 border border-gray-200 p-6">
+        <!-- {{ workDetail.posDesmontables }} -->
     
         <div class="pt-6 w-full flex gap-6">
             <div class="w-full lg:w-3/5">
@@ -284,31 +324,66 @@ watch(renderFile, (currentValue, oldValue) => {
                         </Dropdown>
                     </div>
                      <div class="w-2/12 overflow-hidden">
-                        <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Cantidad") }}</label>
-                        <TextInput
-                            id="quantitat"
-                            v-model="workDetail.quantitat"
-                            type="text"
-                            class="mt-1 mb-6 block w-full"
-                                />
+                        <template v-if="filteredData.tipusArticle">
+                            <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Cantidad") }}</label>
+                            <TextInput
+                                id="quantitat"
+                                v-model="workDetail.quantitat"
+                                type="number"
+                                :min="parseInt(filteredData.tipusArticle[0].minQuantitat)" 
+                                :max="parseInt(filteredData.tipusArticle[0].maxQuantitat)"
+                                :disabled="filteredData.tipusArticle[0].minQuantitat === filteredData.tipusArticle[0].maxQuantitat"
+                                class="mt-1 mb-6 block w-full"
+                                    />
+                                </template>
+                        <template v-else>
+                            
+                            <label for="quantitat" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Cantidad") }}</label>
+                            <TextInput
+                                id="quantitat"
+                                v-model="workDetail.quantitat"
+                                type="number"
+                                :disabled="true"
+                                class="mt-1 mb-6 block w-full"
+                                    />
+                        </template>
                      </div>
                      <div class="w-2/12 overflow-hidden">
-                        <label for="numDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Nº Desmontables") }}</label>
-                        <TextInput
-                            id="numDesmontables"
-                            v-model="workDetail.numDesmontables"
-                            type="text"
-                            class="mt-1 mb-6 block w-full"
-                                />
+                        <template v-if="filteredData.tipusArticle">
+                            <label for="numDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Nº Desmontables") }}</label>
+                            <TextInput
+                                id="numDesmontables"
+                                v-model="workDetail.numDesmontables"
+                                :min="parseInt(filteredData.tipusArticle[0].minDesmontables)" 
+                                :max="parseInt(filteredData.tipusArticle[0].maxDesmontables)"
+                                :disabled="filteredData.tipusArticle[0].permetDents"
+                                type="number"
+                                class="mt-1 mb-6 block w-full"
+                                    />
+                                </template>
+                        <template v-else>
+                            <label for="numDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Nº Desmontables") }}</label>
+                            <TextInput
+                                id="numDesmontables"
+                                v-model="workDetail.numDesmontables"
+                                :disabled="true"
+                                type="text"
+                                class="mt-1 mb-6 block w-full"
+                                    />
+
+                        </template>
                      </div>
                      <div class="w-4/12 overflow-hidden">
                         <label for="posDesmontables" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Pos. Desmontable") }}</label>
-                        <TextInput
-                            id="posDesmontables"
-                            v-model="workDetail.posDesmontables"
-                            type="text"
-                            class="mt-1 mb-6 block w-full"
-                                />
+                        <MultiSelect v-model="workDetail.posDesmontables" 
+                            :disabled="parseInt(workDetail.numDesmontables) <= 0"
+                            :options="_data.posicions" 
+                            optionLabel="posicions"
+                            optionValue="idPosicions" 
+                            :maxSelectedLabels="3"
+                            display="chip"
+                            :selectionLimit="parseInt(workDetail.numDesmontables)" 
+                            class="w-full md:w-20rem" />
                     </div>
 
                  </div>
@@ -318,8 +393,8 @@ watch(renderFile, (currentValue, oldValue) => {
                         <label for="color" class="block text-sm font-bold text-gray-700 dark:text-slate-300"> {{ $t("Color") }}</label>
                         <Dropdown 
                             :loading="!_data.colors" 
-                            :options="_data.colors" 
-                            v-model="workDetail.idColor" 
+                            :options="filteredData.colors" 
+                            v-model="workDetail.idColor"
                             id="idColor" 
                             class="w-full mb-6" 
                             optionLabel="color" 
