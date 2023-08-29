@@ -82,6 +82,14 @@ class DataController extends Controller
 
     }
 
+    public function getAnalegs(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tAnalegs WHERE IdIdioma='SPA'");
+        return $data;
+
+    }
+
     public function getMaterials(Request $request)
     {
        

@@ -90,6 +90,13 @@ const addImplant = () => {
             {...implantDetail}
         )
     }
+
+const removeImplant = (index) => {
+
+}
+
+
+
 onMounted(async () => {
 
       const response12 = await fetch("/grupstipusarticle/"+locale.value);
@@ -132,6 +139,9 @@ onMounted(async () => {
       const response6 = await fetch("/angulacions/"+locale.value);
       _data.angulacions = await response6.json();
      
+      const response16 = await fetch("/analegs/"+locale.value);
+      _data.analegs = await response16.json();
+
       const response9 = await fetch("/marques/"+locale.value);
       _data.marcaImplants = await response9.json();
 
@@ -160,6 +170,12 @@ const txtConexio = (id) => {
 const txtAngulacio = (id) => {
     var txt = _.filter(_data.angulacions, { 'idAngulacions' : id });
     return txt[0]?.angulacions;
+};
+
+const txtAnaleg = (id) => {
+    var txt = _.filter(_data.analegs, { 'idAditament' : id });
+    return txt[0]?.tipusAditament;
+
 };
 
 
@@ -213,7 +229,7 @@ watch(()=>props.workDetail.idTipusArticle, (value, oldValue) => {
 
 }, { deep: true });
 
-//filter tipusImplants on Brand change    
+//filter on Brand change    
 watch(()=>implantDetail.idMarca, (value, oldValue) => {
 
     filteredData.tipusImplants = _.filter(_data.tipusImplants, { 'idMarca' : implantDetail.idMarca })
@@ -226,8 +242,13 @@ watch(()=>props.workDetail.idMaterial, (value, oldValue) => {
     filteredData.colors = _.filter(_data.colorsMaterial, { 'idMaterial' : props.workDetail.idMaterial })
 
     props.workDetail.idColor = filteredData.material[0].idColorDefecte 
+}, { deep: true });
 
+//filter on tipusImplants change
+watch(()=>implantDetail.idConexio, (value, oldValue) => {
 
+    filteredData.analegs = _.filter(_data.analegs, { 'idTipusImplant' : implantDetail.idConexio })
+    
 }, { deep: true });
 
 
@@ -256,6 +277,7 @@ watch(renderFile, (currentValue, oldValue) => {
     <!-- {{ filteredData.colors }} -->
     <!-- {{ _data.incisal }} -->
     <!-- {{ _data.posicions }} -->
+
     <div class="w-full px-6 lg:px-0 z-10 top-0 left-0 bg-white dark:bg-gray-900 h-full min-h-fit">
 
     <!-- step 1 -->
@@ -572,7 +594,6 @@ watch(renderFile, (currentValue, oldValue) => {
 
 
     <!-- step 3 -->
-
     <MessageBox
         class="w-full md:w-3/5 mt-12 bg-gray-100 dark:bg-gray-200"
         :title="$t('Paso 3')"
@@ -666,12 +687,13 @@ watch(renderFile, (currentValue, oldValue) => {
                                 {{ $t('Conexión') }}
                                 <br/>
                                 <Dropdown 
+                                    :disabled="!implantDetail.idMarca"
                                     :options="filteredData.tipusImplants" 
                                     optionLabel="tipusImplants" 
                                     optionValue="idTipusImplant"
                                     class="w-full mt-1 rounded-none"
                                     v-model="implantDetail.idConexio" 
-                                    :placeholder="$t('Selecc. marca')"   
+                                    :placeholder="$t('Seleccionar')"   
                                     :pt="{
                                         input: { class: 'p-1 text-xs' },
                                         loadingIcon: { class: 'text-xs' },
@@ -719,14 +741,33 @@ watch(renderFile, (currentValue, oldValue) => {
                                 <Checkbox v-model="implantDetail.analeg" :binary="true" />
                             </div>
                         </template>
-                    </Column> 
+                                      </Column> 
                     <Column field="tipusAnaleg" style="min-width: 6rem">
                         <template #header>
                             <div>
                                 {{ $t('Tipo análogo') }}
                                 <br/>
+                                <Dropdown 
+                                    :disabled = "!implantDetail.analeg || !implantDetail.idConexio"
+                                    :options="filteredData.analegs" 
+                                    optionLabel="tipusAditament" 
+                                    optionValue="idAditament"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.idAditament"    
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
                             </div>
                         </template>
+                              <template #body="slotProps">
+                            {{ txtAnaleg(slotProps.data.idAditament) }}
+                        </template>
+
                     </Column>
                     <Column field="baseTi" style="min-width: 6rem">
                         <template #header>
