@@ -1,22 +1,16 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-import ActionMessage from '@/Components/ActionMessage.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import Button from '@/Components/PrimaryButton.vue';
-import AltButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useConfirm } from "primevue/useconfirm";
+import Checkbox from 'primevue/checkbox';
 import ConfirmPopup from 'primevue/confirmpopup';
 import { useI18n } from "vue-i18n";
+import { MotionPlugin } from '@vueuse/motion'
 
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
-import lodash from 'lodash';
-import deepdash from 'deepdash';    
+import _ from 'lodash';
 
-const _ = deepdash(lodash);
 
 const toast = useToast();
 const confirm = useConfirm();
@@ -28,8 +22,16 @@ const _data = reactive({
     tipusArticle:null,
     colors:null,
     materials:null,
+    posicions:null,
+    angulacions:null,
+    tipusImplants:null
     });
 
+const expanded = ref(false);
+
+const expand = () => {
+    expanded.value = expanded.value == false ? true : false;
+};
 
 onMounted(async () => {
 
@@ -41,6 +43,15 @@ onMounted(async () => {
 
     const response = await fetch("/colors/"+locale.value);
     _data.colors = await response.json();
+
+    const response2 = await fetch("/posicions/"+locale.value);
+    _data.posicions = await response2.json();
+
+    const response6 = await fetch("/angulacions/"+locale.value);
+    _data.angulacions = await response6.json();
+
+    const response0 = await fetch("/implants/"+locale.value);
+    _data.tipusImplants = await response0.json();
 
 
 });
@@ -60,7 +71,6 @@ const txtArticle = (id) => {
 const txtMaterial = (id) => {
     var txt = _.filter(_data.materials, { 'idMaterial' : id });
     return txt[0]?.material;
-
 };
 
 const txtColor = (id) => {
@@ -68,11 +78,25 @@ const txtColor = (id) => {
     return txt[0]?.color;
 };
 
+const txtPosicio = (id) => {
+    var txt = _.filter(_data.posicions, { 'idPosicions' : id });  
+    return txt[0]?.posicions;
+};
+
+const txtConexio = (id) => {
+    var txt = _.filter(_data.tipusImplants, { 'idTipusImplant' : id });
+    return txt[0]?.tipusImplants;
+};
+
+const txtAngulacio = (id) => {
+    var txt = _.filter(_data.angulacions, { 'idAngulacions' : id });
+    return txt[0]?.angulacions;
+};
 
 const deleteWork = (event, index) => {
     confirm.require({
         target: event.currentTarget,
-        message: 'Quieres borrar el trabajo?',
+        message: t('Quieres borrar el trabajo?', { index: index }),
         icon: 'pi pi-trash',
         acceptIcon: 'pi pi-check',
         rejectIcon: 'pi pi-times',
@@ -95,7 +119,7 @@ const editWork = (event, index) => {
 const cloneWork = (event, index) => {
     confirm.require({
         target: event.currentTarget,
-        message: 'Quieres duplicar el trabajo?',
+        message: t('Quieres duplicar el trabajo?'),
         icon: 'pi pi-copy',
         acceptIcon: 'pi pi-check',
         rejectIcon: 'pi pi-times',
@@ -116,9 +140,14 @@ const cloneWork = (event, index) => {
     <Toast />
     <ConfirmPopup />
 
-    <div class="w-full bg-primary-300 border border-gray-200 mb-6 p-6">
+    <div v-motion-slide-top class="w-full bg-primary-300 border border-gray-200 mb-6 p-6">
         <div class="flex justify-between">
-            <div class="font-bold">Tipo de trabajo: {{ workData.workType == 'A' ? 'Producción' : 'Producción y diseño'  }}</div>
+            <div class="flex font-bold text-md text-gray-700 items-center">
+                Trabajo {{index+1}}. Tipo de trabajo: {{ workData.workType == 'A' ? 'Producción' : 'Producción y diseño'  }}
+                <i v-if="!expanded" @click="expand()" class="ml-2 pi pi-chevron-down hover:cursor-pointer hover:text-primary-500 transition-colors"></i>
+                <i v-if="expanded" @click="expand()" class="ml-2 pi pi-chevron-up hover:cursor-pointer hover:text-primary-500 transition-colors"></i>
+
+            </div>
             <div class="flex">
                 <div @click="deleteWork($event, index)">
                     <i
@@ -134,44 +163,60 @@ const cloneWork = (event, index) => {
                 </div>
             </div>
         </div>
-        <div class="pt-3 flex gap-6 columns-2 w-full">
-            <div class="flex flex-col w-2/3">
-                <div class="mt-4 gap-6 columns-2 flex w-full">
-                    <TextInput disabled :value="txtArticle(workData.idTipusArticle)" type="text" class="mt-1 block w-3/4" />
-                    <TextInput disabled :value="workData.quantitat" type="text" class="mt-1 block w-1/4" />
+        <div class="pt-3 gap-6 columns-2 w-full" :class="expanded ? 'flex' : 'hidden'">
+            <div v-motion-slide-down  class="flex flex-col w-2/3">
+                <div class="mt-3 gap-6 columns-2 flex w-full">
+                    <TextInput disabled :value="txtArticle(workData.idTipusArticle)" type="text" class="mt-1 block w-3/4 text-sm text-gray-500" />
+                    <TextInput disabled :value="workData.quantitat" type="text" class="mt-1 block w-1/4 text-sm text-gray-500" />
 
                 </div>  
 
-                <div class="mt-4 gap-6 columns-2 flex w-full">
-                    <TextInput disabled :value="txtMaterial(workData.idMaterial)" type="text" class="mt-1 block w-3/4" />
+                <div class="mt-3 gap-6 columns-2 flex w-full">
+                    <TextInput disabled :value="txtMaterial(workData.idMaterial)" type="text" class="mt-1 block w-3/4 text-sm text-gray-500" />
 
-                    <TextInput disabled :value="txtColor(workData.idColor)" type="text" class="mt-1 block w-1/4" />
+                    <TextInput disabled :value="txtColor(workData.idColor)" type="text" class="mt-1 block w-1/4 text-sm text-gray-500" />
 
                 </div>
 
-                <!-- <div v-for="(implant, index) in workData.implantsDetail" class="mt-4 columns-5 flex w-2/3">
+                <div v-for="(implant, index) in workData.implantsDetail" class="mt-3 columns-4 flex w-full">
                     <TextInput
                         disabled
-                        v-model="implant.posicio"
+                        :value="txtPosicio(implant.posicio)"
                         type="text"
-                        class="mt-1 block w-1/4"
+                        class="block w-1/4 text-sm text-gray-500"
                     />
 
                     <TextInput
                         disabled
-                        v-model="implant.idConexio"
+                        :value="txtConexio(implant.idConexio)"
                         type="text"
-                        class="mt-1 block w-2/4"
+                        class="block w-2/4 text-sm text-gray-500"
                     />
 
                     <TextInput
                         disabled
-                        v-model="implant.idAngulacions"
+                        :value="txtAngulacio(implant.idAngulacions)"
                         type="text"
-                        class="mt-1 block w-1/4"
+                        class="block w-1/4 text-sm text-gray-500"
                     />
 
-                </div> -->
+                    <div class="flex w-full flex-wrap items-center gap-3">
+                        <div class="flex items-center ml-4">
+                            <Checkbox class="ml-2 text-sm" disabled v-model="implant.angulacio" :binary="true" /> 
+                            <label class="ml-1 text-sm text-gray-500"> {{ $t('Ang') }} </label>
+                        </div>
+                        <div class="flex items-center">
+                            <Checkbox class="ml-2 text-sm" disabled v-model="implant.baseTi" :binary="true" /> 
+                            <label class="ml-1 text-sm text-gray-500"> {{ $t('B. Ti') }} </label>
+                        </div>
+                        <div class="flex items-center">
+                            <Checkbox class="ml-2 text-sm" disabled v-model="implant.enviarCargol" :binary="true" />
+                            <label class="ml-1 text-sm text-gray-500"> {{ $t('Tor') }} </label>
+                        </div>
+                     </div>
+
+
+                </div>
             </div>
             <div class="mt-4 flex border border-gray-300 bg-white p-6 w-1/3">
                 <svg id="Grupo_688" data-name="Grupo 688" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="450.267" height="166.391" viewBox="0 0 450.267 166.391">
