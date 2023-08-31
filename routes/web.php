@@ -89,6 +89,7 @@ Route::middleware([
     Route::get('tipusarticle2/{lang}', 'App\Http\Controllers\DataController@getTipusArticle2');
     Route::get('materialsarticle/{lang}', 'App\Http\Controllers\DataController@getMaterialsTipusArticle');
     Route::get('implants/{lang}', 'App\Http\Controllers\DataController@getTipusImplants');
+    Route::get('basesti/{lang}', 'App\Http\Controllers\DataController@getBasesTi');
     
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
     Route::get('impersonate-users', 'App\Http\Controllers\DataController@getImpersonationUsers');

@@ -113,6 +113,14 @@ class DataController extends Controller
 
     }
 
+    public function getBasesTi(Request $request)
+    {
+       
+        $data = DB::select("SELECT * FROM tBasesTi WHERE IdIdioma='SPA'");
+        return $data;
+
+    }
+
     public function getTipusArticle2(Request $request)
     {
        
