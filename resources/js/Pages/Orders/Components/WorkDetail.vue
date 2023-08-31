@@ -44,7 +44,7 @@ const renderFile = ref(null);
 
 const filteredData = reactive ({
     tipusImplants: null,
-    tipusArticle: null,
+    tipusArticle: [{}],
     tipusArticle2: null,
     materialsArticle: null,
     materials: null,
@@ -69,6 +69,7 @@ const _data = reactive({
     tipusImplants:null,
     marcaImplants:null,
     aditaments:null,
+    basesTi:null,
     });
 
 const implantDetail = reactive({
@@ -78,24 +79,45 @@ const implantDetail = reactive({
         idAngulacions: '',
         analeg: '',
         tipusAnaleg: '',
-        enviarCargol: '',
-        baseTi: '',
+        enviarCargol: false,
+        baseTi: false,
         tipusBaseTi: '',
         tallables: '',
         alcadaGH: '',
 });
 
 const addImplant = () => {
-    props.workDetail.implantsDetail.push(
-            {...implantDetail}
-        )
+    if (props.workDetail.implantsDetail.length < props.workDetail.numImplants) {
+        if (implantDetail.idConexio && implantDetail.idMarca && implantDetail.posicio) {
+            props.workDetail.implantsDetail.push(
+                    {...implantDetail}
+                )
+            }
+            implantDetail.posicio = 0
+        }
     }
 
-const removeImplant = (index) => {
-
+const removeImplant = (event,index) => {
+    console.log(index)
+    confirm.require({
+        target: event.currentTarget,
+        message: 'Quieres borrar el implante?',
+        icon: 'pi pi-trash',
+        acceptIcon: 'pi pi-check',
+        rejectIcon: 'pi pi-times',
+        acceptClass: 'p-button-danger text-xs',
+        rejectClass: 'p-button-info text-xs',
+        accept: () => {
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 1000 });
+            props.workDetail.implantsDetail.splice(index, 1);
+        },
+        reject: () => {
+            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 1000 });
+        }
+    });
 }
 
-
+const dataLoaded = ref(false);
 
 onMounted(async () => {
 
@@ -148,6 +170,11 @@ onMounted(async () => {
       const response0 = await fetch("/implants/"+locale.value);
       _data.tipusImplants = await response0.json();
 
+      const response17 = await fetch("/basesti/"+locale.value);
+      _data.basesTi = await response17.json();
+
+      dataLoaded.value = true;
+
     });
 
 
@@ -178,6 +205,12 @@ const txtAnaleg = (id) => {
 
 };
 
+const txtBasesTi = (id) => {
+    var txt = _.filter(_data.basesTi, { 'idTipusImplant2' : id });
+    return txt[0]?.tipusAditament2;
+
+};
+
 
 const customBase64Uploader = async (event) => {
     const file = event.files[0];
@@ -205,29 +238,76 @@ const fileUploadExecute = async (event) => {
             }
         });
     }
+
+const handleNumDesmontablesInput = () => {
+  const minDesmontables = parseInt(filteredData.tipusArticle[0].minDesmontables);
+  const maxDesmontables = parseInt(filteredData.tipusArticle[0].maxDesmontables);
+
+  if (props.workDetail.numDesmontables < minDesmontables) {
+    props.workDetail.numDesmontables = minDesmontables;
+  } else if (props.workDetail.numDesmontables > maxDesmontables) {
+    props.workDetail.numDesmontables = maxDesmontables;
+  }
+};
  
 //filter tipusArticle   
 watch(()=>props.workDetail.idTipusArticle, (value, oldValue) => {
 
-    filteredData.tipusArticle2 = _.filter(_data.tipusArticle2, { 'idTipusArticle' : props.workDetail.idTipusArticle })
-    filteredData.tipusArticle = _.filter(_data.tipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
-    filteredData.materialsArticle = _.filter(_data.materialsTipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+        filteredData.tipusArticle2 = _.filter(_data.tipusArticle2, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+        filteredData.tipusArticle = _.filter(_data.tipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+        filteredData.materialsArticle = _.filter(_data.materialsTipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+    
+        props.workDetail.quantitat = filteredData.tipusArticle[0].minQuantitat 
+        props.workDetail.numDesmontables = filteredData.tipusArticle[0].minDesmontables 
+        props.workDetail.posDesmontables = []
+        props.workDetail.numDents = filteredData.tipusArticle[0].minDents
+        props.workDetail.numImplants = filteredData.tipusArticle[0].minImplants
+    
+        // Filtrar _data.grupsMaterials usando el campo idMaterial de filteredData.materialsArticle
+        const filteredMaterialsIds = filteredData.materialsArticle.map(item => item.idMaterial);
+        filteredData.materials = _.cloneDeep(_data.grupsMaterials).map(grup => {
+            grup.materials = _.filter(grup.materials, material => filteredMaterialsIds.includes(material.idMaterial));
+            return grup;
+        });
+    
+        // Eliminar objetos en los que el array "materials" esté vacío
+        filteredData.materials = _.filter(filteredData.materials, grup => grup.materials.length > 0);
 
-    props.workDetail.quantitat = filteredData.tipusArticle[0].minQuantitat 
-    props.workDetail.numDesmontables = filteredData.tipusArticle[0].minDesmontables 
-    props.workDetail.posDesmontables = []
-
-    // Filtrar _data.grupsMaterials usando el campo idMaterial de filteredData.materialsArticle
-    const filteredMaterialsIds = filteredData.materialsArticle.map(item => item.idMaterial);
-    filteredData.materials = _.cloneDeep(_data.grupsMaterials).map(grup => {
-        grup.materials = _.filter(grup.materials, material => filteredMaterialsIds.includes(material.idMaterial));
-        return grup;
-    });
-
-    // Eliminar objetos en los que el array "materials" esté vacío
-    filteredData.materials = _.filter(filteredData.materials, grup => grup.materials.length > 0);
 
 }, { deep: true });
+
+watch(()=>dataLoaded.value, (value, oldValue) => {
+
+    if (dataLoaded.value) {
+        filteredData.tipusArticle2 = _.filter(_data.tipusArticle2, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+        filteredData.tipusArticle = _.filter(_data.tipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+        filteredData.materialsArticle = _.filter(_data.materialsTipusArticle, { 'idTipusArticle' : props.workDetail.idTipusArticle })
+    
+        props.workDetail.quantitat = filteredData.tipusArticle[0].minQuantitat 
+        props.workDetail.numDesmontables = filteredData.tipusArticle[0].minDesmontables 
+        props.workDetail.posDesmontables = []
+        props.workDetail.numDents = filteredData.tipusArticle[0].minDents
+        props.workDetail.numImplants = filteredData.tipusArticle[0].minImplants
+    
+        // Filtrar _data.grupsMaterials usando el campo idMaterial de filteredData.materialsArticle
+        const filteredMaterialsIds = filteredData.materialsArticle.map(item => item.idMaterial);
+        filteredData.materials = _.cloneDeep(_data.grupsMaterials).map(grup => {
+            grup.materials = _.filter(grup.materials, material => filteredMaterialsIds.includes(material.idMaterial));
+            return grup;
+        });
+    
+        // Eliminar objetos en los que el array "materials" esté vacío
+        filteredData.materials = _.filter(filteredData.materials, grup => grup.materials.length > 0);
+
+        filteredData.material = _.filter(_data.materials, { 'idMaterial' : props.workDetail.idMaterial })
+        filteredData.colorsIds = _.filter(_data.colorsMaterial, { 'idMaterial' : props.workDetail.idMaterial })
+        
+        const colorsIds = filteredData.colorsIds.map(item => item.idColor);
+        filteredData.colors = _.filter(_data.colors, color => colorsIds.includes(color.idColor));
+    }
+
+
+}, { deep: true, immediate: true });
 
 //filter on Brand change    
 watch(()=>implantDetail.idMarca, (value, oldValue) => {
@@ -239,7 +319,9 @@ watch(()=>implantDetail.idMarca, (value, oldValue) => {
 watch(()=>props.workDetail.idMaterial, (value, oldValue) => {
 
     filteredData.material = _.filter(_data.materials, { 'idMaterial' : props.workDetail.idMaterial })
-    filteredData.colors = _.filter(_data.colorsMaterial, { 'idMaterial' : props.workDetail.idMaterial })
+    filteredData.colorsIds = _.filter(_data.colorsMaterial, { 'idMaterial' : props.workDetail.idMaterial })
+    const colorsIds = filteredData.colorsIds.map(item => item.idColor);
+    filteredData.colors = _.filter(_data.colors, color => colorsIds.includes(color.idColor));
 
     props.workDetail.idColor = filteredData.material[0].idColorDefecte 
 }, { deep: true });
@@ -248,8 +330,42 @@ watch(()=>props.workDetail.idMaterial, (value, oldValue) => {
 watch(()=>implantDetail.idConexio, (value, oldValue) => {
 
     filteredData.analegs = _.filter(_data.analegs, { 'idTipusImplant' : implantDetail.idConexio })
+    filteredData.tipusBaseTi = _.filter(_data.basesTi, { 'idTipusImplant' : implantDetail.idConexio })
+    filteredData.BaseTiAltura = _.filter(_data.basesTi, { 'idTipusImplant' : implantDetail.idConexio })
     
 }, { deep: true });
+
+watch(()=>props.workDetail.numDents, (value, oldValue) => {
+    if (parseInt(value) == 0) {
+        implantDetail.tipusBaseTi = 'noRot'
+    }
+    if (value == 1) {
+        implantDetail.tipusBaseTi = 'noRot'
+    }
+    if (value > 1) {
+        implantDetail.tipusBaseTi = 'rot'
+    }
+    
+},{ deep: true });
+
+watch(()=>implantDetail.enviarCargol, (value, oldValue) => {
+    if (value) {
+        implantDetail.baseTi = false
+        implantDetail.tipusBaseTi = ''
+        implantDetail.tallables = false
+        implantDetail.alcadaGH = ''
+    }
+    
+},{ deep: true });
+
+watch(()=>implantDetail.baseTi, (value, oldValue) => {
+    if (value) {
+        implantDetail.enviarCargol = false
+    }
+    
+},{ deep: true });
+
+
 
 
 
@@ -277,6 +393,10 @@ watch(renderFile, (currentValue, oldValue) => {
     <!-- {{ filteredData.colors }} -->
     <!-- {{ _data.incisal }} -->
     <!-- {{ _data.posicions }} -->
+    <!-- {{ _data.basesTi }} -->
+    <!-- {{ props.workDetail }} -->
+    <!-- {{ _data.analegs }} -->
+    <!-- {{ _data.colors }} -->
 
     <div class="w-full px-6 lg:px-0 z-10 top-0 left-0 bg-white dark:bg-gray-900 h-full min-h-fit">
 
@@ -379,6 +499,8 @@ watch(renderFile, (currentValue, oldValue) => {
                                 :min="parseInt(filteredData.tipusArticle[0].minDesmontables)" 
                                 :max="parseInt(filteredData.tipusArticle[0].maxDesmontables)"
                                 :disabled="filteredData.tipusArticle[0].permetDents"
+                                @input="handleNumDesmontablesInput"
+                                :key="workDetail.numDesmontables"
                                 type="number"
                                 class="mt-1 mb-6 block w-full"
                                     />
@@ -602,6 +724,8 @@ watch(renderFile, (currentValue, oldValue) => {
      </MessageBox>
  
      {{ implantDetail }}
+     <Toast />
+    <ConfirmPopup />
     <div class="w-full bg-primary-300 border border-gray-200 p-6">
         <div class="pt-6 w-full flex gap-6">
               
@@ -610,7 +734,10 @@ watch(renderFile, (currentValue, oldValue) => {
                     <TextInput
                         id="numDents"
                         v-model="workDetail.numDents"
-                        type="text"
+                        :min="parseInt(filteredData.tipusArticle[0].minDents)" 
+                        :max="parseInt(filteredData.tipusArticle[0].maxDents)"
+                        :disabled="parseInt(filteredData.tipusArticle[0].minDents) == parseInt(filteredData.tipusArticle[0].maxDents)"
+                        type="number"
                         class="mt-1 mb-6 block w-full"
                         />
                 </div>
@@ -619,7 +746,10 @@ watch(renderFile, (currentValue, oldValue) => {
                     <TextInput
                         id="numImplants"
                         v-model="workDetail.numImplants"
-                        type="text"
+                        :min="parseInt(filteredData.tipusArticle[0].minImplants)" 
+                        :max="parseInt(filteredData.tipusArticle[0].maxImplants)"
+                        :disabled="parseInt(filteredData.tipusArticle[0].minImplants) == parseInt(filteredData.tipusArticle[0].maxImplants)"
+                        type="number"
                         class="mt-1 mb-6 block w-full"
                         />
                 </div>
@@ -661,7 +791,8 @@ watch(renderFile, (currentValue, oldValue) => {
                             <div>
                                 {{ $t('Marca') }}
                                 <br/>
-                                <Dropdown 
+                                <Dropdown
+                                    :disabled="!workDetail.numImplants > 0" 
                                     :options="_data.marcaImplants" 
                                     optionLabel="marca" 
                                     optionValue="idMarca"
@@ -687,7 +818,7 @@ watch(renderFile, (currentValue, oldValue) => {
                                 {{ $t('Conexión') }}
                                 <br/>
                                 <Dropdown 
-                                    :disabled="!implantDetail.idMarca"
+                                    :disabled="!workDetail.numImplants > 0" 
                                     :options="filteredData.tipusImplants" 
                                     optionLabel="tipusImplants" 
                                     optionValue="idTipusImplant"
@@ -714,6 +845,7 @@ watch(renderFile, (currentValue, oldValue) => {
                                 {{ $t('Angulación') }}
                                 <br/>
                                 <Dropdown 
+                                    :disabled="!workDetail.numImplants > 0" 
                                     :options="_data.angulacions" 
                                     optionLabel="angulacions" 
                                     optionValue="idAngulacions"
@@ -769,14 +901,17 @@ watch(renderFile, (currentValue, oldValue) => {
                         </template>
 
                     </Column>
-                    <Column field="baseTi" style="min-width: 6rem">
+                    <Column field="enviarCargol" style="min-width: 6rem">
                         <template #header>
                             <div class="text-center">
                                 {{ $t('Enviar tornillos') }}
                                 <br/>
-                                <Checkbox v-model="implantDetail.enviarCargol" :binary="true" />
+                                <Checkbox :disabled="implantDetail.baseTi" v-model="implantDetail.enviarCargol" :binary="true" />
 
                             </div>
+                        </template>
+                        <template #body="slotProps">
+                            {{ implantDetail.enviarCargol }}
                         </template>
                     </Column>
                     <Column field="baseTi" style="min-width: 6rem">
@@ -784,9 +919,12 @@ watch(renderFile, (currentValue, oldValue) => {
                             <div  class="text-center">
                                 {{ $t('Base Ti') }}
                                 <br/>
-                                <Checkbox class="" v-model="implantDetail.baseTi" :binary="true" />
+                                <Checkbox :disabled="implantDetail.enviarCargol" v-model="implantDetail.baseTi" :binary="true" />
 
                             </div>
+                        </template>
+                        <template #body="slotProps">
+                            {{ implantDetail.baseTi }}
                         </template>
                     </Column>
                     <Column field="tipusBaseTi" style="min-width: 6rem">
@@ -794,7 +932,26 @@ watch(renderFile, (currentValue, oldValue) => {
                             <div>
                                 {{ $t('Tipo base') }}
                                 <br/>
+                                <Dropdown 
+                                    :disabled="!implantDetail.baseTi"
+                                    :options="filteredData.tipusBaseTi" 
+                                    optionLabel="tipusAditament2" 
+                                    optionValue="idTipusAditament2"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.tipusBaseTi" 
+                                    :placeholder="$t('Seleccionar')"   
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
                             </div>
+                        </template>
+                        <template #body="slotProps">
+                            {{ txtBasesTi(slotProps.data.idTipusAditament2) }}
                         </template>
                     </Column>
                     <Column field="tallables" style="min-width: 6rem">
@@ -802,7 +959,7 @@ watch(renderFile, (currentValue, oldValue) => {
                             <div class="text-center">
                                 {{ $t('Tallable') }}
                                 <br/>
-                                <Checkbox v-model="implantDetail.tallables" :binary="true" />
+                                <Checkbox :disabled="!implantDetail.baseTi" v-model="implantDetail.tallables" :binary="true" />
 
                             </div>
                         </template>
@@ -812,6 +969,22 @@ watch(renderFile, (currentValue, oldValue) => {
                             <div>
                                 {{ $t('GH') }}
                                 <br/>
+                                <Dropdown 
+                                    :disabled="!implantDetail.baseTi"
+                                    :options="filteredData.BaseTiAltura" 
+                                    optionLabel="altura" 
+                                    optionValue="altura"
+                                    class="w-full mt-1 rounded-none"
+                                    v-model="implantDetail.alcadaGH" 
+                                    :placeholder="$t('Seleccionar')"   
+                                    :pt="{
+                                        input: { class: 'p-1 text-xs' },
+                                        loadingIcon: { class: 'text-xs' },
+                                        wrapper: { class: 'text-xs'  },
+                                        trigger: { class: 'text-xs mx-4 my-0 w-auto text-black-900' },
+                                    }"
+                                    >
+                                </Dropdown>
                             </div>
                         </template>
                     </Column>
@@ -824,9 +997,9 @@ watch(renderFile, (currentValue, oldValue) => {
                             {{ $t('+') }}
                         </Button>
                         </template>
-                        <template #body="slotProps">
+                        <template #body="{ index }">
                             <div class="text-center">
-                                <i class="pi pi-trash text-primary-500"></i>
+                                <i @click="removeImplant($event,index)" class="pi pi-trash text-primary-500"></i>
                             </div>
                         </template>
                     </Column>
