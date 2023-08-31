@@ -149,21 +149,19 @@ onMounted(async () => {
                     </template>
                 </Dropdown>
 
-                <!-- <Link
-                    :href="route('impersonate', impersonateUserSelected)"
-                    class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
-                >IMPERSONATE</Link>
-               --> 
-               <!-- {{ page.props.impersonator.user }} -->
-                <div v-if="page.props.impersonator.user">
-                <Link
-                    :href="route('impersonate.leave')"
-                    class="ml-2 block text-sm text-gray-900 underline dark:text-slate-300"
-                >DESIMPERSONATE</Link>
+             <div v-if="page.props.impersonator.user">
+                <Button class="!w-48 mt-3 rounded-sm !bg-emerald-500" @click="router.visit(route('impersonate.leave'))">
+                    <div class="flex">
+                    {{ $t('Volver a mi usuario') }} 
+    
+                </div>
+                </Button>
+    
+
                 </div>
             </div>
 
-              <Button class="w-48 mt-6 rounded-sm" @click="router.visit(route('orders.new'))">
+              <Button class="!w-48 mt-6 rounded-sm" @click="router.visit(route('orders.new'))">
                 <svg class="mr-3 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
                     <g id="Grupo_557" data-name="Grupo 557" transform="translate(-491 -1488)">
                         <path id="Elipse_14" data-name="Elipse 14" d="M16.5,2.64A13.86,13.86,0,0,0,6.7,26.3,13.86,13.86,0,1,0,26.3,6.7a13.769,13.769,0,0,0-9.8-4.06M16.5,0A16.5,16.5,0,1,1,0,16.5,16.5,16.5,0,0,1,16.5,0Z" transform="translate(491 1488)" fill="#fff"/>
