@@ -45,31 +45,34 @@ const validation_msg = computed(() => {
     props.orderData.orderWorks.forEach((work, index) => {
         msg_errors.push({[index]:{
             article: txtArticle(work.idTipusArticle)? txtArticle(work.idTipusArticle) : t('Trabajo'),
-            idTipusArticle: work.idTipusArticle?'':t('Falta definir el tipo de producto'),
-            idMaterial: work.idMaterial?'':t('Falta definir el material'),
-            idTipusArticle2: '',    
-            quantitat:  work.quantitat?'':t('Falta definir las unidades'),
-            idColor:  work.idMaterial?'':t('Falta definir el color'),
-            idIncisal: ''}
+            idTipusArticle: work.idTipusArticle?null:t('Falta informar el tipo de producto'),
+            idMaterial: work.idMaterial?null:t('Falta informar el material'),
+            idTipusArticle2: null,    
+            quantitat:  work.quantitat?null:t('Falta informar las unidades'),
+            idColor:  work.idMaterial?null:t('Falta informar el color'),
+            idIncisal: null}
         });
     
     });
 
     _.forEach(msg_errors, function(workError, key) {
-        msg_validation+='<ul>'
 
-        _.each(workError[key], function(value, key1) {
-           
-            if (key1=='article') {
-                msg_validation+='<br><b>' + value + ' ' + eval(key+1) + '</b><br/>'
+        if (_(workError).omitBy('article').omitBy(_.isNull).size() > 0) {
+            msg_validation+='<ul>'
 
-                } else {
-                value? msg_validation+= '<li>' + value + '</li>' :'';
-                }
-            });
+            _.each(workError[key], function(value, key1) {
+            
+                if (key1=='article') {
+                    msg_validation+='<br><b>' + value + ' ' + eval(key+1) + '</b><br/>'
+
+                    } else {
+                    value? msg_validation+= '<li>' + value + '</li>' :'';
+                    }
+                });
             msg_validation+='</ul>'
+            }
          }); 
-
+        
      return msg_validation;
 
 })
