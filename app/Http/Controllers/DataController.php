@@ -116,7 +116,7 @@ class DataController extends Controller
     public function getBasesTi(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tBasesTi WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tBasesTi WHERE idIdiomaISO='".$request->lang."'");
         return $data;
 
     }
