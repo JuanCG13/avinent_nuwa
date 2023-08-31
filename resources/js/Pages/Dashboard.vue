@@ -51,7 +51,7 @@ watch(impersonateUserSelected, (user) => {
 });
 
 const orderStatus = ((idEstat)=> {
-
+    
 var match = _data.status.filter(
   function(data){ return data.idEstat == idEstat && data.idIdiomaISO == locale.value }
 );
@@ -86,6 +86,7 @@ onMounted(async () => {
         </template>
  
         <template #content>
+            
             <div v-if="isSupported">
                 <Button class="!w-1/6" @click="show()">
                     Show Notification
@@ -123,8 +124,10 @@ onMounted(async () => {
                 :pt="{
                     input: { class: 'text-sm p-2' },
                     loadingIcon: { class: 'text-sm' },
-                    wrapper: { class: 'text-sm'  },
-                    trigger: { class: 'text-sm mx-4 my-0 w-auto text-black-900' },
+                    wrapper: { class: 'text-sm bg-white' },
+                    list: {class: 'rounded-sm py-0' },
+                    item: {class: 'hover:bg-primary-300'},
+                    trigger: { class: 'text-sm mx-4 my-0 w-auto text-black-800' },
                 }">
                 </Dropdown>
                     <br/>
@@ -137,12 +140,15 @@ onMounted(async () => {
                 class="mt-3 w-48 rounded-sm text-xs" 
                 optionValue="id" 
                 optionLabel="name" 
+                :emptyMessage="$t('No hay usuarios')"
                 :placeholder="$t('Seleccionar usuario')"
                 :pt="{
                     input: { class: 'text-sm p-2' },
                     loadingIcon: { class: 'text-sm' },
-                    wrapper: { class: 'text-sm'  },
-                    trigger: { class: 'text-sm mx-4 my-0 w-auto text-black-900' },
+                    wrapper: { class: 'text-sm bg-white' },
+                    list: {class: 'rounded-sm py-0' },
+                    item: {class: 'hover:bg-primary-300'},
+                    trigger: { class: 'text-sm mx-4 my-0 w-auto text-black-800' },
                 }">
                     <template #option="slotProps">
                         <span> {{slotProps.option.name}} </span>
@@ -192,7 +198,7 @@ onMounted(async () => {
                     </Column>
                     <Column :header="$t('Estado')" style="width: 15%">
                         <template #body="{data}">
-                                {{ orderStatus(data.estat) }}
+                                {{ orderStatus(data.idEstat) }}
                         </template>
                     </Column>
                     <Column :header="$t('Acciones')" style="width: 15%"></Column>

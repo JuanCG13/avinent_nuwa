@@ -20,7 +20,7 @@ import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const page = usePage();
 const toast = useToast();
@@ -43,7 +43,7 @@ const currUser = useForm({
 const _status = ((idEstat)=> {
 
     var match = _data.status.filter(
-      function(data){ return data.idEstat == idEstat && data.idIdioma == 'SPA' }
+      function(data){ return data.idEstat == idEstat && data.idIdiomaISO == locale.value }
   );
 
     //console.table(match);
