@@ -164,7 +164,9 @@ const logout = () => {
                     <div class="pt-12 px-6 mx-auto lg:px-0">
                         <slot name="header" />
                     </div>
-                    <slot name="content"/>
+                    <div class="px-6 mx-auto lg:px-0">
+                        <slot name="content"/>
+                   </div>
 
                 </slot>
 
