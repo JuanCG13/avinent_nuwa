@@ -92,6 +92,7 @@ Route::middleware([
     
     Route::get('shipping_addresses/{user}', 'App\Http\Controllers\DataController@getShippingAddresses');
     Route::get('impersonate-users', 'App\Http\Controllers\DataController@getImpersonationUsers');
+    Route::get('clients', 'App\Http\Controllers\DataController@getClients');
 
     //orders 
     Route::get('/order/new', function () {

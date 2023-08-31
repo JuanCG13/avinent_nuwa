@@ -176,6 +176,25 @@ class DataController extends Controller
 
     }
 
+    public function getClients(Request $request)
+    {
+        
+        if (Auth::User()->isAdmin) {
+            $data = DB::table('users')
+            ->select('idClientX3')
+            ->where('idClientX3','<>','null')
+            ->where('idClientX3','<>','')
+            ->groupBy('idClientX3')
+            ->get();
+         return $data;
+        } 
+
+        return [];
+
+  
+
+    }
+
     public function getImpersonationUsers(Request $request)
     {
         
@@ -192,7 +211,7 @@ class DataController extends Controller
          return $data;
         }
 
-        return null;
+        return [];
 
   
 
