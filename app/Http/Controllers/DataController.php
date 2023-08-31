@@ -12,8 +12,8 @@ class DataController extends Controller
 {
     public function getColors(Request $request)
     {
-       
-        $data = DB::select("SELECT * FROM tColors WHERE IdIdioma='SPA'");
+
+        $data = DB::select("SELECT * FROM tColors WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -21,7 +21,7 @@ class DataController extends Controller
     public function getColorsMaterial(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tColorsMaterial");
+        $data = DB::select("SELECT * FROM tColorsMaterial WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -29,7 +29,7 @@ class DataController extends Controller
     public function getIncisal(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tMMIncisal WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tMMIncisal WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -37,7 +37,7 @@ class DataController extends Controller
     public function getPosicions(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tPosicions WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tPosicions WHERE idIdiomaISO='".$request->lang."'");
         return $data;
 
     }
@@ -45,7 +45,7 @@ class DataController extends Controller
     public function getSistemaFitxers(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tSistemaFitxers WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tSistemaFitxers WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -53,7 +53,7 @@ class DataController extends Controller
     public function getZonesPulides(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tZonesPulides WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tZonesPulides WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -61,7 +61,7 @@ class DataController extends Controller
     public function getAngulacions(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tAngulacions WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tAngulacions WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -69,7 +69,7 @@ class DataController extends Controller
     public function getTipusImplants(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tTipusImplants ORDER BY ordre");
+        $data = DB::select("SELECT * FROM tTipusImplants WHERE actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -77,7 +77,7 @@ class DataController extends Controller
     public function getMarques(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tMarcaImplants ORDER BY ordre");
+        $data = DB::select("SELECT * FROM tMarcaImplants WHERE actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -85,7 +85,7 @@ class DataController extends Controller
     public function getAnalegs(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tAnalegs WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tAnalegs WHERE idIdiomaISO='".$request->lang."'");
         return $data;
 
     }
@@ -93,14 +93,14 @@ class DataController extends Controller
     public function getMaterials(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tMaterials WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tMaterials WHERE idIdiomaISO='".$request->lang."' AND actiu = 1 ORDER BY ordre");
         return $data;
     }
 
     public function getMaterialsTipusArticle(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tMaterialTipusArticle");
+        $data = DB::select("SELECT * FROM tMaterialTipusArticle WHERE actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -108,7 +108,7 @@ class DataController extends Controller
     public function getTipusArticle(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tTipusArticle WHERE IdIdioma='SPA'");
+        $data = DB::select("SELECT * FROM tTipusArticle WHERE idIdiomaISO='".$request->lang."' AND actiu = 1");
         return $data;
 
     }
@@ -124,7 +124,7 @@ class DataController extends Controller
     public function getTipusArticle2(Request $request)
     {
        
-        $data = DB::select("SELECT * FROM tTipusArticle2");
+        $data = DB::select("SELECT * FROM tTipusArticle2 WHERE actiu = 1 ORDER BY ordre");
         return $data;
 
     }
@@ -147,7 +147,7 @@ class DataController extends Controller
                         )
                 FROM tMaterials WHERE idGrupMaterial = tGrupMaterials.idGrupMaterial AND idIdioma = tGrupMaterials.idIdioma),
             '$') AS materials
-              FROM tGrupMaterials WHERE idIdioma='SPA';
+              FROM tGrupMaterials WHERE idIdiomaISO='".$request->lang."';
                ");
        return $this->result_as_json($data);
 
@@ -166,9 +166,9 @@ class DataController extends Controller
                             'tipusArticle', tipusArticle
                             )
                         )
-                FROM tTipusArticle WHERE idGrupTipusArticle = tGrupTipusArticle.idGrupTipusArticle AND idIdioma = tGrupTipusArticle.idIdioma),
+                FROM tTipusArticle WHERE idGrupTipusArticle = tGrupTipusArticle.idGrupTipusArticle AND idIdioma = tGrupTipusArticle.idIdioma AND tTipusArticle.actiu = 1),
             '$') AS tipusArticles
-              FROM tGrupTipusArticle WHERE idIdioma='SPA';
+              FROM tGrupTipusArticle WHERE idIdiomaISO='".$request->lang."';
          ");
        return $this->result_as_json($data);
 
@@ -181,6 +181,25 @@ class DataController extends Controller
          $data = DB::Select("SELECT * FROM tAdreces WHERE idClientX3='".$user->idClientX3."'");
          return $data;
         } 
+
+    }
+
+    public function getClients(Request $request)
+    {
+        
+        if (Auth::User()->isAdmin) {
+            $data = DB::table('users')
+            ->select('idClientX3')
+            ->where('idClientX3','<>','null')
+            ->where('idClientX3','<>','')
+            ->groupBy('idClientX3')
+            ->get();
+         return $data;
+        } 
+
+        return [];
+
+  
 
     }
 
@@ -200,7 +219,7 @@ class DataController extends Controller
          return $data;
         }
 
-        return null;
+        return [];
 
   
 
