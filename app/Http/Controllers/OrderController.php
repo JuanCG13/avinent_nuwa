@@ -38,19 +38,30 @@ class OrderController extends Controller
 
     public function dashboard(Request $request)
     {
-       $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
-       $status = Status::all();
-
-       return Inertia::render('Dashboard', [
-       'orders' => $orders, 
-       'status' => $status
-        ]);
+        if(Auth::user()->isAdmin) {
+            $orders = Order::all();
+            } else {
+            $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
+           }
+    
+           $status = Status::all();
+    
+           return Inertia::render('Dashboard', [
+           'orders' => $orders, 
+           'status' => $status
+            ]);
+           
        
     }
 
     public function getOrders(Request $request)
     {
-       $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
+        if(Auth::user()->isAdmin) {
+            $orders = Order::all();
+            } else {
+            $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
+           }
+    
        return $orders;
     }
 
