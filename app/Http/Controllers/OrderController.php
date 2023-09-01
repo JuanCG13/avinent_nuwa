@@ -69,9 +69,20 @@ class OrderController extends Controller
 
     public function editOrder(Request $request) {
 
-        $order['orderHeader'] = Order::where('idComanda','=',$request->id)
-        ->get()[0];     
+        // if (!Auth::user()->isAdmin || !Auth::user()->id == Order::where('idComanda','=',$request->id)->get()->idUsuari) {
+        //     return abort(403);
+        // }
+       // die(Order::where('idComanda','=',$request->id)->first()['idUsuari']);
         
+       $_order = Order::where('idComanda','=',$request->id)
+        ->first();
+
+        if (!$_order) {
+            return  abort(404);
+        }
+
+        $order['orderHeader'] = $_order;
+    
         $orderWorks = Order::find($request->id)
         ->works;    
 
@@ -82,12 +93,16 @@ class OrderController extends Controller
             ->implants;   
         }
 
-        return Inertia::render('Orders/New', [
+        $action = $request->orderAction == 'edit' ? 2 : 1;       
+    
+        return Inertia::render('Orders/Order', [
             'orderData' => $order, 
-             ]);
-           
-             
+            'orderAction' => $action
+            ]);
+ 
     }
+
+    
 
 }
 

@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { router, usePage } from '@inertiajs/vue3';
 
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, computed } from 'vue';
 import Info from './Components/Info.vue';
 import Work from './Components/Work.vue';
 import WorkDetail from './Components/WorkDetail.vue';
@@ -22,7 +22,7 @@ const { t } = useI18n();
 const toast = useToast();
 const page = usePage();
 
-const workType = ref(null);
+const tipoTreball = ref(null);
 const showWorkDetail = ref(false);
 const currentWorkDetail = ref(0);
 
@@ -32,7 +32,11 @@ const workTypes = ref([
 ])
 
 defineProps ({
-    orderData: Object
+    orderData: Object,
+    orderAction: { //0 new | 1 view | 2 edit
+        type: Number,
+        default: 0
+     } 
 });
 
 onMounted(() => {
@@ -40,19 +44,20 @@ onMounted(() => {
         orderData.orderHeader = page.props.orderData.orderHeader;
         orderData.orderWorks = page.props.orderData.orderWorks;
     }
+    //page.props.orderAction = 1;
 })
 
 const orderData = reactive({
     orderHeader:{
-        idComanda: Number,
-        refPacient: String,
-        idAdrecaEnviament: String,
-        adrecaFacturacio: String,
-        persContacte: String,
-        telfContacte: String,
-        dataPrevista: String,
-        dataCreacio: Date,
-        dataModificacio: Date,
+        idComanda: '',
+        refPacient: '',
+        idAdrecaEnviament: '',
+        adrecaFacturacio: '',
+        persContacte: '',
+        telfContacte: '',
+        dataPrevista: '',
+        dataCreacio: '',
+        dataModificacio: '',
     },
     orderWorks:[] //Array of objects
 });
@@ -78,7 +83,7 @@ const cloneWork = (index) => {
 
 const addWork = (type) => {
     orderData.orderWorks.push({
-        workType: type.value,
+        tipoTreball: type.value,
         implantsDetail: [],
         // idLiniaCmd: 0,
         // idComanda: 0,
@@ -112,7 +117,7 @@ const addWork = (type) => {
     //  dataModificacio:Date,
     })
 
-    workType.value = null; //reset tipo de treball
+    tipoTreball.value = null; //reset tipo de treball
     currentWorkDetail.value = orderData.orderWorks[orderData.orderWorks.length-1] 
     showWorkDetail.value = true; //show pantalla treball
 }
@@ -142,26 +147,36 @@ const saveOrder = () => {
     }
 };
 
+const _orderAction = computed(() => {
+    switch (page.props.orderAction) {
+        case 0: 
+            return t('Nuevo caso')
+        case 1: 
+            return t('Visualizar caso') + ' ' + orderData.orderHeader.idComandaX3
+        case 2 : 
+            return t('Editar caso') + ' ' + orderData.orderHeader.idComandaX3
+
+    }
+})
+
 </script>
 
 <template>
-    <AppLayout :title="$t('Nuevo caso')">
+    <AppLayout :title="_orderAction">
 
         <template #header>
             <h2 v-if="!showWorkDetail" class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-               {{$t('Nuevo caso')}}
+               {{_orderAction}}
             </h2>
 
             <h2 v-if="showWorkDetail" class="font-bold text-2xl text-primary-500 dark:text-slate-300 leading-tight">
-                {{$t('Detalle trabajo')}} {{ workDetail }} 
+                {{$t('Detalle trabajo')}} 
             </h2>
 
         </template>
 
         <template #content>
-            {{ page.props.orderData.orderWorks }}
-
-
+            
             <div class="mx-auto gap-12 flex pb-12">
 
                 <WorkDetail v-if="showWorkDetail" 
@@ -210,15 +225,15 @@ const saveOrder = () => {
                             {{ $t('Nuevo trabajo') }}
                         </div>
                         <div class="card flex flex-wrap justify-content-center gap-3">
-                            <SelectButton v-model="workType" :options="workTypes" optionLabel="label" dataKey="value">
+                            <SelectButton v-model="tipoTreball" :options="workTypes" optionLabel="label" dataKey="value">
                    
                             </SelectButton>
                         </div>
-                        <div v-tooltip.top="{value:workType?'':$t('Debes seleccionar el tipo de trabajo'), class:'text-xs text-center border-sm no-wrap'}"> 
+                        <div v-tooltip.top="{value:tipoTreball?'':$t('Debes seleccionar el tipo de trabajo'), class:'text-xs text-center border-sm no-wrap'}"> 
                         <Button 
                             class="text-lg font-bold bg-white !text-purple-900 hover:bg-primary-300" 
-                            :disabled="!workType"
-                            @click="addWork(workType)"
+                            :disabled="!tipoTreball"
+                            @click="addWork(tipoTreball)"
                             >
                             {{ $t('Empezar') }}
                         </Button>

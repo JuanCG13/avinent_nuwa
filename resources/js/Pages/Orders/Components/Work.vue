@@ -143,7 +143,7 @@ const cloneWork = (event, index) => {
     <div v-motion-slide-top class="w-full bg-primary-300 border border-gray-200 mb-6 p-6">
         <div class="flex justify-between">
             <div class="flex font-bold text-md text-gray-700 items-center">
-                Trabajo {{index+1}}. Tipo de trabajo: {{ workData.workType == 'A' ? 'Producción' : 'Producción y diseño'  }}
+                Trabajo {{index+1}}. Tipo de trabajo: {{ workData.tipoTreball == 'A' ? 'Producción' : 'Producción y diseño'  }}
                 <i v-if="!expanded" @click="expand()" class="ml-2 pi pi-chevron-down hover:cursor-pointer hover:text-primary-500 transition-colors"></i>
                 <i v-if="expanded" @click="expand()" class="ml-2 pi pi-chevron-up hover:cursor-pointer hover:text-primary-500 transition-colors"></i>
 

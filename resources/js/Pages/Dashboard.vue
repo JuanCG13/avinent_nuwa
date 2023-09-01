@@ -75,7 +75,7 @@ const editOrder = (event, index) => {
 };
 
 const viewOrder = (event, index) => {
-    
+    router.get(route('orders.view', index));
 };
 
 const cloneOrder = (event, index) => {

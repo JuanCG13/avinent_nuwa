@@ -97,14 +97,17 @@ Route::middleware([
 
     //orders 
     Route::get('/order/new', function () {
-        return Inertia::render('Orders/New', []);})
+        return Inertia::render('Orders/Order', ['orderAction' => 0]);})
         ->name('orders.new');
 
     Route::get('/order/list', 'App\Http\Controllers\OrderController@getOrders')
         ->name('orders.list');
 
-    Route::get('/order/{id}', 'App\Http\Controllers\OrderController@editOrder')
+    Route::get('/order/{id}', 'App\Http\Controllers\OrderController@editOrder', ['orderAction' => 2])
         ->name('orders.edit');
+
+    Route::get('/order/{id}', 'App\Http\Controllers\OrderController@editOrder', ['orderAction' => 1])
+        ->name('orders.view');
 
     Route::post('/order/new/store', 'App\Http\Controllers\OrderController@store')
         ->name('order.store');
