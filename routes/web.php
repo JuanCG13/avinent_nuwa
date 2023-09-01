@@ -103,8 +103,7 @@ Route::middleware([
     Route::get('/order/list', 'App\Http\Controllers\OrderController@getOrders')
         ->name('orders.list');
 
-    Route::get('/order/edit/{id}', function () {
-        return Inertia::render('Orders/Edit', [id]);})
+    Route::get('/order/{id}', 'App\Http\Controllers\OrderController@editOrder')
         ->name('orders.edit');
 
     Route::post('/order/new/store', 'App\Http\Controllers\OrderController@store')

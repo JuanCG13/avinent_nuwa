@@ -51,28 +51,45 @@ watch(impersonateUserSelected, (user) => {
 });
 
 const orderStatus = ((idEstat)=> {
-    
-var match = _data.status.filter(
-  function(data){ return data.idEstat == idEstat && data.idIdiomaISO == locale.value }
-);
-
+    var match = _data.status.filter(
+        function(data){ return data.idEstat == idEstat && data.idIdiomaISO == locale.value }
+    );
     if (match.length > 0) return match[0].estat; else return '-';
-
 });
 
 
 onMounted(async () => {
     const response1 = await fetch("/clients/");
-      clientList.data = await response1.json();
+    clientList.data = await response1.json();
 
-
-      const response = await fetch("/impersonate-users/");
-      impersonateUserList.data = await response.json();
+    const response = await fetch("/impersonate-users/");
+    impersonateUserList.data = await response.json();
 
     //   const response1 = await fetch("/order/list");
     //   orderList.value = await response1.json();
  
     });
+
+const editOrder = (event, index) => {
+    router.get(route('orders.edit', index));
+};
+
+const viewOrder = (event, index) => {
+    
+};
+
+const cloneOrder = (event, index) => {
+    
+};
+
+const deleteOrder = (event, index) => {
+    
+};
+
+const downloadOrder = (event, index) => {
+    
+};
+
 
 
 </script>
@@ -201,7 +218,27 @@ onMounted(async () => {
                                 {{ orderStatus(data.idEstat) }}
                         </template>
                     </Column>
-                    <Column :header="$t('Acciones')" style="width: 15%"></Column>
+                    <Column :header="$t('Acciones')" style="width: 15%">
+                    <template #body="{data}">
+                        <div class="flex">
+                            <div @click="viewOrder($event, data.idComanda)" v-tooltip.top="{value:$t('Visualizar'), class:'text-xs text-center border-sm no-wrap'}">
+                                <i class="pi pi-eye text-md mr-3 hover:cursor-pointer text-primary-500 hover:text-slate-500 transition-colors"></i>
+                            </div>
+                            <div @click="editOrder($event, data.idComanda)" v-if="data.idEstat!=99" v-tooltip.top="{value:$t('Editar'), class:'text-xs text-center border-sm no-wrap'}">
+                                <i class="pi pi-pencil font-light text-md mr-3 hover:cursor-pointer text-primary-500 hover:text-slate-500 transition-colors"></i>
+                            </div>
+                            <div @click="downloadOrder($event, data.idComanda)" v-if="data.idEstat!=99 && data.idEstat!=0" v-tooltip.top="{value:$t('Descargar todo el caso'), class:'text-xs text-center border-sm no-wrap'}">
+                                <i class="pi pi-download font-light text-md mr-3 hover:cursor-pointer text-primary-500 hover:text-slate-500 transition-colors"></i>
+                            </div>
+                            <div @click="cloneOrder($event, data.idComanda)" v-if="data.idEstat!=99" v-tooltip.top="{value:$t('Copiar'), class:'text-xs text-center border-sm no-wrap'}">
+                                <i class="pi pi-copy text-md mr-3 hover:cursor-pointer text-primary-500 hover:text-slate-500 transition-colors"></i>
+                            </div>
+                            <div @click="deleteOrder($event, data.idComanda)" v-if="data.idEstat==0" v-tooltip.top="{value:$t('Borrar'), class:'text-xs text-center border-sm no-wrap'}">
+                                <i class="pi pi-trash text-md mr-3 hover:cursor-pointer text-primary-500 hover:text-slate-500 transition-colors"></i>
+                            </div>
+                        </div>
+                    </template>
+                    </Column>
                 </DataTable>
             </div>
         </template>

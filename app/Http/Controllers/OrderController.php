@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Status;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -59,10 +60,33 @@ class OrderController extends Controller
         if(Auth::user()->isAdmin) {
             $orders = Order::all();
             } else {
-            $orders = Order::where('idUsuari','=',Auth::user()->id)->get();
+            $orders = Order::where('idUsuari','=',Auth::user()->id)
+                        ->get();
            }
     
        return $orders;
+    }
+
+    public function editOrder(Request $request) {
+
+        $order['orderHeader'] = Order::where('idComanda','=',$request->id)
+        ->get()[0];     
+        
+        $orderWorks = Order::find($request->id)
+        ->works;    
+
+        $order['orderWorks'] = $orderWorks;
+
+        foreach ($orderWorks as $work) {   
+            $work['implantsDetail'] = OrderDetail::find($work['idLiniaCmd'])
+            ->implants;   
+        }
+
+        return Inertia::render('Orders/New', [
+            'orderData' => $order, 
+             ]);
+           
+             
     }
 
 }

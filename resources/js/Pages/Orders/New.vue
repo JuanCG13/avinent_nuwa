@@ -31,6 +31,17 @@ const workTypes = ref([
     { label: t('Producción y diseño'), value: t('B') },
 ])
 
+defineProps ({
+    orderData: Object
+});
+
+onMounted(() => {
+    if (page.props.orderData) {
+        orderData.orderHeader = page.props.orderData.orderHeader;
+        orderData.orderWorks = page.props.orderData.orderWorks;
+    }
+})
+
 const orderData = reactive({
     orderHeader:{}, //Object
     orderWorks:[] //Array of objects
@@ -138,6 +149,8 @@ const saveOrder = () => {
         </template>
 
         <template #content>
+            {{ page.props.orderData.orderWorks }}
+
 
             <div class="mx-auto px-6 lg:px-0 gap-12 flex pb-12">
 
