@@ -43,7 +43,17 @@ onMounted(() => {
 })
 
 const orderData = reactive({
-    orderHeader:{}, //Object
+    orderHeader:{
+        idComanda: Number,
+        refPacient: String,
+        idAdrecaEnviament: String,
+        adrecaFacturacio: String,
+        persContacte: String,
+        telfContacte: String,
+        dataPrevista: String,
+        dataCreacio: Date,
+        dataModificacio: Date,
+    },
     orderWorks:[] //Array of objects
 });
 
@@ -107,9 +117,9 @@ const addWork = (type) => {
     showWorkDetail.value = true; //show pantalla treball
 }
 
-const updateData = (data) => {
-    orderData.orderHeader = data.orderHeader;
-};
+// const updateData = (data) => {
+//     orderData.orderHeader = data.orderHeader;
+// };
 
 const addOrder = () => {
     router.post(route('order.new'), [props.orderHeader, props.orderWorks]), {
@@ -152,7 +162,7 @@ const saveOrder = () => {
             {{ page.props.orderData.orderWorks }}
 
 
-            <div class="mx-auto px-6 lg:px-0 gap-12 flex pb-12">
+            <div class="mx-auto gap-12 flex pb-12">
 
                 <WorkDetail v-if="showWorkDetail" 
                     :workDetail="currentWorkDetail"
@@ -162,17 +172,14 @@ const saveOrder = () => {
             </div>  
 
        
-            <div class="mx-auto px-6 lg:px-0 gap-12 flex pb-12"  :class="[showWorkDetail ? 'hidden' : 'flex']">
+            <div class="mx-auto gap-12 flex pb-12"  :class="[showWorkDetail ? 'hidden' : 'flex']">
 
                 <div class="w-1/3 h-full">
                     <Info
                         @addOrder = "addOrder"
                         @saveOrder = "saveOrder"
-                        @updateData="updateData"
-                        :telfContacte="page.props.auth.user.telefonContacte"
-                        :persContacte="page.props.auth.user.personaContacte"
-                        :adrecaFacturacio="page.props.auth.user.adrecaFacturacio"   
-                     />
+                        :orderHeader="orderData.orderHeader"
+                      />
                     <ValidationBox
                         :orderData="orderData"
                     />

@@ -15,10 +15,6 @@ const emit = defineEmits(['updateData'])
 
 const page = usePage();
 
-const handleChange = (event) => {
-  emit('updateData', {orderHeader:orderHeader})
-}
-
 const shipping_addresses = reactive({
       data: null,
     });
@@ -30,30 +26,8 @@ onMounted(async () => {
     });
 
 
-const orderHeader = reactive({ 
-    refPacient: '', 
-    idComanda: '',
-    refPacient: '',
-    idAdrecaEnviament: '',
-    adrecaFacturacio: '??????????',
-    persContacte: '',
-    telfContacte: '',
-    dataPrevista: '',
-    dataCreacio: '',
-    dataModificacio: '',
-    });
-
 const props = defineProps({
     orderHeader: Object,
-   // idComanda: Number,
-    refPacient: String,
-    idAdrecaEnviament: String,
-    adrecaFacturacio: String,
-    persContacte: String,
-    telfContacte: String,
-    dataPrevista: String,
-    dataCreacio: Date,
-    dataModificacio: Date,
 });
 
 
@@ -73,11 +47,11 @@ const phoneOptions = {
             }
         };
 
-onMounted(() => {
-        orderHeader.telfContacte = props.telfContacte;
-        orderHeader.persContacte = props.persContacte;
-        orderHeader.adrecaFacturacio = props.adrecaFacturacio;
-        });
+// onMounted(() => {
+//         orderHeader.telfContacte = props.telfContacte;
+//         orderHeader.persContacte = props.persContacte;
+//         orderHeader.adrecaFacturacio = props.adrecaFacturacio;
+//         });
 </script>
 
 <template>
@@ -93,7 +67,6 @@ onMounted(() => {
                 ref="refPacientInput"
                 type="text"
                 class="mt-1 block w-full"
-                @input="handleChange"
             />
             <InputError class="mt-2" />
         </div>
@@ -107,7 +80,6 @@ onMounted(() => {
                 ref="persContacteInput"
                 type="text"
                 class="mt-1 block w-full"
-                @input="handleChange"
             />
             <InputError class="mt-2" />
         </div>
@@ -132,7 +104,6 @@ onMounted(() => {
                 v-model="orderHeader.adrecaFacturacio"
                 type="text"
                 class="mt-1 block w-full"
-                @input="handleChange"
             />
          
             <InputError class="mt-2" />
